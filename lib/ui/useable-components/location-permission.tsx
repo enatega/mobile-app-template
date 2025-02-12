@@ -8,9 +8,12 @@ import * as Location from "expo-location";
 import { useEffect } from "react";
 import { useLocationContext } from "@/lib/context/global/location.context";
 import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
+import { useUserContext } from "@/lib/context/global/user.context";
 
 const LocationPermissions = () => {
   // Hooks
+  const { userId } = useUserContext();
   const { t } = useTranslation();
   const { setLocationPermission } = useLocationContext();
 
@@ -65,6 +68,12 @@ const LocationPermissions = () => {
   useEffect(() => {
     getLocationPermission();
   }, []);
+
+  useEffect(() => {
+    if (!userId) {
+      router.replace("/login");
+    }
+  }, [userId]);
 
   return (
     <View className="flex-1 items-center justify-center">

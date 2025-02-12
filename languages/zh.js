@@ -187,5 +187,19 @@ export const zh = {
   "Vehicle Plate": "车牌",
   "Language": "语言",
   "You don't have any orders yet": "您还没有任何订单！",
-  "No delivered orders yet": "暂无已送达订单！"
+  "No delivered orders yet": "暂无已送达订单！",
+  "Map not loaded": "地图未加载。",
+  "Please check for permissions": "请检查权限。",
+  "Pick up": "取货",
+  "Mark as Delivered": "标记为已送达",
+  "Vehicle Type has been updated successfully": "车辆类型已成功更新。",
+  "Help": "帮助",
+  "About Us": "关于我们",
+  "Bank Management": "银行管理",
+  "Privacy Policy": "隐私政策",
+  "Product Page": "产品页面",
+  "Vehicle Type": "车辆类型",
+  "This is rider's location": "这是骑手的位置",
+  "Restaurant": "餐厅",
+  "Delivery Address": "送货地址"
 };

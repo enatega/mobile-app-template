@@ -68,8 +68,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="vehicle-type"
         options={{
-          drawerLabel: "Vehicle Type",
-          title: "Vehicle Type",
+          drawerLabel: t("Vehicle Type"),
+          title: t("Vehicle Type"),
           drawerIcon: ({ color, size }) => (
             <BikeRidingIcon color={color} height={size} width={size} />
           ),
@@ -78,8 +78,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="product-page"
         options={{
-          drawerLabel: "Product Page",
-          title: "Product Page",
+          drawerLabel: t("Product Page"),
+          title: t("Product Page"),
           drawerIcon: ({ color, size }) => (
             <PageIcon color={color} height={size} width={size} />
           ),
@@ -88,8 +88,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="privacy-policy"
         options={{
-          drawerLabel: "Privacy Policy",
-          title: "Privacy Policy",
+          drawerLabel: t("Privacy Policy"),
+          title: t("Privacy Policy"),
           drawerIcon: ({ color, size }) => (
             <PrivacyIcon color={color} height={size} width={size} />
           ),
@@ -98,8 +98,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="bank-management"
         options={{
-          drawerLabel: "Bank Management",
-          title: "Bank Management",
+          drawerLabel: t("Bank Management"),
+          title: t("Bank Management"),
           drawerIcon: ({ color, size }) => (
             <CardIcon color={color} height={size} width={size} />
           ),
@@ -108,8 +108,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="about-us"
         options={{
-          drawerLabel: "About Us",
-          title: "About US",
+          drawerLabel: t("About Us"),
+          title: t("About US"),
           drawerIcon: ({ color, size }) => (
             <AboutIcon color={color} height={size} width={size} />
           ),
@@ -118,8 +118,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="help"
         options={{
-          drawerLabel: "Help",
-          title: "Help",
+          drawerLabel: t("Help"),
+          title: t("Help"),
           drawerIcon: ({ color, size }) => (
             <HelpIcon color={color} height={size} width={size} />
           ),

@@ -187,5 +187,19 @@ export const de = {
   "Vehicle Plate": "Fahrzeugkennzeichen",
   "Language": "Sprache",
   "You don't have any orders yet": "Sie haben noch keine Bestellungen!",
-  "No delivered orders yet": "Noch keine gelieferten Bestellungen!"
+  "No delivered orders yet": "Noch keine gelieferten Bestellungen!",
+  "Map not loaded": "Karte wurde nicht geladen.",
+  "Please check for permissions": "Bitte überprüfen Sie die Berechtigungen.",
+  "Pick up": "Abholen",
+  "Mark as Delivered": "Als geliefert markieren",
+  "Vehicle Type has been updated successfully": "Fahrzeugtyp wurde erfolgreich aktualisiert.",
+  "Help": "Hilfe",
+  "About Us": "Über uns",
+  "Bank Management": "Bankverwaltung",
+  "Privacy Policy": "Datenschutzrichtlinie",
+  "Product Page": "Produktseite",
+  "Vehicle Type": "Fahrzeugtyp",
+  "This is rider's location": "Dies ist der Standort des Fahrers",
+  "Restaurant": "Restaurant",
+  "Delivery Address": "Lieferadresse"
 }

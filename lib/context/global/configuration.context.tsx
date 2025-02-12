@@ -43,18 +43,23 @@ export const ConfigurationProvider: React.FC<IConfigurationProviderProps> = ({
 
   // Handlers
   const onFetchConfiguration = () => {
-    const configuration: IConfiguration | undefined =
-      loading || error || !data
-        ? {
-            _id: "",
-            googleApiKey: "",
-            riderAppSentryUrl: "",
-            currency: "",
-            currencySymbol: "",
-          }
-        : data?.configuration;
+    try {
+      const configuration: IConfiguration | undefined =
+        loading || error || !data
+          ? {
+              _id: "",
+              googleApiKey: "",
+              riderAppSentryUrl: "",
+              currency: "",
+              currencySymbol: "",
+            }
+          : data?.configuration;
 
-    setConfiguration(configuration);
+      setConfiguration(configuration);
+    } catch (error) {
+      console.error("Configuration error: ", error);
+      setConfiguration(undefined);
+    }
   };
 
   const fetchConfiguration = useCallback(() => {

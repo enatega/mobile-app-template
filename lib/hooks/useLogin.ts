@@ -1,23 +1,41 @@
+// React Native Async Storage
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ApolloError, useMutation, useQuery } from "@apollo/client";
+
+// Expo
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
-import { useContext, useState } from "react";
+import { Href, router } from "expo-router";
 
+// Contexts
 import { AuthContext } from "../context/global/auth.context";
+
+// GraphQL
 import {
   DEFAULT_RIDER_CREDS,
   RIDER_LOGIN,
 } from "../api/graphql/mutation/login";
-import { Href, router } from "expo-router";
+
+// Components
 import { FlashMessageComponent } from "../ui/useable-components";
+
+// Interfaces
 import { IRiderLoginCompleteResponse } from "../utils/interfaces/auth.interface";
+
+// Constants
 import { ROUTES } from "../utils/constants";
+
+// Hooks
+import { ApolloError, useMutation, useQuery } from "@apollo/client";
+import { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const useLogin = () => {
   const [creds, setCreds] = useState({ username: "", password: "" });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Hooks
+  const { t } = useTranslation();
 
   // Context
   const { setTokenAsync } = useContext(AuthContext);
@@ -53,6 +71,7 @@ const useLogin = () => {
   }
   function onError(err: ApolloError) {
     const error = err as ApolloError;
+    console.log("🚀 ~ onError ~ error:", error)
     setIsLoading(false);
     FlashMessageComponent({
       message:
@@ -117,8 +136,9 @@ const useLogin = () => {
         message:
           error?.graphQLErrors[0]?.message ??
           error?.networkError?.message ??
-          "Something went wrong",
+          t("Something went wrong"),
       });
+      console.log("🚀 ~ onLogin ~ error:", error)
     }
   };
   return {

@@ -1,4 +1,4 @@
-export const he ={
+export const he = {
   // ניווט
   "continue": "המשך",
   "Wallet": "ארנק",
@@ -187,5 +187,20 @@ export const he ={
   "Vehicle Plate": "מספר רכב",
   "Language": "שפה",
   "You don't have any orders yet": "אין לך הזמנות עדיין!",
-  "No delivered orders yet": "אין הזמנות שנמסרו עדיין!"
+  "No delivered orders yet": "אין הזמנות שנמסרו עדיין!",
+  "Map not loaded": "המפה לא נטענה.",
+  "Please check for permissions": "אנא בדוק את ההרשאות.",
+  "Pick up": "איסוף",
+  "Mark as Delivered": "סמן כנמסר",
+  "Vehicle Type has been updated successfully": "סוג הרכב עודכן בהצלחה.",
+  "Help": "עזרה",
+  "About Us": "אודותינו",
+  "Bank Management": "ניהול בנק",
+  "Privacy Policy": "מדיניות פרטיות",
+  "Product Page": "דף מוצר",
+  "Vehicle Type": "סוג רכב",
+  "This is rider's location": "זהו מיקום השליח",
+  "Restaurant": "מסעדה",
+  "Delivery Address": "כתובת משלוח"
 }
+

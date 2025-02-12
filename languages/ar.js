@@ -187,5 +187,19 @@ export const ar = {
   "Vehicle Plate": "لوحة المركبة",
   "Language": "اللغة",
   "You don't have any orders yet": "ليس لديك أي طلبات حتى الآن!",
-  "No delivered orders yet": "لا توجد طلبات تم تسليمها بعد!"
+  "No delivered orders yet": "لا توجد طلبات تم تسليمها بعد!",
+  "Map not loaded": "لم يتم تحميل الخريطة.",
+  "Please check for permissions": "يرجى التحقق من الأذونات.",
+  "Pick up": "استلام",
+  "Mark as Delivered": "تم التسليم",
+  "Vehicle Type has been updated successfully": "تم تحديث نوع المركبة بنجاح.",
+  "Help": "المساعدة",
+  "About Us": "معلومات عنا",
+  "Bank Management": "إدارة البنك",
+  "Privacy Policy": "سياسة الخصوصية",
+  "Product Page": "صفحة المنتج",
+  "Vehicle Type": "نوع المركبة",
+  "This is rider's location": "هذا هو موقع السائق",
+  "Restaurant": "مطعم",
+  "Delivery Address": "عنوان التوصيل"
 }
