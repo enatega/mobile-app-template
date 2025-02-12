@@ -36,6 +36,7 @@ import "@/i18next";
 import "../global.css";
 import { useEffect } from "react";
 import LocationPermissionComponent from "../lib/ui/useable-components/location-permission";
+import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSplashScreen";
 
 initSentry();
 
@@ -72,31 +73,33 @@ function RootLayout() {
             <LocationProvider>
               <UserProvider>
                 <SoundProvider>
-                  <LocationPermissionComponent>
-                    <Stack
-                      screenOptions={{
-                        headerShown: false,
-                      }}
-                    >
-                      <Stack.Screen
-                        name="login"
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen
-                        name="(tabs)"
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen name="+not-found" />
-                      <Stack.Screen
-                        name="order-detail"
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen
-                        name="chat"
-                        options={{ headerShown: false }}
-                      />
-                    </Stack>
-                  </LocationPermissionComponent>
+                  <AnimatedSplashScreen>
+                    <LocationPermissionComponent>
+                      <Stack
+                        screenOptions={{
+                          headerShown: false,
+                        }}
+                      >
+                        <Stack.Screen
+                          name="login"
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="(tabs)"
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen name="+not-found" />
+                        <Stack.Screen
+                          name="order-detail"
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="chat"
+                          options={{ headerShown: false }}
+                        />
+                      </Stack>
+                    </LocationPermissionComponent>
+                  </AnimatedSplashScreen>
                   <StatusBar style="auto" />
                   <FlashMessage position="bottom" />
                 </SoundProvider>

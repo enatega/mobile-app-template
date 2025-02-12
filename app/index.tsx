@@ -21,11 +21,6 @@ function App() {
   const init = async () => {
     const token = await AsyncStorage.getItem(RIDER_TOKEN);
     if (token) {
-      // if (!locationPermission) {
-      //   router.navigate(ROUTES.location as Href)
-      //   return
-      // }
-
       router.navigate(ROUTES.home as Href);
       return;
     }

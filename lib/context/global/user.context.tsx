@@ -179,7 +179,6 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
 
   useEffect(() => {
     if (!userId) return;
-    console.log({ userId });
 
     refetchProfile({ id: userId });
   }, [userId]);
