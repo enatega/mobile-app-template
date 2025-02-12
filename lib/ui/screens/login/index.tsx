@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 // React Native
 import {
   View,
@@ -12,17 +13,22 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
+
 // Components
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
+
 // Icon
 import Icon from "react-native-vector-icons/FontAwesome6";
+
 // Schemas
 import { SignInSchema } from "@/lib/utils/schema";
-// Hook
+import { useTranslation } from "react-i18next";
+
+// Hooks
 import useLogin from "@/lib/hooks/useLogin";
+
 // Interface
 import { ILoginInitialValues } from "@/lib/utils/interfaces";
-// const { height } = Dimensions.get("window")
 
 const initial: ILoginInitialValues = {
   username: "",
@@ -30,6 +36,9 @@ const initial: ILoginInitialValues = {
 };
 
 const LoginScreen = () => {
+  // Hooks
+  const { t } = useTranslation();
+
   // States
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [initialValues, setInitialValues] = useState(initial);
@@ -81,10 +90,10 @@ const LoginScreen = () => {
 
                   {/* Title */}
                   <Text className="text-center text-xl font-semibold  text-black">
-                    Enter Your Credentials to login
+                    {t("Enter Your Credentials to login")}
                   </Text>
                   <Text className="text-center text-sm text-gray-500 mb-5">
-                    We'll check if you have an account
+                    {t("We'll check if you have an account")}
                   </Text>
 
                   {/* Email Input */}
@@ -92,7 +101,7 @@ const LoginScreen = () => {
                   <View className="flex-row items-center border border-gray-300 rounded-lg px-3 bg-white mb-[-4]">
                     <TextInput
                       className="flex-1 h-12 text-base text-black"
-                      placeholder="Email"
+                      placeholder={t("Email")}
                       keyboardType="email-address"
                       value={values.username}
                       onChangeText={handleChange("username")}
@@ -109,7 +118,7 @@ const LoginScreen = () => {
                   <View className="flex-row items-center border border-gray-300 rounded-lg px-3 bg-white mb-[-4]">
                     <TextInput
                       className="flex-1 h-12 text-base text-black"
-                      placeholder="Password"
+                      placeholder={t("Password")}
                       secureTextEntry={!passwordVisible}
                       value={values.password}
                       onChangeText={handleChange("password")}
@@ -141,7 +150,7 @@ const LoginScreen = () => {
                       <SpinnerComponent />
                     ) : (
                       <Text className="text-center text-white text-lg font-medium">
-                        Login
+                        {t("Login")}
                       </Text>
                     )}
                   </TouchableOpacity>

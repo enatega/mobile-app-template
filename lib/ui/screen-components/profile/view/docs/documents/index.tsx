@@ -1,5 +1,6 @@
 // Hooks
 import { useUserContext } from "@/lib/context/global/user.context";
+import { useTranslation } from "react-i18next";
 
 // Types & Interfaces
 import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
@@ -13,15 +14,17 @@ export default function DocumentsSection({
 }: {
   setIsFormOpened: Dispatch<SetStateAction<TRiderProfileBottomBarBit>>;
 }) {
+  // Hooks
+  const { t } = useTranslation();
   const { dataProfile } = useUserContext();
   return (
     <View className="flex flex-col h-[20%] w-full justify-between items-center">
       <View className="flex flex-col gap-3 items-start justify-center px-5 w-full border-b-2  border-b-gray-200 py-3">
         <View className="flex flex-row w-full justify-between">
-          <Text className="font-bold">Driving License</Text>
+          <Text className="font-bold">{t("Driving License")}</Text>
           <TouchableOpacity onPress={() => setIsFormOpened("LICENSE_FORM")}>
             <Text className="font-semibold text-[#0EA5E9]">
-              {dataProfile?.licenseDetails ? "Update" : "Add"}
+              {dataProfile?.licenseDetails ? t("Update") : t("Add")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -31,16 +34,18 @@ export default function DocumentsSection({
           <Text
             className={`${dataProfile?.licenseDetails ? "text-[#0D99FF]" : "text-[#991B1B]"} font-semibold`}
           >
-            {dataProfile?.licenseDetails ? "Submitted Data" : "Missing Data"}
+            {dataProfile?.licenseDetails
+              ? t("Submitted Data")
+              : t("Missing Data")}
           </Text>
         </View>
       </View>
       <View className="flex flex-col gap-3 items-start justify-center px-5 w-full border-b-2  border-b-gray-200 py-3">
         <View className="flex flex-row w-full justify-between">
-          <Text className="font-bold">Vehicle Plate</Text>
+          <Text className="font-bold">{t("Vehicle Plate")}</Text>
           <TouchableOpacity onPress={() => setIsFormOpened("VEHICLE_FORM")}>
             <Text className="font-semibold text-[#0EA5E9]">
-              {dataProfile?.vehicleDetails ? "Update" : "Add"}
+              {dataProfile?.vehicleDetails ? t("Update") : t("Add")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -50,7 +55,9 @@ export default function DocumentsSection({
           <Text
             className={`${dataProfile?.vehicleDetails ? "text-[#0D99FF]" : "text-[#991B1B]"} font-semibold`}
           >
-            {dataProfile?.vehicleDetails ? "Submitted Data" : "Missing Data"}
+            {dataProfile?.vehicleDetails
+              ? t("Submitted Data")
+              : t("Missing Data")}
           </Text>
         </View>
       </View>

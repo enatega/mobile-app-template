@@ -213,6 +213,6 @@ export const fr = {
   amountGreater: 'Le montant doit être supérieur à',
   amountReq: 'Le montant est requis !',
   CustomerName: 'Nom du client',
- continue: 'Continuer'
+  continue: 'Continuer'
 
 }

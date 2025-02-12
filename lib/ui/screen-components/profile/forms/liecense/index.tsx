@@ -1,3 +1,4 @@
+// Core
 import {
   Keyboard,
   Text,
@@ -8,28 +9,48 @@ import {
 } from "react-native";
 import FormHeader from "../form-header";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
+// React Native Calendars
 import { Calendar, DateData } from "react-native-calendars";
+
+// Flash Message
+import { showMessage } from "react-native-flash-message";
+
+// Icons
 import { UploadIcon } from "@/lib/assets/svg";
-import { CustomContinueButton } from "@/lib/ui/useable-components";
-import * as ImagePicker from "expo-image-picker";
-import { ICloudinaryResponse } from "@/lib/utils/interfaces/cloudinary.interface";
-import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+
+// Components
+import { CustomContinueButton } from "@/lib/ui/useable-components";
+
+// Expo
+import * as ImagePicker from "expo-image-picker";
+import { Link } from "expo-router";
+
+// Skeleton
 import { MotiView } from "moti";
 import { Skeleton } from "moti/skeleton";
-import { showMessage } from "react-native-flash-message";
+
+// Hooks
 import { useMutation } from "@apollo/client";
-import { UPDATE_LICENSE } from "@/lib/apollo/mutations/rider.mutation";
 import { useUserContext } from "@/lib/context/global/user.context";
+
+// GraphQL
+import { UPDATE_LICENSE } from "@/lib/apollo/mutations/rider.mutation";
 import { RIDER_PROFILE } from "@/lib/apollo/queries";
+
+// Interfaces
 import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
+import { ICloudinaryResponse } from "@/lib/utils/interfaces/cloudinary.interface";
+import { useTranslation } from "react-i18next";
 
 export default function DrivingLicenseForm({
   setIsFormOpened,
 }: {
   setIsFormOpened: Dispatch<SetStateAction<TRiderProfileBottomBarBit>>;
 }) {
-  // Contexts
+  // Hooks
+  const { t } = useTranslation();
   const { userId, dataProfile } = useUserContext();
 
   // States
@@ -49,7 +70,7 @@ export default function DrivingLicenseForm({
   const [mutateLicense] = useMutation(UPDATE_LICENSE, {
     onError: (error) => {
       showMessage({
-        message: "Failed to update license",
+        message: t("Failed to update license"),
         type: "danger",
       });
       console.error("Failed to update license", error);
@@ -115,7 +136,7 @@ export default function DrivingLicenseForm({
     } catch (error) {
       console.error(error);
       return showMessage({
-        message: "Failed to upload image",
+        message: t("Failed to upload image"),
         type: "danger",
       });
     } finally {
@@ -144,12 +165,12 @@ export default function DrivingLicenseForm({
         });
       } else if (!formData.number) {
         return showMessage({
-          message: "Please enter a license number",
+          message: t("Please enter a license number"),
           type: "danger",
         });
       } else if (!formData.image) {
         return showMessage({
-          message: "Please upload an image",
+          message: t("Please upload an image"),
           type: "danger",
         });
       }
@@ -180,7 +201,7 @@ export default function DrivingLicenseForm({
     });
   }, []);
   return (
-    <View className="w-full">
+    <View className="w-full items-center justify-center">
       {isLoading.isCalendarVisible && (
         <View
           style={{
@@ -205,7 +226,7 @@ export default function DrivingLicenseForm({
             }}
           />
           <CustomContinueButton
-            title="Done"
+            title={t("Done")}
             onPress={() =>
               setIsLoading((prev) => ({
                 ...prev,
@@ -217,11 +238,13 @@ export default function DrivingLicenseForm({
       )}
       {!isLoading.isCalendarVisible && (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View className="flex flex-col justify-between w-full p-3 h-full mt-0 -z-10">
+          <View
+            className={`flex flex-col justify-between w-full p-3 h-[95%] my-auto mt-0 -z-1`}
+          >
             <FormHeader title="Driving License" />
             <View>
-              <View className="flex flex-col w-full my-2">
-                <Text>License No</Text>
+              <View className="flex flex-col w-full mb-2">
+                <Text>{t("License No")}</Text>
                 <TextInput
                   value={formData.number}
                   onChangeText={(licenseNo) =>
@@ -231,7 +254,7 @@ export default function DrivingLicenseForm({
                 />
               </View>
               <View className="flex flex-col w-full my-2">
-                <Text>License Expiry Date</Text>
+                <Text>{t("License Expiry Date")}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     setIsLoading((prev) => ({
@@ -248,7 +271,7 @@ export default function DrivingLicenseForm({
                 </TouchableOpacity>
               </View>
               <View className="flex flex-col w-full my-2">
-                <Text>Add License Document</Text>
+                <Text>{t("Add License Document")}</Text>
                 {!cloudinaryResponse?.secure_url || !formData.image ? (
                   <TouchableOpacity
                     className="w-full rounded-md border border-dashed border-gray-300 p-3 h-28 items-center justify-center"
@@ -289,7 +312,7 @@ export default function DrivingLicenseForm({
               </View>
               <View>
                 <CustomContinueButton
-                  title={isLoading.isSubmitting ? "Please wait..." : "Add"}
+                  title={isLoading.isSubmitting ? t("Please wait") : t("Add")}
                   onPress={handleSubmit}
                 />
               </View>

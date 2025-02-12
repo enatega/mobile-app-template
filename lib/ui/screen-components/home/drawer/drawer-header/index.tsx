@@ -66,7 +66,7 @@ const CustomDrawerHeader = () => {
               color: Colors.light.black,
             }}
           >
-            {dataProfile?.name ?? "rider name"}
+            {dataProfile?.name ?? t("rider name")}
           </Text>
           <Text
             className="font-medium"
@@ -84,7 +84,7 @@ const CustomDrawerHeader = () => {
           className="text-md"
           style={{ color: Colors.light.secondaryTextColor }}
         >
-          Availability
+          {t("Availability")}
         </Text>
         <CustomSwitch
           value={dataProfile?.available ?? isEnabled}
@@ -97,7 +97,7 @@ const CustomDrawerHeader = () => {
           className="text-xs font-medium"
           style={{ color: Colors.light.secondaryTextColor }}
         >
-          {isEnabled ? t("available") : t("notAvailable")}
+          {isEnabled ? t("Available") : t("Not Available")}
         </Text>
       </View>
     </View>

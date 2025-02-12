@@ -16,11 +16,13 @@ import CustomDrawerHeader from "@/lib/ui/screen-components/home/drawer/drawer-he
 
 // UI-Componetns
 import { LogoutIcon, RightArrowIcon } from "@/lib/ui/useable-components/svg";
+import { useTranslation } from "react-i18next";
 
 export default function CustomDrawerContent(
   props: DrawerContentComponentProps,
 ) {
-  // Context
+  // Hooks
+  const { t } = useTranslation();
   const { logout } = useContext(AuthContext);
 
   return (
@@ -98,7 +100,7 @@ export default function CustomDrawerContent(
             >
               <LogoutIcon width={16} height={16} color={Colors.light.black} />
             </View>
-            <Text className="text-sm font-semibold">Logout</Text>
+            <Text className="text-sm font-semibold">{t("Logout")}</Text>
           </View>
         </TouchableOpacity>
       </View>

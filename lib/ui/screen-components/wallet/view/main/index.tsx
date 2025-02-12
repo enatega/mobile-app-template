@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { useLazyQueryQL } from "@/lib/hooks/useLazyQueryQL";
 import { useMutation } from "@apollo/client";
 import { useUserContext } from "@/lib/context/global/user.context";
+import { useTranslation } from "react-i18next";
 
 // GraphQL
 import { CREATE_WITHDRAW_REQUEST } from "@/lib/apollo/mutations/withdraw-request.mutation";
@@ -40,6 +41,9 @@ import { Text, View } from "react-native";
 import { WalletScreenMainLoading } from "@/lib/ui/skeletons";
 
 export default function WalletMain() {
+  // Hooks
+  const { t } = useTranslation();
+
   // States
   const [isBottomModalOpen, setIsBottomModalOpen] = useState(false);
   const [amountErrMsg, setAmountErrMsg] = useState("");
@@ -102,7 +106,7 @@ export default function WalletMain() {
     useMutation(CREATE_WITHDRAW_REQUEST, {
       onCompleted: () => {
         FlashMessageComponent({
-          message: "Successfully created the withdraw request!",
+          message: t("Successfully created the withdraw request"),
         });
         setIsBottomModalOpen(false);
         // setIsModalVisible(true)
@@ -111,10 +115,10 @@ export default function WalletMain() {
         });
       },
       onError: (error) => {
-        Alert.alert("Warning", error.message, [
+        Alert.alert(t("Warning"), error.message, [
           {
             onPress: () => setIsBottomModalOpen(false),
-            text: "Okay",
+            text: t("Okay"),
           },
         ]);
         FlashMessageComponent({
@@ -122,7 +126,7 @@ export default function WalletMain() {
             error.message ||
             error.graphQLErrors[0].message ||
             JSON.stringify(error) ||
-            "Something went wrong",
+            t("Something went wrong"),
         });
       },
       refetchQueries: [
@@ -136,14 +140,14 @@ export default function WalletMain() {
     const currentAmount = riderProfileData?.rider.currentWalletAmount || 0;
     if (withdrawAmount > (currentAmount || 0)) {
       return setAmountErrMsg(
-        `Please enter a valid amount. You have $${currentAmount} available.`,
+        `${t("Please enter a valid amount, You have $")}${currentAmount} ${t("available")}.`,
       );
     } else if (withdrawAmount < 10) {
       return setAmountErrMsg(
-        "The withdraw amount must be atleast 10 or greater.",
+        t("The withdraw amount must be atleast 10 or greater"),
       );
     } else if (typeof withdrawAmount !== "number") {
-      return setAmountErrMsg("Please enter a valid number.");
+      return setAmountErrMsg(t("Please enter a valid number"));
     }
     try {
       await createWithDrawRequest({
@@ -155,7 +159,8 @@ export default function WalletMain() {
       const err = error as GraphQLError;
       console.log(error);
       FlashMessageComponent({
-        message: err.message || JSON.stringify(error) || "Something went wrong",
+        message:
+          err.message || JSON.stringify(error) || t("Something went wrong"),
       });
     }
   }
@@ -185,13 +190,13 @@ export default function WalletMain() {
       {!isLoading && riderProfileData?.rider.currentWalletAmount && (
         <View className="flex flex-column gap-4 items-center bg-[#F3F4F6]">
           <Text className="text-[18px] text-[#4B5563] font-[600] mt-12">
-            Current Balance
+            {t("Current Balance")}
           </Text>
           <Text className="font-semibold text-[32px]">
             ${riderProfileData?.rider.currentWalletAmount ?? 0}
           </Text>
           <CustomContinueButton
-            title="Withdraw Now"
+            title={t("Withdraw Now")}
             onPress={() => setIsBottomModalOpen((prev) => !prev)}
           />
         </View>
@@ -201,7 +206,7 @@ export default function WalletMain() {
         riderCurrentWithdrawRequestData?.riderCurrentWithdrawRequest && (
           <View>
             <Text className="font-bold text-lg bg-white p-5 mt-4">
-              Pending Request
+              {t("Pending Request")}
             </Text>
             <RecentTransaction
               transaction={{
@@ -224,7 +229,7 @@ export default function WalletMain() {
           </View>
         )}
       <Text className="font-bold text-lg bg-white p-5 mt-4">
-        Recent Transactions
+        {t("Recent Transactions")}
       </Text>
 
       <ScrollView style={{ backgroundColor: "white" }}>

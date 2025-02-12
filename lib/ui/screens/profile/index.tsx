@@ -20,17 +20,18 @@ export default function ComponentName() {
 
   // UseEffects
   useEffect(() => {
-    const isOpened = Keyboard.addListener("keyboardWillShow", () => {
+    const isOpened = Keyboard.addListener("keyboardDidShow", () => {
       setIsKeyboardVisible(true);
     });
-    const isClosed = Keyboard.addListener("keyboardWillHide", () => {
+    const isClosed = Keyboard.addListener("keyboardDidHide", () => {
       setIsKeyboardVisible(false);
     });
     return () => {
       isOpened.remove();
       isClosed.remove();
     };
-  }, []);
+  }, [Keyboard, isKeyboardVisible]);
+  console.log(isKeyboardVisible);
   return (
     <SafeAreaView>
       <ProfileHeader />
@@ -47,14 +48,22 @@ export default function ComponentName() {
             setIsFormOpened(null);
           }}
           style={{
-            maxHeight: isFormOpened === "LICENSE_FORM" ? 420 : 350,
+            maxHeight:
+              isKeyboardVisible && isFormOpened === "LICENSE_FORM"
+                ? "100%"
+                : !isKeyboardVisible && isFormOpened === "LICENSE_FORM"
+                  ? "65%"
+                  : isKeyboardVisible && isFormOpened === "VEHICLE_FORM"
+                    ? "100%"
+                    : !isKeyboardVisible && isFormOpened === "VEHICLE_FORM"
+                      ? "45%"
+                      : "65%",
             width: "100%",
-            height: "100%",
             backgroundColor: "#fff",
             borderRadius: 20,
             padding: 2,
             alignItems: "center",
-            justifyContent: "flex-start",
+            justifyContent: "space-between",
 
             shadowColor: "#000",
             shadowOffset: {
@@ -63,13 +72,15 @@ export default function ComponentName() {
             },
             marginLeft: 0,
             marginTop:
-              isFormOpened === "LICENSE_FORM"
-                ? !isKeyboardVisible
-                  ? 405
-                  : 80
-                : !isKeyboardVisible
-                  ? 470
-                  : 140,
+              isFormOpened === "LICENSE_FORM" && !isKeyboardVisible
+                ? "65%"
+                : isFormOpened === "LICENSE_FORM" && isKeyboardVisible
+                  ? "10%"
+                  : isFormOpened === "VEHICLE_FORM" && !isKeyboardVisible
+                    ? "100%"
+                    : isFormOpened === "VEHICLE_FORM" && isKeyboardVisible
+                      ? "10%"
+                      : "auto",
             shadowOpacity: 0.25,
             shadowRadius: 4,
           }}

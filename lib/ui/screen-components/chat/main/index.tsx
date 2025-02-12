@@ -1,25 +1,29 @@
-import { View, Text, Platform, StyleSheet, Image } from "react-native";
+// Core
+import { View, Text, Platform, StyleSheet } from "react-native";
 
+// Gifted Chat
 import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
 import { useChatScreen } from "@/lib/hooks/useChat";
 import { SendIcon } from "@/lib/ui/useable-components/svg";
-import { Entypo, FontAwesome } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 export default function ChatMain() {
-  // Hook
+  // Hooks
+  const { t } = useTranslation();
   const {
     messages,
     onSend,
-    image,
-    setImage,
+    // image,
+    // setImage,
     inputMessage,
     setInputMessage,
     profile,
   } = useChatScreen();
 
-  const filterImages = (src) => {
-    setImage(image.filter((item) => item !== src));
-  };
+  // const filterImages = (src) => {
+  //   setImage(image.filter((item) => item !== src));
+  // };
 
   const renderSend = (props) => {
     return (
@@ -35,7 +39,7 @@ export default function ChatMain() {
     return (
       <View className="flex-1 justify-center items-center">
         <Text className="font-[Inter] text-2xl text-gray-900 mt-[300px]">
-          No New Chats
+          {t("No New Chats")}
         </Text>
       </View>
     );
@@ -66,24 +70,24 @@ export default function ChatMain() {
     return <FontAwesome name="angle-double-down" size={22} color="green" />;
   };
 
-  const renderAccessory = (props) => {
-    return (
-      <View>
-        {image?.map((item) => (
-          <View key={item?.uri ?? ""}>
-            <Image source={{ uri: item }} />
-            <Entypo
-              onPress={() => filterImages(item)}
-              name="circle-with-cross"
-              size={18}
-              style={styles.accessoryIcon}
-              color="black"
-            />
-          </View>
-        ))}
-      </View>
-    );
-  };
+  // const renderAccessory = (props) => {
+  //   return (
+  //     <View>
+  //       {image?.map((item) => (
+  //         <View key={item?.uri ?? ""}>
+  //           <Image source={{ uri: item }} />
+  //           <Entypo
+  //             onPress={() => filterImages(item)}
+  //             name="circle-with-cross"
+  //             size={18}
+  //             style={styles.accessoryIcon}
+  //             color="black"
+  //           />
+  //         </View>
+  //       ))}
+  //     </View>
+  //   );
+  // };
 
   return (
     <View className="flex-1" style={styles.chatContainer}>
@@ -104,7 +108,7 @@ export default function ChatMain() {
           left: { color: "blue" },
           right: { color: "green" },
         }}
-        placeholder="Chats Here"
+        placeholder={t("Chats Here")}
         // textInputStyle={{ paddingTop: 10 }}
         // renderAccessory={image.length > 0 ? renderAccessory : null}
         text={inputMessage ?? ""}

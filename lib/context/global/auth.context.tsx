@@ -1,23 +1,31 @@
 // Core
-import React, { useState } from "react";
+import { createContext } from "react";
+
+// Expo
 import * as Location from "expo-location";
+
+// React Native Navigation
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Interfaces§
+// Interfaces
 import { IAuthContext, IAuthProviderProps } from "@/lib/utils/interfaces";
+
+// Constants
 import { RIDER_TOKEN } from "@/lib/utils/constants";
-import { useRouter } from "expo-router";
+
+// Components
 import { FlashMessageComponent } from "@/lib/ui/useable-components";
 
-export const AuthContext = React.createContext<IAuthContext>(
-  {} as IAuthContext,
-);
+// Hooks
+import { FC, useState } from "react";
+import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 
-export const AuthProvider: React.FC<IAuthProviderProps> = ({
-  client,
-  children,
-}) => {
+export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
+
+export const AuthProvider: FC<IAuthProviderProps> = ({ client, children }) => {
   // Hooks
+  const { t } = useTranslation();
   const router = useRouter();
 
   // State
@@ -43,7 +51,7 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({
       router.replace("/login");
     } catch (e) {
       FlashMessageComponent({
-        message: `Logout failed`,
+        message: t(`Logout failed`),
       });
       console.log("Logout Error: ", e);
     }

@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 // Expo
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 // Core
 import { Text, TouchableOpacity, View } from "react-native";
@@ -23,6 +24,9 @@ export default function EarningBottomBar({
   modalVisible,
   setModalVisible,
 }: IEarningBottomProps) {
+  // Hooks
+  const { t } = useTranslation();
+
   // Contexts
   const { setRiderOrderEarnings } = useUserContext();
   return (
@@ -57,13 +61,13 @@ export default function EarningBottomBar({
           height: 2,
         },
         marginLeft: 0,
-        marginTop: 582,
+        marginTop: "125%",
         shadowOpacity: 0.25,
         shadowRadius: 4,
       }}
     >
       <Text className="font-bold text-xl w-full py-5 text-center">
-        Earnings
+        {t("Earnings")}
       </Text>
       <Ionicons
         name="close-circle-outline"
@@ -83,7 +87,7 @@ export default function EarningBottomBar({
       />
       <View className="flex flex-col justify-between h-[65%] w-full">
         <View className="flex flex-row justify-between items-center flex-2 bg-gray-100 p-5">
-          <Text className="font-bold">Total Earning</Text>
+          <Text className="font-bold">{t("Total Earnings")}</Text>
           <Text>${totalEarnings}</Text>
         </View>
         <View className="flex flex-row justify-between items-center flex-2 p-5">
@@ -92,7 +96,7 @@ export default function EarningBottomBar({
         </View>
         <View className="flex flex-row justify-between p-5 ">
           <Text className="text-md text-[#3B82F6] font-bold">
-            Deliveries({totalDeliveries})
+            {t("Deliveries")}({totalDeliveries})
           </Text>
           <TouchableOpacity
             className="flex flex-row gap-2 items-center flex-2"

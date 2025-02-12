@@ -10,6 +10,7 @@ import {
 
 // Icons
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 // Core
 import { Text, TouchableOpacity, View } from "react-native";
@@ -27,6 +28,9 @@ export default function EarningDetailsDateFilter({
   setIsDateFilterVisible,
   refetchDeafult,
 }: IEarningDetailsMainProps & IEarningsDateFilterProps) {
+  // Hooks
+  const { t } = useTranslation();
+
   // Handlers
   const handleDayPress = (day: DateData) => {
     const { dateString } = day;
@@ -104,7 +108,7 @@ export default function EarningDetailsDateFilter({
         >
           <View className="flex flex-row items-center gap-2">
             <Ionicons name="filter" color={Colors.light.primary} size={25} />
-            <Text>Date Filter</Text>
+            <Text>{t("Date Filter")}</Text>
           </View>
         </TouchableOpacity>
         {(dateFilter.startDate || dateFilter.endDate) && (
@@ -119,7 +123,7 @@ export default function EarningDetailsDateFilter({
           >
             <View className="flex flex-row items-center gap-2">
               <Ionicons name="remove-sharp" color={"red"} size={25} />
-              <Text>Clear Filters</Text>
+              <Text>{t("Clear Filters")}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -135,7 +139,7 @@ export default function EarningDetailsDateFilter({
           />
           <CustomContinueButton
             onPress={() => handleFilterSubmit()}
-            title={isFiltering ? "Please Wait..." : "Apply Filter"}
+            title={isFiltering ? t("Please Wait...") : t("Apply Filter")}
             disabled={isFiltering}
           />
         </View>

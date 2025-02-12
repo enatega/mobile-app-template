@@ -16,6 +16,9 @@ import useOrder from "@/lib/hooks/useOrder";
 // Cion
 import { ChatIcon } from "../svg";
 
+// Hooks
+import { useTranslation } from "react-i18next";
+
 const Order = ({ order, tab }: IOrderComponentProps) => {
   // Hook
   const { time, mutateAssignOrder, loadingAssignOrder } = useOrder(order);
@@ -24,6 +27,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
   const configuration = useContext(ConfigurationContext);
 
   // Hooks
+  const { t } = useTranslation();
   const router = useRouter();
 
   return (
@@ -47,7 +51,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             {/* Status */}
             <View className="flex-1 flex-row justify-between items-center">
               <Text className="font-[Inter] text-base font-bold  text-left decoration-skip-ink-0 text-gray-600">
-                Status
+                {t("Status")}
               </Text>
               <View
                 className={`ps-3 pe-3 bg-green-100 border border-1 rounded-[12px] ${
@@ -75,7 +79,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             {/* Order ID */}
             <View className="flex-1 flex-row justify-between items-center">
               <Text className="font-[Inter] text-base font-bold  text-left decoration-skip-ink-0 text-gray-600">
-                Order ID
+                {t("Order ID")}
               </Text>
               <Text className="font-[Inter] text-[16px] text-base font-semibold  text-right underline-offset-auto decoration-skip-ink text-gray-900  mr-2">
                 #{order?.orderId}
@@ -88,7 +92,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 <Text>I</Text>
               </View>
               <Text className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink text-gray-900">
-                Store Name
+                {t("Store Name")}
               </Text>
             </View>
 
@@ -104,7 +108,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               </View>
               <View>
                 <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
-                  Pickup Order
+                  {t("Pickup Order")}
                 </Text>
                 <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
                   {order?.deliveryAddress.deliveryAddress}
@@ -124,7 +128,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               </View>
               <View>
                 <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
-                  Delivery Order
+                  {t("Delivery Order")}
                 </Text>
                 <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
                   79 Kampuchea Krom Boulevard (128)
@@ -163,7 +167,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             {/* Payment Method */}
             <View className="flex-1 flex-row justify-between items-center">
               <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
-                Payment Method
+                {t("Payment Method")}
               </Text>
               <Text className="font-[Inter] text-base font-semibold  text-left underline-offset-auto decoration-skip-ink text-gray-900  mr-2">
                 {order?.paymentMethod}
@@ -173,7 +177,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             {/* Order Amount */}
             <View className="flex-1 flex-row justify-between">
               <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
-                Order Amount
+                {t("Order Amount")}
               </Text>
               <View className="flex-row gap-x-1">
                 <Text className="font-[Inter] font-semibold text-left text-gray-900">
@@ -181,7 +185,9 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                   {order?.orderAmount}
                 </Text>
                 <Text className="font-[Inter]   text-left   text-gray-500">
-                  {order.paymentStatus === "PAID" ? "Paid" : "(Not paid yet)"}
+                  {order.paymentStatus === "PAID"
+                    ? t("Paid")
+                    : t("(Not paid yet)")}
                 </Text>
               </View>
             </View>
@@ -206,10 +212,10 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               {/* Order Comment */}
               <View className="flex-1">
                 <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
-                  Order Comment
+                  {t("Order Comment")}
                 </Text>
                 <Text className="font-[Inter] text-[16px] italic font-medium text-gray-900">
-                  No Comment
+                  {t("No Comment")}
                 </Text>
               </View>
             </View>
@@ -227,7 +233,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                   <SpinnerComponent />
                 ) : (
                   <Text className="text-center text-white text-lg font-medium">
-                    Assign me
+                    {t("Assign me")}
                   </Text>
                 )}
               </TouchableOpacity>

@@ -11,8 +11,12 @@ import {
   PrivacyIcon,
   PageIcon,
 } from "@/lib/ui/useable-components/svg";
+import { useTranslation } from "react-i18next";
 
 export default function DrawerMain() {
+  // Hooks
+  const { t } = useTranslation();
+
   return (
     <Drawer
       drawerContent={CustomDrawerContent}
@@ -33,7 +37,7 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="orders"
         options={{
-          drawerLabel: "Home",
+          drawerLabel: t("Home"),
           title: "Orders",
           drawerIcon: ({ color, size }) => (
             <HomeIcon color={color} height={size} width={size} />
@@ -43,8 +47,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="profile"
         options={{
-          drawerLabel: "Profile",
-          title: "Profile",
+          drawerLabel: t("Profile"),
+          title: t("Profile"),
           drawerIcon: ({ color, size }) => (
             <UserIcon color={color} height={size} width={size} />
           ),
@@ -53,8 +57,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="language"
         options={{
-          drawerLabel: "Language",
-          title: "Language",
+          drawerLabel: t("Language"),
+          title: t("Language"),
           drawerIcon: ({ color, size }) => (
             <LanguageIcon color={color} height={size} width={size} />
           ),

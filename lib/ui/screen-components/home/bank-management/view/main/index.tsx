@@ -45,7 +45,7 @@ export default function BankManagementMain() {
     {
       onError: (error) => {
         showMessage({
-          message: "Failed to update bank details",
+          message: t("Failed to update bank details"),
           type: "danger",
         });
         console.error("Failed to update bank details", error);
@@ -75,37 +75,37 @@ export default function BankManagementMain() {
       if (!formData.bankName) {
         setIsError({
           field: "bankName",
-          message: "Bank Name is required",
+          message: t("Bank Name is required"),
         });
         return showMessage({
-          message: "Bank Name is required",
+          message: t("Bank Name is required"),
           type: "danger",
         });
       } else if (!formData.accountName) {
         setIsError({
           field: "accountName",
-          message: "Account Name is required",
+          message: t("Account Name is required"),
         });
         return showMessage({
-          message: "Account Name is required",
+          message: t("Account Name is required"),
           type: "danger",
         });
       } else if (!formData.accountNumber) {
         setIsError({
           field: "accountNumber",
-          message: "Account Number is required",
+          message: t("Account Number is required"),
         });
         return showMessage({
-          message: "Account Number is required",
+          message: t("Account Number is required"),
           type: "danger",
         });
       } else if (!formData.accountCode) {
         setIsError({
           field: "accountCode",
-          message: "Account Code is required",
+          message: t("Account Code is required"),
         });
         return showMessage({
-          message: "Account Code is required",
+          message: t("Account Code is required"),
           type: "danger",
         });
       }
@@ -121,8 +121,8 @@ export default function BankManagementMain() {
         },
       });
       Alert.alert(
-        "Bank Details Updated",
-        "Your bank details have been updated successfully.",
+        t("Bank Details Updated"),
+        t("Your bank details have been updated successfully"),
       );
     } catch (error) {
       console.log(error);
@@ -151,11 +151,11 @@ export default function BankManagementMain() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="flex flex-col justify-between items-center w-full h-[75%] my-6 px-4">
           <View className="flex flex-col w-full items-start justify-start gap-2">
-            <Text className="text-lg font-normal">Bank Name</Text>
+            <Text className="text-lg font-normal">{t("Bank Name")}</Text>
             <TextInput
               className={`min-w-[100%] rounded-md border ${isError.field === "bankName" ? "border-red-600 border-2" : "border-2 border-gray-300"} p-3 my-2`}
               value={formData.bankName}
-              placeholder="Swiss Bank"
+              placeholder={t("Swiss Bank")}
               onChangeText={(val) => {
                 setIsError({ field: "", message: "" });
                 handleChange("bankName", val);
@@ -189,7 +189,7 @@ export default function BankManagementMain() {
             />
           </View>
           <View className="flex flex-col w-full items-start justify-start gap-2">
-            <Text className="text-lg font-normal">Account Number</Text>
+            <Text className="text-lg font-normal">{t("Account Number")}</Text>
             <TextInput
               className={`min-w-[100%] rounded-md border ${isError.field === "accountNumber" ? "border-red-600 border-2" : "border-2 border-gray-300"} p-3 my-2`}
               value={formData.accountNumber}
@@ -202,7 +202,7 @@ export default function BankManagementMain() {
           </View>
           <View>
             <CustomContinueButton
-              title={areBankDetailsLoading ? "Please wait..." : "Confirm"}
+              title={areBankDetailsLoading ? t("Please wait") : t("Confirm")}
               onPress={handleSubmit}
             />
           </View>

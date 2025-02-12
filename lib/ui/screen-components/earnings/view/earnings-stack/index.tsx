@@ -3,6 +3,7 @@ import { IEarningStackProps } from "@/lib/utils/interfaces/earning.interface";
 
 // Icons
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 // Core
 import { Text, TouchableOpacity, View } from "react-native";
@@ -16,6 +17,9 @@ export default function EarningStack({
   tip,
   totalDeliveries,
 }: IEarningStackProps) {
+  // Hooks
+  const { t } = useTranslation();
+
   // Handlers
   function handleForwardPress() {
     setModalVisible({
@@ -32,7 +36,7 @@ export default function EarningStack({
     <View className="flex flex-row justify-between items-center p-4 w-[95%] mx-auto my-3 border-b-gray-300 border-b-2">
       <View className="flex flex-row gap-2 items-center flex-2">
         <Text>{date}</Text>
-        <Text className="font-bold">Total Earning</Text>
+        <Text className="font-bold">{t("Total Earnings")}</Text>
       </View>
       <TouchableOpacity
         className="flex flex-row gap-2 items-center flex-2"

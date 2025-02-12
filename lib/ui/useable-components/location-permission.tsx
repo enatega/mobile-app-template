@@ -1,9 +1,17 @@
-import React, { useEffect } from "react";
+// Core
 import { View, Linking, Alert, Text, TouchableOpacity } from "react-native";
+
+// Expo
 import * as Location from "expo-location";
+
+// Hooks
+import { useEffect } from "react";
 import { useLocationContext } from "@/lib/context/global/location.context";
+import { useTranslation } from "react-i18next";
 
 const LocationPermissions = () => {
+  // Hooks
+  const { t } = useTranslation();
   const { setLocationPermission } = useLocationContext();
 
   const getLocationPermission = async () => {
@@ -15,16 +23,20 @@ const LocationPermissions = () => {
 
   const LocationAlert = async () => {
     Alert.alert(
-      "Location access",
-      "Location permissions are required to use this app. Kindly open settings to allow location access.",
+      t("Location access"),
+      t(
+        t(
+          "Location permissions are required to use this app Kindly open settings to allow location access",
+        ),
+      ),
       [
         {
-          text: "Open settings",
+          text: t("Open settings"),
           onPress: async () => {
             await Linking.openSettings();
           },
         },
-      ]
+      ],
     );
     const { status } = await Location.getForegroundPermissionsAsync();
     if (status === "granted") {
@@ -57,7 +69,7 @@ const LocationPermissions = () => {
   return (
     <View className="flex-1 items-center justify-center">
       <View>
-        <Text className="text-2xl text-bold">Enable Location</Text>
+        <Text className="text-2xl text-bold">{t("Enable Location")}</Text>
       </View>
 
       <TouchableOpacity
@@ -67,7 +79,7 @@ const LocationPermissions = () => {
         }}
       >
         <Text className="text-center text-white text-[14px] font-medium">
-          Continue
+          {t("Continue")}
         </Text>
       </TouchableOpacity>
     </View>
