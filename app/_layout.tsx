@@ -38,6 +38,7 @@ import { useEffect } from "react";
 import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSplashScreen";
 import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
 import { LocationPermissionComp } from "@/lib/ui/useable-components";
+import InternetProvider from "@/lib/context/global/internet-provider";
 
 initSentry();
 
@@ -67,50 +68,52 @@ function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <ApolloProvider client={client}>
-        <ConfigurationProvider>
-          <AuthProvider client={client}>
-            <LocationProvider>
-              <UserProvider>
-                <SoundProvider>
-                  <AnimatedSplashScreen>
-                    <LocationPermissionComp>
-                      <UnavailableStatus />
+      <InternetProvider>
+        <ApolloProvider client={client}>
+          <ConfigurationProvider>
+            <AuthProvider client={client}>
+              <LocationProvider>
+                <UserProvider>
+                  <SoundProvider>
+                    <AnimatedSplashScreen>
+                      <LocationPermissionComp>
+                        <UnavailableStatus />
 
-                      <Stack
-                        screenOptions={{
-                          headerShown: false,
-                        }}
-                        initialRouteName="login"
-                      >
-                        <Stack.Screen
-                          name="login"
-                          options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                          name="(tabs)"
-                          options={{ headerShown: false }}
-                        />
-                        <Stack.Screen name="+not-found" />
-                        <Stack.Screen
-                          name="order-detail"
-                          options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                          name="chat"
-                          options={{ headerShown: false }}
-                        />
-                      </Stack>
-                    </LocationPermissionComp>
-                  </AnimatedSplashScreen>
-                  <StatusBar style="auto" />
-                  <FlashMessage position="bottom" />
-                </SoundProvider>
-              </UserProvider>
-            </LocationProvider>
-          </AuthProvider>
-        </ConfigurationProvider>
-      </ApolloProvider>
+                        <Stack
+                          screenOptions={{
+                            headerShown: false,
+                          }}
+                          initialRouteName="(tabs)"
+                        >
+                          <Stack.Screen
+                            name="login"
+                            options={{ headerShown: false }}
+                          />
+                          <Stack.Screen
+                            name="(tabs)"
+                            options={{ headerShown: false }}
+                          />
+                          <Stack.Screen name="+not-found" />
+                          <Stack.Screen
+                            name="order-detail"
+                            options={{ headerShown: false }}
+                          />
+                          <Stack.Screen
+                            name="chat"
+                            options={{ headerShown: false }}
+                          />
+                        </Stack>
+                      </LocationPermissionComp>
+                    </AnimatedSplashScreen>
+                    <StatusBar style="auto" />
+                    <FlashMessage position="bottom" />
+                  </SoundProvider>
+                </UserProvider>
+              </LocationProvider>
+            </AuthProvider>
+          </ConfigurationProvider>
+        </ApolloProvider>
+      </InternetProvider>
     </ThemeProvider>
   );
 }

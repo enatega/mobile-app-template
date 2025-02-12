@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-export default function VehicleTypeLayout() {
+export default function WorkScheduleLayout() {
   return (
     <Stack>
       <Stack.Screen

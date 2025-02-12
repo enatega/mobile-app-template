@@ -30,6 +30,7 @@ export default function CustomDrawerContent(
     <DrawerContentScrollView
       {...props}
       // scrollEnabled={false}
+
       contentContainerStyle={{
         backgroundColor: Colors.light.primary,
         paddingBottom: 0,

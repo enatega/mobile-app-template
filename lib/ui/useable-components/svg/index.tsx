@@ -17,3 +17,5 @@ export { default as CircleCrossIcon } from "./circle-cross";
 export { default as SendIcon } from "./send";
 export { default as NoDataIcon } from "./no-data";
 export { default as BikeRidingIcon } from "./bike-riding";
+export { default as ClockIcon } from "./clock";
+export { default as NoInternetIcon } from "./no-internet";

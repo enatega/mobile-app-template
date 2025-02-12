@@ -11,6 +11,7 @@ import {
   PrivacyIcon,
   PageIcon,
   BikeRidingIcon,
+  ClockIcon,
 } from "@/lib/ui/useable-components/svg";
 import { useTranslation } from "react-i18next";
 
@@ -72,6 +73,17 @@ export default function DrawerMain() {
           title: t("Vehicle Type"),
           drawerIcon: ({ color, size }) => (
             <BikeRidingIcon color={color} height={size} width={size} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="work-schedule"
+        options={{
+          drawerLabel: "Work Schedule",
+          title: "Work Schedule",
+          drawerIcon: ({ color, size }) => (
+            <ClockIcon color={color} height={size} width={size} />
           ),
         }}
       />
