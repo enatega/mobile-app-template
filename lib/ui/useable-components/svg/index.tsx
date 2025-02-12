@@ -16,3 +16,4 @@ export { default as CallIcon } from "./call";
 export { default as CircleCrossIcon } from "./circle-cross";
 export { default as SendIcon } from "./send";
 export { default as NoDataIcon } from "./no-data";
+export { default as BikeRidingIcon } from "./bike-riding";

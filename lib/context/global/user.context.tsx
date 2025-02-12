@@ -60,6 +60,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     refetch: refetchProfile,
   } = useQuery(RIDER_PROFILE, {
     fetchPolicy: "network-only",
+    skip: !userId,
     variables: {
       id: userId,
     },
@@ -85,6 +86,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
 
   async function getUserId() {
     const id = await AsyncStorage.getItem("rider-id");
+
     if (id) {
       setUserId(id);
     }
@@ -143,6 +145,21 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     }
   };
 
+  const trackRiderLocation = async () => {
+    locationListener.current = await watchPositionAsync(
+      { accuracy: LocationAccuracy.BestForNavigation, timeInterval: 10000 },
+      async (location) => {
+        client.mutate({
+          mutation: UPDATE_LOCATION,
+          variables: {
+            latitude: location.coords.latitude.toString(),
+            longitude: location.coords.longitude.toString(),
+          },
+        });
+      },
+    );
+  };
+
   // UseEffects
   useEffect(() => {
     if (!dataProfile) return;
@@ -160,21 +177,16 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     };
   }, [dataProfile]);
 
-  const trackRiderLocation = async () => {
-    locationListener.current = await watchPositionAsync(
-      { accuracy: LocationAccuracy.BestForNavigation, timeInterval: 10000 },
-      async (location) => {
-        client.mutate({
-          mutation: UPDATE_LOCATION,
-          variables: {
-            latitude: location.coords.latitude.toString(),
-            longitude: location.coords.longitude.toString(),
-          },
-        });
-      },
-    );
-  };
   useEffect(() => {
+    if (!userId) return;
+    console.log({ userId });
+
+    refetchProfile({ id: userId });
+  }, [userId]);
+
+  useEffect(() => {
+    getUserId();
+
     trackRiderLocation();
     return () => {
       if (locationListener.current) {
@@ -183,10 +195,6 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    getUserId();
-    refetchProfile({ id: userId });
-  }, []);
   /*Why is this duplicated? */
   // useEffect(() => {
   //   const trackRiderLocation = async () => {

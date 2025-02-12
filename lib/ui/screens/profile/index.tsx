@@ -32,7 +32,7 @@ export default function ComponentName() {
     };
   }, []);
   return (
-    <SafeAreaView>
+    <SafeAreaView className="bg-white">
       <ProfileHeader />
       <ProfileMain
         isFormOpened={isFormOpened}
