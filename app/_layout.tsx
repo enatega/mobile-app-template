@@ -37,6 +37,7 @@ import "../global.css";
 import { useEffect } from "react";
 import LocationPermissionComponent from "../lib/ui/useable-components/location-permission";
 import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSplashScreen";
+import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
 
 initSentry();
 
@@ -44,7 +45,6 @@ initSentry();
 SplashScreen.preventAutoHideAsync();
 
 function RootLayout() {
-  // Hooks
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../lib/assets/fonts/SpaceMono-Regular.ttf"),
@@ -75,10 +75,13 @@ function RootLayout() {
                 <SoundProvider>
                   <AnimatedSplashScreen>
                     <LocationPermissionComponent>
+                      <UnavailableStatus />
+
                       <Stack
                         screenOptions={{
                           headerShown: false,
                         }}
+                        initialRouteName="login"
                       >
                         <Stack.Screen
                           name="login"
