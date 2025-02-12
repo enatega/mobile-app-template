@@ -13,7 +13,7 @@ export default function UnavailableStatus() {
   return (
     <View className="absolute top-0 left-0 right-0 bg-black/70 p-3 py-2 px-4 z-50">
       <Text className="text-white text-center font-bold">
-        You are currently Offline
+        You are currently unavailable.
       </Text>
     </View>
   );
