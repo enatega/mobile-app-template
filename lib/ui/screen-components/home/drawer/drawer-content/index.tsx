@@ -38,10 +38,7 @@ export default function CustomDrawerContent(
       <CustomDrawerHeader />
 
       {/* Drawer Items with Right Arrow */}
-      <View
-        // style={{ backgroundColor: Colors.light.white }}
-        className="bg-red-200 mb-20"
-      >
+      <View style={{ backgroundColor: Colors.light.white }} className="mb-14">
         {props.state.routes.map((route, index) => {
           const isFocused = props.state.index === index;
           const { options } = props.descriptors[route.key];
