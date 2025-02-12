@@ -42,7 +42,11 @@ export default function CustomDrawerContent(
 
       {/* Drawer Items with Right Arrow */}
       <ScrollView
-        style={{ backgroundColor: Colors.light.white }}
+        style={{
+          backgroundColor: Colors.light.white,
+          height: "auto",
+          paddingBottom: 20,
+        }}
         scrollEnabled={true}
       >
         {props.state.routes.map((route, index) => {
