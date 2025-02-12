@@ -201,6 +201,11 @@ export const he = {
   "Vehicle Type": "סוג רכב",
   "This is rider's location": "זהו מיקום השליח",
   "Restaurant": "מסעדה",
-  "Delivery Address": "כתובת משלוח"
+  "Delivery Address": "כתובת משלוח",
+  "Order marked as": "ההזמנה סומנה כ",
+  "Enable Location For Better Experience": "הפעל מיקום לחוויה טובה יותר",
+  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible":
+    "אנחנו צריכים את המיקום שלך כדי למצוא מסעדות קרובות, להבטיח משלוח מדויק ולספק את השירות הטוב ביותר האפשרי",
+  "Logout": "התנתקות"
 }
 

@@ -201,5 +201,10 @@ export const fr = {
   "Vehicle Type": "Type de véhicule",
   "This is rider's location": "Ceci est l'emplacement du coursier",
   "Restaurant": "Restaurant",
-  "Delivery Address": "Adresse de livraison"
+  "Delivery Address": "Adresse de livraison",
+  "Order marked as": "Commande marquée comme",
+  "Enable Location For Better Experience": "Activez la localisation pour une meilleure expérience",
+  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible":
+    "Nous avons besoin de votre localisation pour trouver des restaurants à proximité, assurer une livraison précise et offrir le meilleur service possible",
+  "Logout": "Déconnexion"
 }

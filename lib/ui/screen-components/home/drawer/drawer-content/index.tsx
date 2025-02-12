@@ -17,6 +17,7 @@ import CustomDrawerHeader from "@/lib/ui/screen-components/home/drawer/drawer-he
 // UI-Componetns
 import { LogoutIcon, RightArrowIcon } from "@/lib/ui/useable-components/svg";
 import { useTranslation } from "react-i18next";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function CustomDrawerContent(
   props: DrawerContentComponentProps,
@@ -39,7 +40,10 @@ export default function CustomDrawerContent(
       <CustomDrawerHeader />
 
       {/* Drawer Items with Right Arrow */}
-      <View style={{ backgroundColor: Colors.light.white }}>
+      <ScrollView
+        style={{ backgroundColor: Colors.light.white }}
+        scrollEnabled={true}
+      >
         {props.state.routes.map((route, index) => {
           const isFocused = props.state.index === index;
           const { options } = props.descriptors[route.key];
@@ -103,7 +107,7 @@ export default function CustomDrawerContent(
             <Text className="text-sm font-semibold">{t("Logout")}</Text>
           </View>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </DrawerContentScrollView>
   );
 }

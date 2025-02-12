@@ -201,5 +201,10 @@ export const ar = {
   "Vehicle Type": "نوع المركبة",
   "This is rider's location": "هذا هو موقع السائق",
   "Restaurant": "مطعم",
-  "Delivery Address": "عنوان التوصيل"
+  "Delivery Address": "عنوان التوصيل",
+  "Order marked as": "تم وضع علامة على الطلب كـ",
+  "Enable Location For Better Experience": "قم بتمكين الموقع للحصول على تجربة أفضل",
+  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible": 
+    "نحن بحاجة إلى موقعك للعثور على المطاعم القريبة، وضمان التوصيل الدقيق، وتقديم أفضل خدمة ممكنة",
+  "Logout": "تسجيل الخروج"
 }

@@ -190,5 +190,10 @@ export const km = {
   "Vehicle Type": "ប្រភេទយានយន្ត",
   "This is rider's location": "នេះជាទីតាំងអ្នកដឹកជញ្ជូន",
   "Restaurant": "ភោជនីយដ្ឋាន",
-  "Delivery Address": "អាសយដ្ឋានដឹកជញ្ជូន"
+  "Delivery Address": "អាសយដ្ឋានដឹកជញ្ជូន",
+  "Order marked as": "ការបញ្ជាទិញត្រូវបានសម្គាល់ថា",
+  "Enable Location For Better Experience": "បើកទីតាំងសម្រាប់បទពិសោធន៍ប្រសើរ",
+  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible": 
+    "យើងត្រូវការទីតាំងរបស់អ្នកដើម្បីស្វែងរកភោជនីយដ្ឋាននៅក្បែរ ប្រាកដភាពប្រគល់យ៉ាងត្រឹមត្រូវ និងផ្តល់សេវាកម្មល្អបំផុត",
+  "Logout": "ចេញ"
 }

@@ -203,4 +203,7 @@ export const en = {
   "Restaurant":"Restaurant",
   "Delivery Address":"Delivery Address",
   "Order marked as":"Order marked as",
+  "Enable Location For Better Experience":"Enable Location For Better Experience",
+  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible":"We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible",
+  "Logout":"Logout"
 };

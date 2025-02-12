@@ -6,19 +6,22 @@ import {
   LocationSubscription,
 } from "expo-location";
 import { QueryResult, useQuery } from "@apollo/client";
-import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// Interface
 import {
   IRiderProfileResponse,
   IUserContextProps,
   IUserProviderProps,
 } from "@/lib/utils/interfaces";
+// Context
+// import { useLocationContext } from "./location.context";
+// API
 import { RIDER_ORDERS, RIDER_PROFILE } from "@/lib/apollo/queries";
 import { UPDATE_LOCATION } from "@/lib/apollo/mutations/rider.mutation";
 import {
   SUBSCRIPTION_ASSIGNED_RIDER,
   SUBSCRIPTION_ZONE_ORDERS,
 } from "@/lib/apollo/subscriptions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   IRiderEarnings,
   IRiderEarningsArray,
@@ -27,8 +30,7 @@ import {
 const UserContext = createContext<IUserContextProps>({} as IUserContextProps);
 
 export const UserProvider = ({ children }: IUserProviderProps) => {
-  const router = useRouter();
-  const [isInitialized, setIsInitialized] = useState(false);
+  // States
   const [modalVisible, setModalVisible] = useState<
     IRiderEarnings & { bool: boolean }
   >({
@@ -42,9 +44,14 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
   });
   const [riderOrderEarnings, setRiderOrderEarnings] = useState<
     IRiderEarningsArray[]
-  >([]);
+  >([] as IRiderEarningsArray[]);
   const [userId, setUserId] = useState("");
+
+  // Refs
   const locationListener = useRef<LocationSubscription>();
+
+  // Context
+  // const { locationPermission } = useLocationContext()
 
   const {
     loading: loadingProfile,
@@ -68,26 +75,22 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     subscribeToMore,
     refetch: refetchAssigned,
   } = useQuery(RIDER_ORDERS, {
+    // onCompleted,
+    // onError: error2,
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
   });
 
-  const getUserId = async () => {
-    try {
-      const id = await AsyncStorage.getItem("rider-id");
-      setUserId(id || "");
-      if (!id) {
-        router.replace("/login");
-        return;
-      }
-      setIsInitialized(true);
-    } catch (error) {
-      console.error("Error getting user ID:", error);
-      setIsInitialized(true);
-      router.replace("/login");
-      return;
+  let unsubscribeZoneOrder: unknown = null;
+  let unsubscribeAssignOrder: unknown = null;
+
+  async function getUserId() {
+    const id = await AsyncStorage.getItem("rider-id");
+
+    if (id) {
+      setUserId(id);
     }
-  };
+  }
 
   const subscribeNewOrders = () => {
     try {
@@ -119,12 +122,12 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
           return prev;
         },
       });
-
       const unsubZoneOrder = subscribeToMore({
         document: SUBSCRIPTION_ZONE_ORDERS,
         variables: { zoneId: dataProfile?.rider?.zone?._id },
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev;
+
           if (subscriptionData.data.subscriptionZoneOrders.origin === "new") {
             return {
               riderOrders: [
@@ -136,64 +139,66 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
           return prev;
         },
       });
-
       return { unsubZoneOrder, unsubAssignOrder };
     } catch (error) {
-      console.log(error, "zone order Error");
-      return { unsubZoneOrder: null, unsubAssignOrder: null };
+      console.log(error);
     }
   };
 
   const trackRiderLocation = async () => {
-    try {
-      locationListener.current = await watchPositionAsync(
-        { accuracy: LocationAccuracy.BestForNavigation, timeInterval: 10000 },
-        async (location) => {
-          client.mutate({
-            mutation: UPDATE_LOCATION,
-            variables: {
-              latitude: location.coords.latitude.toString(),
-              longitude: location.coords.longitude.toString(),
-            },
-          });
-        },
-      );
-    } catch (error) {
-      console.error(error, "Location Error");
-    }
+    locationListener.current = await watchPositionAsync(
+      { accuracy: LocationAccuracy.BestForNavigation, timeInterval: 10000 },
+      async (location) => {
+        client.mutate({
+          mutation: UPDATE_LOCATION,
+          variables: {
+            latitude: location.coords.latitude.toString(),
+            longitude: location.coords.longitude.toString(),
+          },
+        });
+      },
+    );
   };
 
-  useEffect(() => {
-    getUserId();
-  }, []);
-
-  useEffect(() => {
-    if (!isInitialized) return;
-
-    refetchProfile({ id: userId });
-  }, [userId, isInitialized]);
-
+  // UseEffects
   useEffect(() => {
     if (!dataProfile) return;
-
-    const { unsubZoneOrder, unsubAssignOrder } = subscribeNewOrders();
+    {
+      const { unsubZoneOrder, unsubAssignOrder } = subscribeNewOrders();
+      unsubscribeZoneOrder = unsubZoneOrder;
+      unsubscribeAssignOrder = unsubAssignOrder;
+    }
     return () => {
-      if (unsubZoneOrder) unsubZoneOrder();
-      if (unsubAssignOrder) unsubAssignOrder();
+      if (unsubscribeZoneOrder) {
+        unsubscribeZoneOrder();
+      }
+
+      if (unsubscribeAssignOrder) unsubscribeAssignOrder();
     };
   }, [dataProfile]);
 
   useEffect(() => {
+    if (!userId) return;
+
+    refetchProfile({ id: userId });
+  }, [userId]);
+
+  useEffect(() => {
+    getUserId();
+
     trackRiderLocation();
     return () => {
-      locationListener.current?.remove();
+      if (locationListener.current) {
+        locationListener?.current?.remove();
+      }
     };
   }, []);
 
-  if (!isInitialized) {
-    return null; // or a loading component
-  }
-
+  useEffect(() => {
+    getUserId();
+    refetchProfile({ id: userId });
+  }, [userId]);
+  console.warn(dataProfile?.rider.available);
   return (
     <UserContext.Provider
       value={{
@@ -218,7 +223,6 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     </UserContext.Provider>
   );
 };
-
 export const UserConsumer = UserContext.Consumer;
 export const useUserContext = () => useContext(UserContext);
 export default UserContext;

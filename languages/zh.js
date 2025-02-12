@@ -201,5 +201,10 @@ export const zh = {
   "Vehicle Type": "车辆类型",
   "This is rider's location": "这是骑手的位置",
   "Restaurant": "餐厅",
-  "Delivery Address": "送货地址"
+  "Delivery Address": "送货地址",
+  "Order marked as": "订单标记为",
+  "Enable Location For Better Experience": "启用位置以获得更好的体验",
+  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible":
+    "我们需要您的位置来查找附近的餐厅，确保准确送达，并提供最佳服务",
+  "Logout": "退出登录"
 };
