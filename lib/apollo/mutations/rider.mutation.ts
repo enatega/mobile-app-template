@@ -1,4 +1,20 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
+
+export const EDIT_RIDER = gql`
+  mutation EditRider($riderInput: RiderInput!) {
+    editRider(riderInput: $riderInput) {
+      _id
+      name
+      username
+      phone
+      password
+      vehicleType
+      zone {
+        _id
+      }
+    }
+  }
+`;
 
 export const UPDATE_LOCATION = gql`
   mutation UpdateRiderLocation($latitude: String!, $longitude: String!) {
@@ -6,7 +22,7 @@ export const UPDATE_LOCATION = gql`
       _id
     }
   }
-`
+`;
 
 export const UPDATE_AVAILABILITY = gql`
   mutation ToggleRider($id: String) {
@@ -14,7 +30,7 @@ export const UPDATE_AVAILABILITY = gql`
       _id
     }
   }
-`
+`;
 
 export const UPDATE_LICENSE = gql`
   mutation UpdateRiderLicenseDetails(
@@ -28,7 +44,7 @@ export const UPDATE_LICENSE = gql`
       _id
     }
   }
-`
+`;
 export const UPDATE_VEHICLE = gql`
   mutation UpdateRiderVehicleDetails(
     $updateRiderVehicleDetailsId: String!
@@ -41,7 +57,7 @@ export const UPDATE_VEHICLE = gql`
       _id
     }
   }
-`
+`;
 export const UPDATE_BUSINESS_DETAILS = gql`
   mutation UpdateRiderBussinessDetails(
     $bussinessDetails: BussinessDetailsInput
@@ -54,4 +70,4 @@ export const UPDATE_BUSINESS_DETAILS = gql`
       _id
     }
   }
-`
+`;

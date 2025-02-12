@@ -10,6 +10,7 @@ import {
   HelpIcon,
   PrivacyIcon,
   PageIcon,
+  BikeRidingIcon,
 } from "@/lib/ui/useable-components/svg";
 import { useTranslation } from "react-i18next";
 
@@ -61,6 +62,16 @@ export default function DrawerMain() {
           title: t("Language"),
           drawerIcon: ({ color, size }) => (
             <LanguageIcon color={color} height={size} width={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="vehicle-type"
+        options={{
+          drawerLabel: "Vehicle Type",
+          title: "Vehicle Type",
+          drawerIcon: ({ color, size }) => (
+            <BikeRidingIcon color={color} height={size} width={size} />
           ),
         }}
       />

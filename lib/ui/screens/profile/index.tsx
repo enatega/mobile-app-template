@@ -33,7 +33,7 @@ export default function ComponentName() {
   }, [Keyboard, isKeyboardVisible]);
   console.log(isKeyboardVisible);
   return (
-    <SafeAreaView>
+    <SafeAreaView className="bg-white">
       <ProfileHeader />
       <ProfileMain
         isFormOpened={isFormOpened}

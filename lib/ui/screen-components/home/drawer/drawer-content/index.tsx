@@ -28,7 +28,7 @@ export default function CustomDrawerContent(
   return (
     <DrawerContentScrollView
       {...props}
-      scrollEnabled={false}
+      // scrollEnabled={false}
       contentContainerStyle={{
         backgroundColor: Colors.light.primary,
         paddingBottom: 0,
@@ -90,12 +90,12 @@ export default function CustomDrawerContent(
         {/* Logout Button */}
         <TouchableOpacity
           onPress={logout}
-          className="flex-row justify-between items-center px-4 py-3 border-b-[0.5px]"
+          className="flex-row justify-between items-center px-4 py-2 border-b-[0.5px]"
           style={{ borderColor: Colors.light.borderLineColor }}
         >
           <View className="flex-row items-center gap-3">
             <View
-              className="h-[40px] w-[40px] rounded-full items-center justify-center"
+              className="h-[30px] w-[40px] rounded-full items-center justify-center"
               style={{ backgroundColor: Colors.light.sidebarIconBackground }}
             >
               <LogoutIcon width={16} height={16} color={Colors.light.black} />
