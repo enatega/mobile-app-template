@@ -9,6 +9,7 @@ import {
   Observable,
   Operation,
 } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 import {
   getMainDefinition,
   offsetLimitPagination,
@@ -20,6 +21,7 @@ import { calculateDistance } from "../utils/methods/custom-functions";
 import { DefinitionNode, FragmentDefinitionNode } from "graphql";
 import { Subscription } from "zen-observable-ts";
 import { RIDER_TOKEN } from "../utils/constants";
+// import { onError } from "apollo-link-error";
 
 const setupApollo = () => {
   const { GRAPHQL_URL, WS_GRAPHQL_URL } = useEnvVars();
@@ -73,13 +75,13 @@ const setupApollo = () => {
             },
           },
           freeDelivery: {
-            read(_existing: IRestaurantLocation) {
+            read(/* _existing: IRestaurantLocation */) {
               const randomValue = Math.random() * 10;
               return randomValue > 5;
             },
           },
           acceptVouchers: {
-            read(_existing: IRestaurantLocation) {
+            read(/* _existing: IRestaurantLocation */) {
               const randomValue = Math.random() * 10;
               return randomValue < 5;
             },
@@ -131,6 +133,29 @@ const setupApollo = () => {
       })
   );
 
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.forEach(({ message, locations, path }) => {
+        if (
+          message.toLowerCase().includes("unauthenticate") ||
+          message.toLowerCase().includes("unauthorize")
+        ) {
+          console.log("error......");
+          AsyncStorage.removeItem(RIDER_TOKEN)
+            .then(() => {})
+            .catch((err) => console.log(err));
+        }
+
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        );
+      });
+    }
+    if (networkError) {
+      console.log(`[Network error]: ${networkError}`);
+    }
+  });
+
   // const terminatingLink = split(({ query }) => {
   //   const {
   //     kind,
@@ -155,7 +180,10 @@ const setupApollo = () => {
   }, wsLink);
 
   const client = new ApolloClient({
-    link: concat(ApolloLink.from([terminatingLink, requestLink]), httpLink),
+    link: concat(
+      ApolloLink.from([terminatingLink, requestLink, errorLink]),
+      httpLink
+    ),
     cache,
     resolvers: {},
   });
