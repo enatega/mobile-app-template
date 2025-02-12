@@ -27,6 +27,7 @@ export default function CustomDrawerContent(
     <DrawerContentScrollView
       {...props}
       // scrollEnabled={false}
+
       contentContainerStyle={{
         backgroundColor: Colors.light.primary,
         paddingBottom: 0,
@@ -37,7 +38,10 @@ export default function CustomDrawerContent(
       <CustomDrawerHeader />
 
       {/* Drawer Items with Right Arrow */}
-      <View style={{ backgroundColor: Colors.light.white }}>
+      <View
+        // style={{ backgroundColor: Colors.light.white }}
+        className="bg-red-200 mb-20"
+      >
         {props.state.routes.map((route, index) => {
           const isFocused = props.state.index === index;
           const { options } = props.descriptors[route.key];
@@ -101,6 +105,8 @@ export default function CustomDrawerContent(
             <Text className="text-sm font-semibold">Logout</Text>
           </View>
         </TouchableOpacity>
+
+        <View className="mb-10" />
       </View>
     </DrawerContentScrollView>
   );
