@@ -32,6 +32,19 @@ interface Zone {
   _id: string;
 }
 
+export interface WorkSchedule {
+  day: string;
+  enabled: boolean;
+  slots: TimeSlot[];
+  __typename: string;
+}
+
+interface TimeSlot {
+  startTime: string;
+  endTime: string;
+  __typename: string;
+}
+
 export interface IRiderProfile {
   __typename: string;
   _id: string;
@@ -71,6 +84,8 @@ export interface IRiderProfile {
     accountCode: string;
     accountNumber: string;
   };
+  timeZone: string;
+  workSchedule: WorkSchedule[];
 }
 
 export interface IRiderProfileResponse {

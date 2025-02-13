@@ -124,6 +124,7 @@ const useLogin = () => {
           username: username.toLowerCase(),
           password: password,
           notificationToken: notificationToken,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         },
       });
 
