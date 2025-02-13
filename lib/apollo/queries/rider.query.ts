@@ -104,6 +104,15 @@ export const RIDER_PROFILE = gql`
         image
         number
       }
+      timeZone
+      workSchedule {
+        day
+        enabled
+        slots {
+          startTime
+          endTime
+        }
+      }
     }
   }
 `;
