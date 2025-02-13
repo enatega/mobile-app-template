@@ -9,6 +9,7 @@ import { VEHICLE_TYPE } from "@/lib/utils/constants";
 import { IVehicleTypeItem } from "@/lib/utils/interfaces";
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -27,6 +28,9 @@ const vehicleMap: Record<string, JSX.Element> = {
 export default function VehicleTypeMainScreen() {
   // Context
   const { dataProfile } = useUserContext();
+
+  // Hooks
+  const { t } = useTranslation();
 
   // State
   const [selectedCode, setSelectedCode] = useState<string>(
@@ -85,12 +89,13 @@ export default function VehicleTypeMainScreen() {
       onCompleted: () => {
         console.log("completed");
         FlashMessageComponent({
-          message: "Vehicle Type has been updated successfully.",
+          message: t("Vehicle Type has been updated successfully"),
         });
       },
       onError: (error) => {
         FlashMessageComponent({
-          message: error.graphQLErrors[0]?.message ?? "Please try again later",
+          message:
+            error.graphQLErrors[0]?.message ?? t("Please try again later"),
         });
       },
     });
@@ -116,7 +121,7 @@ export default function VehicleTypeMainScreen() {
           <SpinnerComponent />
         ) : (
           <Text className="text-center text-white text-lg font-medium">
-            Update
+            {t("Update")}
           </Text>
         )}
       </TouchableOpacity>

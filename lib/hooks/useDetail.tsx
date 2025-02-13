@@ -1,6 +1,12 @@
 import { useContext, useState, useEffect } from "react";
 
-import { useQuery, useMutation, useSubscription } from "@apollo/client";
+import {
+  useQuery,
+  useMutation,
+  useSubscription,
+  ServerParseError,
+  ServerError,
+} from "@apollo/client";
 import { FlashMessageComponent } from "../ui/useable-components";
 import { IOrder } from "../utils/interfaces/order.interface";
 import { SUBSCRIPTION_ORDERS } from "../apollo/subscriptions";
@@ -11,8 +17,12 @@ import {
   UPDATE_ORDER_STATUS_RIDER,
 } from "../apollo/mutations/order.mutation";
 import UserContext from "../context/global/user.context";
+import { useTranslation } from "react-i18next";
+import { GraphQLFormattedError } from "graphql";
 
 const useDetails = (orderData: IOrder) => {
+  // Hooks
+  const { t } = useTranslation();
   const { assignedOrders, loadingAssigned } = useContext(UserContext);
   const [order, setOrder] = useState(orderData);
 
@@ -69,7 +79,7 @@ const useDetails = (orderData: IOrder) => {
   async function onCompleted(result) {
     if (result.updateOrderStatusRider) {
       FlashMessageComponent({
-        message: `Order marked as ${result.updateOrderStatusRider.orderStatus}`,
+        message: `${t("Order marked as")} ${result.updateOrderStatusRider.orderStatus}`,
       });
     }
     if (result.assignOrder) {
@@ -80,8 +90,14 @@ const useDetails = (orderData: IOrder) => {
     }
   }
 
-  function onError({ graphQLErrors, networkError }) {
-    let message = t("errorOccured");
+  function onError({
+    graphQLErrors,
+    networkError,
+  }: {
+    graphQLErrors: ReadonlyArray<GraphQLFormattedError>;
+    networkError: Error | ServerParseError | ServerError | null;
+  }) {
+    let message = t("Something went wrong");
     if (networkError) message = "Internal Server Error";
     if (graphQLErrors) message = graphQLErrors.map((o) => o.message).join(", ");
 

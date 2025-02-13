@@ -1,6 +1,5 @@
-import { Colors } from "@/lib/utils/constants";
-import { Stack } from "expo-router";
-import { Platform } from "react-native";
+// Expo
+import { Stack } from 'expo-router'
 
 export default function LoginLayour() {
   return (
@@ -9,14 +8,7 @@ export default function LoginLayour() {
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="index"
-        // options={{
-        //   title: "Order Detail",
-        //   headerTitleAlign: "center",
-        //   headerShadowVisible: false,
-        // }}
-      />
+      <Stack.Screen name="index" />
     </Stack>
-  );
+  )
 }

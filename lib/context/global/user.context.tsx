@@ -194,30 +194,11 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     };
   }, []);
 
-  /*Why is this duplicated? */
-  // useEffect(() => {
-  //   const trackRiderLocation = async () => {
-  //     locationListener.current = await watchPositionAsync(
-  //       { accuracy: LocationAccuracy.BestForNavigation, timeInterval: 10000 },
-  //       async (location) => {
-  //         client.mutate({
-  //           mutation: UPDATE_LOCATION,
-  //           variables: {
-  //             latitude: location.coords.latitude.toString(),
-  //             longitude: location.coords.longitude.toString(),
-  //           },
-  //         })
-  //       },
-  //     )
-  //   }
-  //   trackRiderLocation()
-  //   return () => {
-  //     if (locationListener.current) {
-  //       locationListener.current.remove()
-  //     }
-  //   }
-  // }, [])
-
+  useEffect(() => {
+    getUserId();
+    refetchProfile({ id: userId });
+  }, [userId]);
+  console.warn(dataProfile?.rider.available);
   return (
     <UserContext.Provider
       value={{

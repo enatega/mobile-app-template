@@ -1,8 +1,8 @@
 // Core
 import { SafeAreaView } from "react-native-safe-area-context";
-import HelpMain from "../../screen-components/home/help/view/main";
 
-//
+// Components
+import HelpMain from "../../screen-components/home/help/view/main";
 
 const HelpScreen = () => {
   return (

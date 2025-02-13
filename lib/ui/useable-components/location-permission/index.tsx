@@ -5,11 +5,16 @@ import * as Location from "expo-location";
 import { useLocationContext } from "@/lib/context/global/location.context";
 import { ILocationPermissionComponentProps } from "@/lib/utils/interfaces";
 import SpinnerComponent from "../spinner";
+import { useTranslation } from "react-i18next";
 
 export default function LocationPermissionComponent({
   children,
 }: ILocationPermissionComponentProps) {
+  // Hooks
+  const { t } = useTranslation();
   const { setLocationPermission } = useLocationContext();
+
+  // States
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
@@ -86,11 +91,12 @@ export default function LocationPermissionComponent({
           <View className="h-fit w-[95%] p-4 items-center justify-around bg-white border-white rounded-[16px]">
             <View className="gap-y-2">
               <Text className="font-[Inter] text-gray-900 font-semibold text-[20px] leading-[28px] tracking-[0px] text-center">
-                Enable Location For Better Experience
+                {t("Enable Location For Better Experience")}
               </Text>
               <Text className="font-[Inter] text-gray-700 font-[400] text-[14px] leading-[28px] tracking-[0px] text-center">
-                We need your location to find nearby restaurants, ensure
-                accurate delivery, and provide the best service possible.
+                {t(
+                  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible",
+                )}
               </Text>
             </View>
 

@@ -14,6 +14,7 @@ import { useFocusEffect } from "expo-router";
 import * as Linking from "expo-linking";
 
 export default function HelpMain() {
+  // Hooks
   const { t } = useTranslation();
 
   const openWhatsAppChat = async () => {

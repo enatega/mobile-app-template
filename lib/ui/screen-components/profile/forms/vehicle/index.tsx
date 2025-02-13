@@ -1,3 +1,4 @@
+// Core
 import {
   Keyboard,
   Text,
@@ -6,32 +7,49 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import FormHeader from "../form-header";
 import { Dispatch, SetStateAction, useState } from "react";
-import { UploadIcon } from "@/lib/assets/svg";
+
+// Components
+import FormHeader from "../form-header";
 import { CustomContinueButton } from "@/lib/ui/useable-components";
+
+// Expo
 import * as ImagePicker from "expo-image-picker";
-import { ICloudinaryResponse } from "@/lib/utils/interfaces/cloudinary.interface";
 import { Link } from "expo-router";
+
+// Icons
 import { Ionicons } from "@expo/vector-icons";
+import { UploadIcon } from "@/lib/assets/svg";
+
+// Skeletons
 import { MotiView } from "moti";
 import { Skeleton } from "moti/skeleton";
+
+// Flash Message
 import { showMessage } from "react-native-flash-message";
-import { useMutation } from "@apollo/client";
+
+// GraphQL
 import { UPDATE_VEHICLE } from "@/lib/apollo/mutations/rider.mutation";
-import { useUserContext } from "@/lib/context/global/user.context";
 import { RIDER_PROFILE } from "@/lib/apollo/queries";
+
+// Types & Interfaces
 import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
+import { ICloudinaryResponse } from "@/lib/utils/interfaces/cloudinary.interface";
+
+// Hooks
+import { useUserContext } from "@/lib/context/global/user.context";
+import { useMutation } from "@apollo/client";
+import { useTranslation } from "react-i18next";
 
 export default function VehiclePlateForm({
   setIsFormOpened,
 }: {
   setIsFormOpened: Dispatch<SetStateAction<TRiderProfileBottomBarBit>>;
 }) {
-  // Contexts
+  // Hooks
+  const { t } = useTranslation();
   const { userId } = useUserContext();
 
-  // Local states
   // States
   const [isLoading, setIsLoading] = useState({
     isUploading: false,
@@ -47,7 +65,7 @@ export default function VehiclePlateForm({
   const [mutateLicense] = useMutation(UPDATE_VEHICLE, {
     onError: (error) => {
       showMessage({
-        message: "Failed to update license",
+        message: t("Failed to update license"),
         type: "danger",
       });
       console.error("Failed to update license", error);
@@ -112,7 +130,7 @@ export default function VehiclePlateForm({
     } catch (error) {
       console.error(error);
       return showMessage({
-        message: "Failed to upload image",
+        message: t("Failed to upload image"),
         type: "danger",
       });
     } finally {
@@ -135,12 +153,12 @@ export default function VehiclePlateForm({
       }));
       if (!formData.number) {
         return showMessage({
-          message: "Please enter a license number",
+          message: t("Please enter a plate number"),
           type: "danger",
         });
       } else if (!formData.image) {
         return showMessage({
-          message: "Please upload an image",
+          message: t("Please upload an image"),
           type: "danger",
         });
       }
@@ -164,10 +182,10 @@ export default function VehiclePlateForm({
     <View className="w-full">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="flex flex-col justify-between w-full p-3 h-full mt-0 -z-10">
-          <FormHeader title="Vehicle Plate" />
+          <FormHeader title={t("Vehicle Plate")} />
           <View>
             <View className="flex flex-col w-full my-2">
-              <Text>Plate No</Text>
+              <Text>{t("Plate No")}</Text>
               <TextInput
                 value={formData.number}
                 onChangeText={(licenseNo) =>
@@ -177,7 +195,7 @@ export default function VehiclePlateForm({
               />
             </View>
             <View className="flex flex-col w-full my-2">
-              <Text>Add Registration Document</Text>
+              <Text>{t("Add Registration Document")}</Text>
               {!cloudinaryResponse?.secure_url ? (
                 <TouchableOpacity
                   className="w-full rounded-md border border-dashed border-gray-300 p-3 h-28 items-center justify-center"
@@ -215,7 +233,7 @@ export default function VehiclePlateForm({
             </View>
             <View>
               <CustomContinueButton
-                title={isLoading.isSubmitting ? "Please wait..." : "Add"}
+                title={isLoading.isSubmitting ? t("Please wait") : t("Add")}
                 onPress={handleSubmit}
               />
             </View>

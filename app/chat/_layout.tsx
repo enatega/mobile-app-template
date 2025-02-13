@@ -1,21 +1,31 @@
-import { Colors } from "@/lib/utils/constants";
-import { Stack } from "expo-router";
-import { Platform } from "react-native";
+// Constants
+import { Colors } from '@/lib/utils/constants'
+
+// Expo
+import { Stack } from 'expo-router'
+
+// Hooks
+import { useTranslation } from 'react-i18next'
+
+// Core
+import { Platform } from 'react-native'
 
 export default function LoginLayour() {
+  // Hooks
+  const { t } = useTranslation()
   return (
     <Stack
       screenOptions={{
         headerStyle: Platform.select({
           ios: {
-            position: "absolute",
+            position: 'absolute',
           },
 
           default: {
-            position: "absolute",
+            position: 'absolute',
             backgroundColor: Colors.light.white,
             elevation: 0, // Shadow for Android
-            shadowColor: "white", // Shadow for iOS
+            shadowColor: 'white', // Shadow for iOS
             shadowOpacity: 0,
             shadowRadius: 0,
           },
@@ -26,11 +36,11 @@ export default function LoginLayour() {
         name="index"
         options={{
           headerShown: false,
-          title: "Chat",
-          headerTitleAlign: "center",
+          title: t('Chat'),
+          headerTitleAlign: 'center',
           headerShadowVisible: false,
         }}
       />
     </Stack>
-  );
+  )
 }

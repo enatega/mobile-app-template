@@ -23,11 +23,15 @@ import { EarningsSummaryMainLoading } from "@/lib/ui/skeletons";
 import EarningDetailsDateFilter from "../date-filter";
 import { showMessage } from "react-native-flash-message";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function EarningDetailsMain({
   dateFilter,
   setDateFilter,
 }: IEarningDetailsMainProps) {
+  // Hooks
+  const { t } = useTranslation();
+
   // States
   const [isFiltering, setIsFiltering] = useState(false);
   const [isDateFilterVisible, setIsDateFilterVisible] = useState(false);
@@ -66,26 +70,26 @@ export default function EarningDetailsMain({
     // Validation
     if (!dateFilter.startDate) {
       return showMessage({
-        message: "Please select a start date",
+        message: t("Please select a start date"),
         type: "danger",
         duration: 1000,
       });
     } else if (!dateFilter.endDate) {
       return showMessage({
-        message: "Please select an end date",
+        message: t("Please select an end date"),
         type: "danger",
         duration: 1000,
       });
     } else if (new Date(dateFilter.startDate) > new Date(dateFilter.endDate)) {
       return showMessage({
-        message: "Start date cannot be after end date",
+        message: t("Start date cannot be after end date"),
         type: "danger",
         duration: 1000,
       });
     }
     if (!userId) {
       return showMessage({
-        message: "Please log in to view your earnings",
+        message: t("Please log in to view your earnings"),
         type: "danger",
         duration: 1000,
       });

@@ -38,10 +38,10 @@ const CustomDrawerHeader = () => {
   }) as MutationTuple<IRiderProfile | undefined, { id: string }>;
 
   return (
-    <View className="w-full h-[130px] flex-row justify-between p-4">
+    <View className="w-full h-[15%] flex-row justify-between p-4 bottom-4">
       <View className="justify-between">
         <View
-          className="w-[54px] h-[54px] rounded-full items-center justify-center overflow-hidden"
+          className="w-[32px] h-[32px] rounded-full items-center justify-center overflow-hidden"
           style={{ backgroundColor: Colors.light.white }}
         >
           <Text
@@ -67,7 +67,7 @@ const CustomDrawerHeader = () => {
               color: Colors.light.black,
             }}
           >
-            {dataProfile?.name ?? "rider name"}
+            {dataProfile?.name ?? t("rider name")}
           </Text>
           <Text
             className="font-medium"
@@ -85,10 +85,10 @@ const CustomDrawerHeader = () => {
           className="text-md"
           style={{ color: Colors.light.secondaryTextColor }}
         >
-          Availability
+          {t("Availability")}
         </Text>
         <CustomSwitch
-          value={dataProfile?.available ?? isEnabled}
+          value={dataProfile?.available ?? false}
           isDisabled={loading}
           onToggle={async () =>
             await toggleAvailablity({ variables: { id: userId ?? "" } })
@@ -98,7 +98,7 @@ const CustomDrawerHeader = () => {
           className="text-xs font-medium"
           style={{ color: Colors.light.secondaryTextColor }}
         >
-          {isEnabled ? t("available") : t("notAvailable")}
+          {isEnabled ? t("Available") : t("Not Available")}
         </Text>
       </View>
     </View>
