@@ -68,14 +68,14 @@ function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <InternetProvider>
-        <ApolloProvider client={client}>
-          <ConfigurationProvider>
-            <AuthProvider client={client}>
-              <LocationProvider>
-                <UserProvider>
-                  <SoundProvider>
-                    <AnimatedSplashScreen>
+      <AnimatedSplashScreen>
+        <InternetProvider>
+          <ApolloProvider client={client}>
+            <ConfigurationProvider>
+              <AuthProvider client={client}>
+                <LocationProvider>
+                  <UserProvider>
+                    <SoundProvider>
                       <LocationPermissionComp>
                         <UnavailableStatus />
 
@@ -104,16 +104,16 @@ function RootLayout() {
                           />
                         </Stack>
                       </LocationPermissionComp>
-                    </AnimatedSplashScreen>
-                    <StatusBar style="auto" />
-                    <FlashMessage position="bottom" />
-                  </SoundProvider>
-                </UserProvider>
-              </LocationProvider>
-            </AuthProvider>
-          </ConfigurationProvider>
-        </ApolloProvider>
-      </InternetProvider>
+                      <StatusBar style="auto" />
+                      <FlashMessage position="bottom" />
+                    </SoundProvider>
+                  </UserProvider>
+                </LocationProvider>
+              </AuthProvider>
+            </ConfigurationProvider>
+          </ApolloProvider>
+        </InternetProvider>
+      </AnimatedSplashScreen>
     </ThemeProvider>
   );
 }

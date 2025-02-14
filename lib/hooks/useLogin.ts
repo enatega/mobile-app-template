@@ -29,6 +29,7 @@ import { ROUTES } from "../utils/constants";
 import { ApolloError, useMutation, useQuery } from "@apollo/client";
 import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { setItem } from "../services/async-storage";
 
 const useLogin = () => {
   const [creds, setCreds] = useState({ username: "", password: "" });
@@ -41,7 +42,7 @@ const useLogin = () => {
   const { setTokenAsync } = useContext(AuthContext);
 
   // API
-  const [login, { data: riderLoginData }] = useMutation(RIDER_LOGIN, {
+  const [login] = useMutation(RIDER_LOGIN, {
     onCompleted,
     onError,
   });
@@ -55,7 +56,11 @@ const useLogin = () => {
   }: IRiderLoginCompleteResponse) {
     setIsLoading(false);
     if (riderLogin) {
-      await AsyncStorage.setItem("rider-id", riderLogin.userId);
+      console.log({ userId: riderLogin.userId });
+      //  await AsyncStorage.setItem("rider-id", riderLogin.userId);
+
+      await setItem("rider-id", riderLogin.userId);
+
       await setTokenAsync(riderLogin.token);
       router.replace(ROUTES.home as Href);
     } else if (
@@ -120,7 +125,7 @@ const useLogin = () => {
       }
 
       // Perform mutation with the obtained data
-      const { data } = await login({
+      await login({
         variables: {
           username: username.toLowerCase(),
           password: password,
@@ -128,10 +133,6 @@ const useLogin = () => {
           timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         },
       });
-
-      if (riderLoginData?.userId) {
-        await AsyncStorage.setItem("rider-id", data.userId);
-      }
     } catch (err) {
       const error = err as ApolloError;
       FlashMessageComponent({
@@ -142,6 +143,7 @@ const useLogin = () => {
       });
     }
   };
+
   return {
     creds,
     onLogin,

@@ -26,6 +26,7 @@ import {
   IRiderEarnings,
   IRiderEarningsArray,
 } from "@/lib/utils/interfaces/rider-earnings.interface";
+import { asyncStorageEmitter } from "@/lib/services/async-storage";
 
 const UserContext = createContext<IUserContextProps>({} as IUserContextProps);
 
@@ -80,6 +81,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
     pollInterval: 10000,
+    skip: !userId,
   });
 
   let unsubscribeZoneOrder: unknown = null;
@@ -187,20 +189,24 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
   }, [userId]);
 
   useEffect(() => {
-    getUserId();
+    const listener = asyncStorageEmitter.addListener("rider-id", (data) => {
+      setUserId(data?.value ?? "");
+    });
 
+    getUserId();
     trackRiderLocation();
     return () => {
       if (locationListener.current) {
         locationListener?.current?.remove();
       }
+
+      if (listener) {
+        listener.removeListener("rider-id", () => {
+          console.log("Rider Id listerener removed");
+        });
+      }
     };
   }, []);
-
-  useEffect(() => {
-    getUserId();
-    refetchProfile({ id: userId });
-  }, [userId]);
 
   return (
     <UserContext.Provider
@@ -216,7 +222,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
         loadingAssigned,
         errorAssigned,
         assignedOrders:
-          loadingAssigned || errorAssigned ? [] : dataAssigned.riderOrders,
+          loadingAssigned || errorAssigned ? [] : dataAssigned?.riderOrders,
         refetchAssigned,
         networkStatusAssigned,
         requestForegroundPermissionsAsync,
