@@ -29,7 +29,7 @@ export default function StackLayout() {
       >
         <Stack.Screen
           name="index"
-          options={{ headerShown: true, headerTitle: t('Earnings Order Details') }}
+          options={{ headerShown: true, headerTitle: t('Earnings') }}
         />
         <Stack.Screen
           name="(routes)"
