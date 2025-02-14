@@ -160,7 +160,7 @@ export default function DrivingLicenseForm({
       }));
       if (!formData.expiryDate) {
         return showMessage({
-          message: "Please select an expiry date",
+          message: t("Please select an expiry date"),
           type: "danger",
         });
       } else if (!formData.number) {
