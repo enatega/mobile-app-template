@@ -49,7 +49,6 @@ export const useLazyQueryQL = <
   );
 
   const handleFetch = async (variables?: V) => {
-    console.log({ variables, enabled });
     if (enabled) {
       await debouncedFetch(variables); // Ensure the async debounced fetch is awaited
     }
