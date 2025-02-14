@@ -13,7 +13,7 @@ export default function ProfileHeader() {
   const { t } = useTranslation();
   const { dataProfile } = useUserContext();
   return (
-    <View className="justify-between flex-row h-[130px] w-[55%] items-center p-4">
+    <View className="justify-between flex-row h-[8rem] w-[58%] items-center p-4">
       <View
         className="w-[54px] h-[54px] rounded-full items-center justify-center overflow-hidden"
         style={{ backgroundColor: Colors.light.white }}

@@ -205,5 +205,18 @@ export const en = {
   "Order marked as":"Order marked as",
   "Enable Location For Better Experience":"Enable Location For Better Experience",
   "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible":"We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible",
-  "Logout":"Logout"
+  "Logout":"Logout",
+  "Monday":"Monday",
+  "Tuesday":"Tuesday",
+  "Wednesday":"Wednesday",
+  "Thursday":"Thursday",
+  "Friday":"Friday",
+  "Saturday":"Saturday",
+  "Sunday":"Sunday",
+  "Work Schedule has been updated successfully":"Work Schedule has been updated successfully.",
+  "Start time must be earlier than end time":"Start time must be earlier than end time.",
+  "End time must be greater than start time":"End time must be greater than start time.",
+  "Update Schedule":"Update Schedule",
+  "Select Time Slot":"Select Time Slot",
+  
 };

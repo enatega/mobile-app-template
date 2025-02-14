@@ -1,5 +1,5 @@
 // Core
-import { TouchableOpacity, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native";
 
 // Contexts
@@ -77,7 +77,7 @@ export default function EarningsMain() {
     <View className="bg-white">
       <EarningsBarChart
         data={barData}
-        width={900}
+        width={330}
         height={280}
         frontColor="#8fe36e"
       />
@@ -105,13 +105,13 @@ export default function EarningsMain() {
         </TouchableOpacity>
       </View>
       <View>
-        {riderEarningsData?.riderEarningsGraph?.earnings?.length === 0 &&
+        {/* {riderEarningsData?.riderEarningsGraph?.earnings?.length === 0 &&
           !isRiderEarningsLoading && (
             <Text className="block mx-auto font-bold text-center w-full my-12">
-              {t("No record found")}
+              {t('No record found')}
             </Text>
-          )}
-        {riderEarningsData?.riderEarningsGraph?.earnings?.length &&
+          )} */}
+        {/* {riderEarningsData?.riderEarningsGraph?.earnings?.length &&
           riderEarningsData?.riderEarningsGraph?.earnings
             ?.slice(0, 4)
             ?.map((earning: IRiderEarnings, index) => (
@@ -125,7 +125,31 @@ export default function EarningsMain() {
                 key={index}
                 setModalVisible={setModalVisible}
               />
-            ))}
+            ))} */}
+
+        <FlatList
+          data={riderEarningsData?.riderEarningsGraph?.earnings}
+          keyExtractor={(_, index) => index.toString()}
+          ListEmptyComponent={
+            <Text className="block mx-auto font-bold text-center w-full my-12">
+              {t("No record found")}
+            </Text>
+          }
+          renderItem={(info) => {
+            return (
+              <EarningStack
+                date={info?.item?.date}
+                earning={info?.item?.totalEarningsSum}
+                totalDeliveries={info?.item?.earningsArray.length}
+                _id={info?.item?._id}
+                tip={info?.item?.totalTipsSum}
+                earningsArray={info?.item?.earningsArray}
+                key={info.index}
+                setModalVisible={setModalVisible}
+              />
+            );
+          }}
+        />
       </View>
     </View>
   );

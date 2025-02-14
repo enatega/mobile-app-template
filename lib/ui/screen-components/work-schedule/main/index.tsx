@@ -3,8 +3,9 @@ import { useUserContext } from "@/lib/context/global/user.context";
 import { FlashMessageComponent } from "@/lib/ui/useable-components";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 import { WorkSchedule } from "@/lib/utils/interfaces";
-import { useMutation } from "@apollo/client";
+import { ApolloError, useMutation } from "@apollo/client";
 import { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -44,6 +45,9 @@ const generateTimeSlots = () => {
 const timeOptions = generateTimeSlots();
 
 export default function ScheduleScreen() {
+  // Hooks
+  const { t } = useTranslation();
+  // States
   const [schedule, setSchedule] = useState<WorkSchedule[]>();
   const [dropdown, setDropdown] = useState<{
     dayIndex: number;
@@ -85,20 +89,21 @@ export default function ScheduleScreen() {
         },
         onCompleted: () => {
           FlashMessageComponent({
-            message: "Work Schedule has been updated successfully.",
+            message: t("Work Schedule has been updated successfully"),
           });
         },
         onError: (error) => {
           FlashMessageComponent({
             message:
-              error.graphQLErrors[0]?.message ?? "Please try again later",
+              error.graphQLErrors[0]?.message ?? t("Something went wrong"),
           });
         },
       });
       // eslint-disable-next-line unused-imports/no-unused-vars
     } catch (err) {
+      const error = err as ApolloError;
       FlashMessageComponent({
-        message: err?.message || "Something went wrong.",
+        message: error?.message || t("Something went wrong"),
       });
     }
   };
@@ -143,7 +148,7 @@ export default function ScheduleScreen() {
       // If updating startTime, ensure it doesn't exceed endTime
       if (slot.endTime && timeToMinutes(value) >= timeToMinutes(slot.endTime)) {
         FlashMessageComponent({
-          message: "Start time must be earlier than end time.",
+          message: "Start time must be earlier than end time",
         });
         return;
       }
@@ -154,7 +159,7 @@ export default function ScheduleScreen() {
         timeToMinutes(value) <= timeToMinutes(slot.startTime)
       ) {
         FlashMessageComponent({
-          message: "End time must be greater than start time.",
+          message: "End time must be greater than start time",
         });
         return;
       }
@@ -245,7 +250,7 @@ export default function ScheduleScreen() {
               <View className="bg-gray-200 border border-gray-300 p-4 mb-3 rounded-lg">
                 {/* Day Header with Toggle */}
                 <View className="flex-row justify-between items-center">
-                  <Text className="text-lg font-bold">{item.day}</Text>
+                  <Text className="text-lg font-bold">{t(item.day)}</Text>
                   <Switch
                     value={item.enabled}
                     onValueChange={() => toggleDay(index)}
@@ -352,7 +357,7 @@ export default function ScheduleScreen() {
             <SpinnerComponent />
           ) : (
             <Text className="text-center text-white text-lg font-medium">
-              Update Schedule
+              {t("Update Schedule")}
             </Text>
           )}
         </TouchableOpacity>
@@ -387,7 +392,7 @@ export default function ScheduleScreen() {
             }}
           >
             <Text className="font-[Inter] text-lg font-bold mb-2">
-              Select Time Slot
+              {t("Select Time Slot")}
             </Text>
             <ScrollView
               style={{ maxHeight: 300 }}

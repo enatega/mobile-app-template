@@ -206,5 +206,6 @@ export const ar = {
   "Enable Location For Better Experience": "قم بتمكين الموقع للحصول على تجربة أفضل",
   "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible": 
     "نحن بحاجة إلى موقعك للعثور على المطاعم القريبة، وضمان التوصيل الدقيق، وتقديم أفضل خدمة ممكنة",
-  "Logout": "تسجيل الخروج"
+  "Logout": "تسجيل الخروج",
+  "Work Schedule": "جدول العمل"
 }

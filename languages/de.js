@@ -206,5 +206,6 @@ export const de = {
   "Enable Location For Better Experience": "Standort aktivieren für eine bessere Erfahrung",
   "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible": 
     "Wir benötigen Ihren Standort, um nahegelegene Restaurants zu finden, eine genaue Lieferung zu gewährleisten und den bestmöglichen Service zu bieten",
-  "Logout": "Abmelden"
+  "Logout": "Abmelden",
+  "Work Schedule": "Arbeitszeitplan"
 }

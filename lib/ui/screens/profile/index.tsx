@@ -1,5 +1,5 @@
 // Core
-import { SafeAreaView } from "react-native";
+import { FlatList, SafeAreaView } from "react-native";
 import { useEffect, useState } from "react";
 
 // Components
@@ -34,10 +34,17 @@ export default function ComponentName() {
   console.log(isKeyboardVisible);
   return (
     <SafeAreaView className="bg-white">
-      <ProfileHeader />
-      <ProfileMain
-        isFormOpened={isFormOpened}
-        setIsFormOpened={setIsFormOpened}
+      <FlatList
+        data={[
+          <ProfileHeader />,
+          <ProfileMain
+            isFormOpened={isFormOpened}
+            setIsFormOpened={setIsFormOpened}
+          />,
+        ]}
+        renderItem={(item) => {
+          return item.item;
+        }}
       />
       {isFormOpened !== null && (
         <ReactNativeModal
