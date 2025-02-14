@@ -107,19 +107,21 @@ export default function VehicleTypeMainScreen() {
         />
       </View>
 
-      <TouchableOpacity
-        className="h-12 bg-green-500 rounded-3xl py-3 mt-10"
-        style={{ width: width * 0.9 }}
-        onPress={() => onHandlerSubmit()}
-      >
-        {mutationLoading ? (
-          <SpinnerComponent />
-        ) : (
-          <Text className="text-center text-white text-lg font-medium">
-            Update
-          </Text>
-        )}
-      </TouchableOpacity>
+      <View className="h-[20%]">
+        <TouchableOpacity
+          className="h-12 bg-green-500 rounded-3xl py-3"
+          style={{ width: width * 0.9 }}
+          onPress={() => onHandlerSubmit()}
+        >
+          {mutationLoading ? (
+            <SpinnerComponent />
+          ) : (
+            <Text className="text-center text-white text-lg font-medium">
+              Update
+            </Text>
+          )}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
