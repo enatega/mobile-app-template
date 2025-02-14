@@ -36,9 +36,10 @@ const CustomDrawerHeader = () => {
       });
     },
   }) as MutationTuple<IRiderProfile | undefined, { id: string }>;
-
   return (
-    <View className="w-full h-[15%] flex-row justify-between p-4 bottom-4">
+    <View
+      className={` bg-[${Colors.light.primary}] w-full h-[15%] flex-row justify-between p-4 bottom-4`}
+    >
       <View className="justify-between">
         <View
           className="w-[32px] h-[32px] rounded-full items-center justify-center overflow-hidden"

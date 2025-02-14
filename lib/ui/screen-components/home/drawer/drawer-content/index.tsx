@@ -32,8 +32,8 @@ export default function CustomDrawerContent(
       // scrollEnabled={false}
 
       contentContainerStyle={{
-        backgroundColor: Colors.light.primary,
-        paddingBottom: 0,
+        backgroundColor: "white",
+        paddingBottom: 50,
         paddingStart: 0,
         paddingEnd: 0,
       }}
