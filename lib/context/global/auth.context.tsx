@@ -42,7 +42,7 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({
       router.replace("/login");
     } catch (e) {
       FlashMessageComponent({
-        message: `Logout failed`,
+        message: `Logout failed - ${e?.message ?? "Unknown Error"}`,
       });
       console.log("Logout Error: ", e);
     }
