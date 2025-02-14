@@ -23,16 +23,39 @@ import {
 
 // Hooks
 import { useTranslation } from "react-i18next";
+import { TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { DrawerActions, useNavigationState } from "@react-navigation/native";
+import { useEffect } from "react";
 
 export default function DrawerMain() {
   // Hooks
   const { t } = useTranslation();
+  // const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  // Get drawer state using navigation hook
+  const isDrawerOpen = useNavigationState((state) => {
+    return state?.history?.some((it) => it.type === "drawer");
+  });
+
+  console.log("🚀 ~ DrawerMain ~ isDrawerOpen:", isDrawerOpen);
+  useEffect(() => {}, [useNavigationState]);
 
   return (
     <Drawer
       drawerContent={CustomDrawerContent}
       initialRouteName="orders"
-      screenOptions={{
+      screenOptions={({ navigation }) => ({
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.dispatch(DrawerActions.toggleDrawer());
+              // setIsDrawerOpen((prev) => !prev)
+            }}
+            style={{ marginLeft: 16 }}
+          >
+            <Ionicons name="menu" size={24} color="black" />
+          </TouchableOpacity>
+        ),
         drawerHideStatusBarOnOpen: true,
         drawerActiveBackgroundColor: Colors.light.lowOpacityPrimaryColor,
         drawerActiveTintColor: Colors.light.mainTextColor,
@@ -43,13 +66,13 @@ export default function DrawerMain() {
           borderRadius: 0,
           marginTop: 4,
         },
-      }}
+      })}
     >
       <Drawer.Screen
         name="orders"
         options={{
           drawerLabel: t("Home"),
-          title: "Orders",
+          title: t("Orders"),
           drawerIcon: ({ color, size }) => (
             <HomeIcon color={color} height={size} width={size} />
           ),
