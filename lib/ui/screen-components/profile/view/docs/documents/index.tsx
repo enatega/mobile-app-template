@@ -18,7 +18,7 @@ export default function DocumentsSection({
   const { t } = useTranslation();
   const { dataProfile } = useUserContext();
   return (
-    <View className="flex flex-col h-[20%] w-full justify-between items-center">
+    <View className="flex flex-col h-[28%] w-full justify-between items-center">
       <View className="flex flex-col gap-3 items-start justify-center px-5 w-full border-b-2  border-b-gray-200 py-3">
         <View className="flex flex-row w-full justify-between">
           <Text className="font-bold">{t("Driving License")}</Text>

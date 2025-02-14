@@ -206,5 +206,18 @@ export const zh = {
   "Enable Location For Better Experience": "启用位置以获得更好的体验",
   "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible":
     "我们需要您的位置来查找附近的餐厅，确保准确送达，并提供最佳服务",
-  "Logout": "退出登录"
+  "Logout": "退出登录",
+  "Monday": "星期一",
+  "Tuesday": "星期二",
+  "Wednesday": "星期三",
+  "Thursday": "星期四",
+  "Friday": "星期五",
+  "Saturday": "星期六",
+  "Sunday": "星期日",
+  "Work Schedule has been updated successfully": "工作时间表已成功更新。",
+  "Start time must be earlier than end time": "开始时间必须早于结束时间。",
+  "End time must be greater than start time": "结束时间必须晚于开始时间。",
+  "Update Schedule": "更新日程",
+  "Select Time Slot": "选择时间段",
+  "Work Schedule": "工作时间表"
 };

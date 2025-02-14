@@ -206,6 +206,19 @@ export const he = {
   "Enable Location For Better Experience": "הפעל מיקום לחוויה טובה יותר",
   "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible":
     "אנחנו צריכים את המיקום שלך כדי למצוא מסעדות קרובות, להבטיח משלוח מדויק ולספק את השירות הטוב ביותר האפשרי",
-  "Logout": "התנתקות"
+  "Logout": "התנתקות",
+  "Monday": "יום שני",
+  "Tuesday": "יום שלישי",
+  "Wednesday": "יום רביעי",
+  "Thursday": "יום חמישי",
+  "Friday": "יום שישי",
+  "Saturday": "שבת",
+  "Sunday": "יום ראשון",
+  "Work Schedule has been updated successfully": "לוח הזמנים עודכן בהצלחה.",
+  "Start time must be earlier than end time": "שעת ההתחלה חייבת להיות לפני שעת הסיום.",
+  "End time must be greater than start time": "שעת הסיום חייבת להיות אחרי שעת ההתחלה.",
+  "Update Schedule": "עדכון לוח זמנים",
+  "Select Time Slot": "בחר חלון זמן",
+  "Work Schedule": "לוח זמנים לעבודה"
 }
 

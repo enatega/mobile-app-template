@@ -1,6 +1,13 @@
+// Expo
 import { Drawer } from "expo-router/drawer";
+
+// Constants
 import { Colors } from "@/lib/utils/constants";
+
+// Components
 import CustomDrawerContent from "@/lib/ui/screen-components/home/drawer/drawer-content";
+
+// Icons
 import {
   LanguageIcon,
   UserIcon,
@@ -13,6 +20,8 @@ import {
   BikeRidingIcon,
   ClockIcon,
 } from "@/lib/ui/useable-components/svg";
+
+// Hooks
 import { useTranslation } from "react-i18next";
 
 export default function DrawerMain() {
@@ -80,7 +89,7 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="work-schedule"
         options={{
-          drawerLabel: "Work Schedule",
+          drawerLabel: t("Work Schedule"),
           title: "Work Schedule",
           drawerIcon: ({ color, size }) => (
             <ClockIcon color={color} height={size} width={size} />

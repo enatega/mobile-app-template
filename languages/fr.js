@@ -206,5 +206,18 @@ export const fr = {
   "Enable Location For Better Experience": "Activez la localisation pour une meilleure expérience",
   "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible":
     "Nous avons besoin de votre localisation pour trouver des restaurants à proximité, assurer une livraison précise et offrir le meilleur service possible",
-  "Logout": "Déconnexion"
+  "Logout": "Déconnexion",
+  "Monday": "Lundi",
+  "Tuesday": "Mardi",
+  "Wednesday": "Mercredi",
+  "Thursday": "Jeudi",
+  "Friday": "Vendredi",
+  "Saturday": "Samedi",
+  "Sunday": "Dimanche",
+  "Work Schedule has been updated successfully": "L'emploi du temps a été mis à jour avec succès.",
+  "Start time must be earlier than end time": "L'heure de début doit être antérieure à l'heure de fin.",
+  "End time must be greater than start time": "L'heure de fin doit être postérieure à l'heure de début.",
+  "Update Schedule": "Mettre à jour le planning",
+  "Select Time Slot": "Sélectionner un créneau horaire",
+  "Work Schedule": "Emploi du temps"
 }
