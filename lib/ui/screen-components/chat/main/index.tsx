@@ -1,5 +1,5 @@
 // Core
-import { View, Text, Platform, StyleSheet } from "react-native";
+import { View, Platform, StyleSheet } from "react-native";
 
 // Gifted Chat
 import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
@@ -35,15 +35,15 @@ export default function ChatMain() {
     );
   };
 
-  const renderChatEmpty = () => {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <Text className="font-[Inter] text-2xl text-gray-900 mt-[300px]">
-          {t("No New Chats")}
-        </Text>
-      </View>
-    );
-  };
+  // const renderChatEmpty = () => {
+  //   return (
+  //     <View className="flex-1 justify-center items-center">
+  //       <Text className="font-[Inter] text-2xl text-gray-900 mt-[300px]">
+  //         {t("No New Chats")}
+  //       </Text>
+  //     </View>
+  //   );
+  // };
 
   const renderBubble = (props) => {
     return (
@@ -102,7 +102,7 @@ export default function ChatMain() {
         scrollToBottomComponent={scrollToBottomComponent}
         renderAvatar={null}
         renderUsernameOnMessage
-        renderChatEmpty={renderChatEmpty}
+        // renderChatEmpty={renderChatEmpty}
         inverted={Platform.OS !== "web" || messages.length === 0}
         timeTextStyle={{
           left: { color: "blue" },

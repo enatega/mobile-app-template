@@ -30,6 +30,7 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({
 
   const logout = async () => {
     try {
+      console.log("logout called");
       client.clearStore();
       await AsyncStorage.removeItem(RIDER_TOKEN);
       await AsyncStorage.removeItem("rider-id");

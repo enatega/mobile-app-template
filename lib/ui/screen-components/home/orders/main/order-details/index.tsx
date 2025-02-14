@@ -129,6 +129,8 @@ export default function OrderDetailScreen() {
     };
   }, []);
 
+  if (!order) return;
+
   return (
     <>
       <GestureHandlerRootView className="flex-1">
@@ -290,7 +292,7 @@ export default function OrderDetailScreen() {
               {/* Order ID */}
               <View className="flex-row justify-between mb-4">
                 <Text className="font-bold text-gray-600">{t("Order ID")}</Text>
-                <Text className="text-gray-900">#{order.orderId}</Text>
+                <Text className="text-gray-900">#{order?.orderId ?? "-"}</Text>
               </View>
 
               <View className="flex-1 flex-row justify-start items-center gap-x-4 mb-4">
@@ -312,11 +314,11 @@ export default function OrderDetailScreen() {
                     color="#111827"
                   />
                 </View>
-                <View>
-                  <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
+                <View className="pl-4 w-full">
+                  <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500 flex-1">
                     {t("Pickup Order")}
                   </Text>
-                  <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
+                  <Text className="font-[Inter] text-base font-bold text-left underline-offset-auto decoration-skip-ink text-gray-900 flex-1">
                     {order?.deliveryAddress?.deliveryAddress}
                   </Text>
                 </View>
@@ -378,24 +380,24 @@ export default function OrderDetailScreen() {
                 </TouchableOpacity>
               )}
 
-              {tab === "processing" && order.orderStatus === "PICKED" && (
-                <TouchableOpacity
-                  className="h-14 bg-green-500 rounded-3xl py-3 w-full mt-4 mb-10"
-                  onPress={() =>
-                    mutateOrderStatus({
-                      variables: { id: order?._id, status: "DELIVERED" },
-                    })
-                  }
-                >
-                  {loadingOrderStatus ? (
-                    <SpinnerComponent />
-                  ) : (
-                    <Text className="text-center text-white text-lg font-medium">
-                      {t("Mark as Delivered")}
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              )}
+              {/* {tab == "processing" && order.orderStatus === "PICKED" && ( */}
+              <TouchableOpacity
+                className="h-14 bg-green-500 rounded-3xl py-3 w-full mt-4 mb-10"
+                onPress={() =>
+                  mutateOrderStatus({
+                    variables: { id: order?._id, status: "DELIVERED" },
+                  })
+                }
+              >
+                {loadingOrderStatus ? (
+                  <SpinnerComponent />
+                ) : (
+                  <Text className="text-center text-white text-lg font-medium">
+                    {t("Mark as Delivered")}
+                  </Text>
+                )}
+              </TouchableOpacity>
+              {/* )} */}
 
               {tab === "new_orders" && order.orderStatus === "ACCEPTED" && (
                 <TouchableOpacity
