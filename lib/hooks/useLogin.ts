@@ -118,6 +118,7 @@ const useLogin = () => {
           })
         ).data;
       }
+
       // Perform mutation with the obtained data
       const { data } = await login({
         variables: {

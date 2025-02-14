@@ -101,7 +101,8 @@ const useDetails = (orderData: IOrder) => {
     if (networkError) message = "Internal Server Error";
     if (graphQLErrors) message = graphQLErrors.map((o) => o.message).join(", ");
 
-    FlashMessageComponent({ message: message });
+    // FlashMessageComponent({ message: message });
+    console.log({ message });
   }
 
   async function update(cache, { data: result }) {

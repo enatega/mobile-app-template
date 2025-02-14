@@ -79,6 +79,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     // onError: error2,
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
+    pollInterval: 10000,
   });
 
   let unsubscribeZoneOrder: unknown = null;
@@ -96,8 +97,10 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     try {
       const unsubAssignOrder = subscribeToMore({
         document: SUBSCRIPTION_ASSIGNED_RIDER,
-        variables: { riderId: dataProfile?.rider._id },
+        variables: { riderId: dataProfile?.rider?._id },
         updateQuery: (prev, { subscriptionData }) => {
+          console.log("running subscription");
+
           if (!subscriptionData.data) return prev;
           if (subscriptionData.data.subscriptionAssignRider.origin === "new") {
             return {

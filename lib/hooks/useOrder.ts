@@ -7,7 +7,7 @@ import { IOrder } from "../utils/interfaces/order.interface";
 import UserContext from "../context/global/user.context";
 import { getRemainingAcceptingTime } from "../utils/methods";
 import { SUBSCRIPTION_ORDERS } from "../apollo/subscriptions";
-import { FlashMessageComponent } from "../ui/useable-components/flash-message";
+import { FlashMessageComponent } from "../ui/useable-components";
 import { ASSIGN_ORDER } from "../apollo/mutations/order.mutation";
 
 const useOrder = (order: IOrder) => {
@@ -59,12 +59,13 @@ const useOrder = (order: IOrder) => {
     {
       onCompleted,
       onError,
-      refetchQueries: [{ query: refetchAssigned }],
+      // refetchQueries: [{ query: refetchAssigned }],
     }
   );
 
   async function onCompleted(result) {
     if (result.assignOrder) {
+      FlashMessageComponent({ message: "Order has been assigned to you." });
     }
   }
 

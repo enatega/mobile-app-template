@@ -52,12 +52,15 @@ const CustomDrawerHeader = () => {
             }}
           >
             {dataProfile?.name
-              .split(" ")[0]
-              .substring(0, 1)
-              .toUpperCase()
-              .concat(
+              ?.split(" ")[0]
+              ?.substring(0, 1)
+              ?.toUpperCase()
+              ?.concat(
                 "",
-                dataProfile?.name.split(" ")[1].substring(0, 1).toUpperCase(),
+                dataProfile?.name
+                  ?.split(" ")[1]
+                  ?.substring(0, 1)
+                  ?.toUpperCase() ?? "",
               ) ?? "JS"}
           </Text>
         </View>

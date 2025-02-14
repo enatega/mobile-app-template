@@ -111,7 +111,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                   {t("Pickup Order")}
                 </Text>
                 <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
-                  {order?.deliveryAddress.deliveryAddress}
+                  {order?.deliveryAddress?.deliveryAddress ?? "-"}
                 </Text>
               </View>
             </View>
