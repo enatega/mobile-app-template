@@ -121,7 +121,7 @@ export default function ScheduleScreen() {
 
   // Handlers
   const toggleDay = (index: number) => {
-    const updatedSchedule = [...schedule];
+    const updatedSchedule = [...(schedule ?? [])];
     updatedSchedule[index].enabled = !updatedSchedule[index].enabled;
     setSchedule(updatedSchedule);
   };
@@ -280,16 +280,17 @@ export default function ScheduleScreen() {
   };
 
   const addSlot = (dayIndex: number) => {
-    const updatedSchedule = [...schedule];
+    const updatedSchedule = schedule ? [...schedule] : [];
     updatedSchedule[dayIndex].slots.push({
       startTime: "09:00",
-      endTime: "17:00",
+      endTime: "23:45",
+      __typename: "TimeSlot",
     });
     setSchedule(updatedSchedule);
   };
 
   const removeSlot = (dayIndex: number, slotIndex: number) => {
-    const updatedSchedule = [...schedule];
+    const updatedSchedule = schedule ? [...schedule] : [];
     updatedSchedule[dayIndex].slots.splice(slotIndex, 1);
     setSchedule(updatedSchedule);
   };
