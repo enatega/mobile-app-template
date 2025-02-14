@@ -80,9 +80,9 @@ export default function ComponentName() {
             marginLeft: 0,
             marginTop:
               isFormOpened === "LICENSE_FORM" && !isKeyboardVisible
-                ? "65%"
+                ? "60%"
                 : isFormOpened === "LICENSE_FORM" && isKeyboardVisible
-                  ? "10%"
+                  ? "0%"
                   : isFormOpened === "VEHICLE_FORM" && !isKeyboardVisible
                     ? "100%"
                     : isFormOpened === "VEHICLE_FORM" && isKeyboardVisible
