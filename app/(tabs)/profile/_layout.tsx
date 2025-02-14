@@ -1,18 +1,16 @@
-import { Stack } from 'expo-router'
+import { Stack } from "expo-router";
 
 export default function ProfileLayout() {
   return (
-    <Stack
-      screenOptions={{ headerTitle: '', headerBackButtonMenuEnabled: true }}
-    >
+    <Stack screenOptions={{ headerShown: false, headerShadowVisible: false }}>
       <Stack.Screen
         name="index"
         options={{
           headerShown: true,
-          headerTitle: 'Profile',
-          headerBackButtonMenuEnabled: true,
+          headerTitle: "Profile",
+          headerTitleAlign: "center",
         }}
       />
     </Stack>
-  )
+  );
 }

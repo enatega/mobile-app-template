@@ -9,12 +9,15 @@ export default function StackLayout() {
     <>
       <Stack
         screenOptions={{
-          headerTitle: pathname.startsWith("/earnings/earnings-detail")
-            ? "Earnings Summary"
-            : pathname.startsWith("/earnings/earnings-order-details")
-              ? "Deliveries"
-              : "Earnings",
+          headerTitle:
+            pathname.startsWith("/earnings/earnings-detail") ?
+              "Earnings Summary"
+            : pathname.startsWith("/earnings/earnings-order-details") ?
+              "Deliveries"
+            : "Earnings",
           headerBackTitle: "",
+          headerTitleAlign: "center",
+          headerShadowVisible: false,
           contentStyle: {
             backgroundColor: "white",
           },
@@ -36,7 +39,7 @@ export default function StackLayout() {
           name="/(routes)/earnings-details"
           options={{ headerShown: true, headerTitle: "Earning Details" }}
         />*/}
-      </Stack> 
+      </Stack>
       <EarningBottomBar
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

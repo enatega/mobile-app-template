@@ -5,7 +5,12 @@ export default function StackLayout() {
     <Stack>
       <Stack.Screen
         name="index"
-        options={{ headerShown: true, headerTitle: "Wallet" }}
+        options={{
+          headerShown: true,
+          headerTitle: "Wallet",
+          headerTitleAlign: "center",
+          headerShadowVisible: false,
+        }}
       />
       <Stack.Screen name="(routes)/success" options={{ headerShown: false }} />
     </Stack>
