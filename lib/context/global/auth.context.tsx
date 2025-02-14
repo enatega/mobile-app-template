@@ -37,8 +37,6 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({
 
       if (await Location.hasStartedLocationUpdatesAsync("RIDER_LOCATION")) {
         await Location.stopLocationUpdatesAsync("RIDER_LOCATION");
-        client.clearStore();
-        await AsyncStorage.removeItem(RIDER_TOKEN);
       }
       setToken("");
       router.replace("/login");
