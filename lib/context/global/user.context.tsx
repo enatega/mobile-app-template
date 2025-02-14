@@ -198,7 +198,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     getUserId();
     refetchProfile({ id: userId });
   }, [userId]);
-  console.warn(dataProfile?.rider.available);
+
   return (
     <UserContext.Provider
       value={{

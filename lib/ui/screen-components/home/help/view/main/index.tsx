@@ -12,6 +12,7 @@ import HelpAccordian from "../../accordian";
 import { FAQs } from "@/lib/utils/constants";
 import { useFocusEffect } from "expo-router";
 import * as Linking from "expo-linking";
+import { FlashMessageComponent } from "@/lib/ui/useable-components";
 
 export default function HelpMain() {
   // Hooks
@@ -30,7 +31,9 @@ export default function HelpMain() {
         if (supported) {
           await Linking.openURL(iosUrl);
         } else {
-          console.log("WhatsApp is not installed on the device");
+          FlashMessageComponent({
+            message: "WhatsApp is not installed on the device",
+          });
         }
       } catch (error) {
         console.error("Error opening URL", error);

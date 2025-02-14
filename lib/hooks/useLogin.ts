@@ -71,7 +71,7 @@ const useLogin = () => {
   }
   function onError(err: ApolloError) {
     const error = err as ApolloError;
-    console.log("🚀 ~ onError ~ error:", error)
+
     setIsLoading(false);
     FlashMessageComponent({
       message:
@@ -139,7 +139,6 @@ const useLogin = () => {
           error?.networkError?.message ??
           t("Something went wrong"),
       });
-      console.log("🚀 ~ onLogin ~ error:", error)
     }
   };
   return {

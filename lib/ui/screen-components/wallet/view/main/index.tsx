@@ -80,7 +80,7 @@ export default function WalletMain() {
     loading: isRiderProfileLoading,
   } = useLazyQueryQL(
     RIDER_BY_ID,
-    {},
+    { enabled: !!userId },
     {
       id: userId,
     },
@@ -157,7 +157,7 @@ export default function WalletMain() {
       });
     } catch (error) {
       const err = error as GraphQLError;
-      console.log(error);
+
       FlashMessageComponent({
         message:
           err.message || JSON.stringify(error) || t("Something went wrong"),
@@ -186,10 +186,10 @@ export default function WalletMain() {
   }, [userId]);
   if (isLoading) return <WalletScreenMainLoading />;
   return (
-    <View className="flex flex-col justify-between  w-[100%] h-full">
+    <View className="flex flex-col justify-between  w-[100%] h-full bg-white">
       {!isLoading && riderProfileData?.rider.currentWalletAmount && (
-        <View className="flex flex-column gap-4 items-center bg-[#F3F4F6]">
-          <Text className="text-[18px] text-[#4B5563] font-[600] mt-12">
+        <View className="flex flex-column gap-4 items-center bg-gray-100 m-4 p-4 rounded-lg">
+          <Text className="text-[18px] text-[#4B5563] font-[600]">
             {t("Current Balance")}
           </Text>
           <Text className="font-semibold text-[32px]">

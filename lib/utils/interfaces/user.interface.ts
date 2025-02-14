@@ -39,7 +39,7 @@ export interface WorkSchedule {
   __typename: string;
 }
 
-interface TimeSlot {
+export interface TimeSlot {
   startTime: string;
   endTime: string;
   __typename: string;

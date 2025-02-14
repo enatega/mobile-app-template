@@ -50,7 +50,7 @@ const LoginScreen = () => {
   const onLoginHandler = async (creds: ILoginInitialValues) => {
     // TODO: Implement login logic
     try {
-      await onLogin(creds.username, creds.password);
+      await onLogin(creds.username.toLowerCase(), creds.password);
     } catch (err: unknown) {
       console.log(err);
     }
@@ -103,6 +103,7 @@ const LoginScreen = () => {
                       className="flex-1 h-12 text-base text-black"
                       placeholder={t("Email")}
                       keyboardType="email-address"
+                      inputMode="email"
                       value={values.username}
                       onChangeText={handleChange("username")}
                       onBlur={handleBlur("username")}
