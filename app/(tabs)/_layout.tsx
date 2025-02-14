@@ -18,12 +18,12 @@ import { useColorScheme } from '@/lib/hooks/useColorScheme'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-
 const RootLayout = () => {
   // States
   const [tabKey, setTabKey] = useState(1)
 
   // Hooks
+
   const colorScheme = useColorScheme()
   const pathName = usePathname()
   const { t } = useTranslation()

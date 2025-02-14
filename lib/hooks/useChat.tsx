@@ -43,7 +43,7 @@ export const useChatScreen = () => {
   function onError(error) {
     Alert.alert("Error", error.message);
   }
-  console.log(dataProfile);
+
   //Handler
   const onSend = () => {
     send({

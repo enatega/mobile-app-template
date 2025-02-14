@@ -19,3 +19,4 @@ export { default as NoDataIcon } from "./no-data";
 export { default as BikeRidingIcon } from "./bike-riding";
 export { default as ClockIcon } from "./clock";
 export { default as NoInternetIcon } from "./no-internet";
+export { default as RightChevron } from "./right-chevron";

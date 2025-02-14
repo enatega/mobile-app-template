@@ -1,24 +1,22 @@
 // Expo
-import { Stack } from 'expo-router'
+import { Stack } from "expo-router";
 
 // Hooks
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
 export default function ProfileLayout() {
   // Hooks
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
-    <Stack
-      screenOptions={{ headerTitle: '', headerBackButtonMenuEnabled: true }}
-    >
+    <Stack screenOptions={{ headerShown: false, headerShadowVisible: false }}>
       <Stack.Screen
         name="index"
         options={{
           headerShown: true,
-          headerTitle: t('Profile'),
-          headerBackButtonMenuEnabled: true,
+          headerTitleAlign: "center",
+          headerTitle: t("Profile"),
         }}
       />
     </Stack>
-  )
+  );
 }

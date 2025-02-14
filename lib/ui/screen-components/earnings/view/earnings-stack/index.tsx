@@ -1,8 +1,8 @@
 // Interfaces
 import { IEarningStackProps } from "@/lib/utils/interfaces/earning.interface";
+// SVG
+import { RightChevron } from "@/lib/ui/useable-components/svg";
 
-// Icons
-import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 
 // Core
@@ -43,7 +43,7 @@ export default function EarningStack({
         onPress={handleForwardPress}
       >
         <Text className="font-bold">${earning}</Text>
-        <Ionicons name="arrow-forward" size={23} />
+        <RightChevron />
       </TouchableOpacity>
     </View>
   );
