@@ -33,7 +33,7 @@ export default function CustomDrawerContent(
 
       contentContainerStyle={{
         backgroundColor: "white",
-        paddingBottom: 50,
+        paddingBottom: 30,
         paddingStart: 0,
         paddingEnd: 0,
       }}
