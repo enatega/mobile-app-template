@@ -19,14 +19,13 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const RootLayout = () => {
-
   // States
   const [tabKey, setTabKey] = useState(1);
 
   // Hooks
   const colorScheme = useColorScheme();
   const pathName = usePathname();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (pathName.startsWith("/wallet/success")) {
@@ -101,7 +100,7 @@ const RootLayout = () => {
         name="profile"
         options={{
           title: t("Profile"),
-          headerShown:false,
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <PersonIcon color={color} width={25} height={25} />
           ),

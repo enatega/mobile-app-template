@@ -31,7 +31,7 @@ export default function ComponentName() {
       isClosed.remove();
     };
   }, [Keyboard, isKeyboardVisible]);
-  console.log(isKeyboardVisible);
+
   return (
     <SafeAreaView className="bg-white">
       <ProfileHeader />

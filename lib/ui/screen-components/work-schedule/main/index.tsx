@@ -2,7 +2,7 @@ import { UPDATE_WORK_SCHEDULE } from "@/lib/apollo/mutations/rider.mutation";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { FlashMessageComponent } from "@/lib/ui/useable-components";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
-import { WorkSchedule } from "@/lib/utils/interfaces";
+import { TimeSlot, WorkSchedule } from "@/lib/utils/interfaces";
 import { useMutation } from "@apollo/client";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -67,6 +67,15 @@ export default function ScheduleScreen() {
   // Handler
   const onHandlerSubmit = async () => {
     try {
+      const overlapping_day = hasOverlappingSlots(schedule ?? []);
+
+      if (overlapping_day) {
+        FlashMessageComponent({
+          message: `${overlapping_day} has overlapping slots.`,
+        });
+        return;
+      }
+
       // eslint-disable-next-line unused-imports/no-unused-vars
       const cleaned_work_schedule = schedule?.map(({ __typename, ...day }) => ({
         ...day,
@@ -122,6 +131,81 @@ export default function ScheduleScreen() {
   //   closeDropdown(); // Close dropdown after selection
   // };
 
+  // const updateTime = (
+  //   dayIndex: number,
+  //   slotIndex: number,
+  //   type: "startTime" | "endTime",
+  //   value: string,
+  // ) => {
+  //   const updatedSchedule = JSON.parse(JSON.stringify(schedule));
+
+  //   // Get the current slot
+  //   const slot = updatedSchedule[dayIndex].slots[slotIndex];
+
+  //   // Helper function to convert time string (HH:mm) to minutes
+  //   const timeToMinutes = (time: string) => {
+  //     const [hours, minutes] = time.split(":").map(Number);
+  //     return hours * 60 + minutes;
+  //   };
+
+  //   if (type === "startTime") {
+  //     // If updating startTime, ensure it doesn't exceed endTime
+  //     if (slot.endTime && timeToMinutes(value) >= timeToMinutes(slot.endTime)) {
+  //       FlashMessageComponent({
+  //         message: "Start time must be earlier than end time.",
+  //       });
+  //       return;
+  //     }
+  //   } else if (type === "endTime") {
+  //     // If updating endTime, ensure it's greater than startTime
+  //     if (
+  //       slot.startTime &&
+  //       timeToMinutes(value) <= timeToMinutes(slot.startTime)
+  //     ) {
+  //       FlashMessageComponent({
+  //         message: "End time must be greater than start time.",
+  //       });
+  //       return;
+  //     }
+  //   }
+
+  //   // Update the slot value
+  //   updatedSchedule[dayIndex].slots[slotIndex][type] = value;
+  //   setSchedule(updatedSchedule);
+  //   closeDropdown(); // Close dropdown after selection
+  // };
+
+  const hasOverlappingSlots = (schedule: WorkSchedule[]): string => {
+    // Helper function to convert time string (HH:mm) to minutes
+    const timeToMinutes = (time: string) => {
+      const [hours, minutes] = time.split(":").map(Number);
+      return hours * 60 + minutes;
+    };
+
+    for (const daySchedule of schedule) {
+      if (!daySchedule.enabled) continue; // Skip disabled days
+
+      const slots = daySchedule.slots;
+
+      // Sort slots by start time to ensure proper order
+      const sortedSlots = [...slots].sort(
+        (a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime),
+      );
+
+      for (let i = 0; i < sortedSlots.length - 1; i++) {
+        const currentEnd = timeToMinutes(sortedSlots[i].endTime);
+        const nextStart = timeToMinutes(sortedSlots[i + 1].startTime);
+
+        // If the next slot starts before the current one ends, there's an overlap
+        if (nextStart < currentEnd) {
+          return daySchedule.day;
+        }
+      }
+    }
+
+    return "";
+  };
+
   const updateTime = (
     dayIndex: number,
     slotIndex: number,
@@ -139,25 +223,47 @@ export default function ScheduleScreen() {
       return hours * 60 + minutes;
     };
 
+    const newTime = timeToMinutes(value);
+
     if (type === "startTime") {
-      // If updating startTime, ensure it doesn't exceed endTime
-      if (slot.endTime && timeToMinutes(value) >= timeToMinutes(slot.endTime)) {
+      // Ensure new startTime is before endTime
+      if (slot.endTime && newTime >= timeToMinutes(slot.endTime)) {
         FlashMessageComponent({
           message: "Start time must be earlier than end time.",
         });
         return;
       }
     } else if (type === "endTime") {
-      // If updating endTime, ensure it's greater than startTime
-      if (
-        slot.startTime &&
-        timeToMinutes(value) <= timeToMinutes(slot.startTime)
-      ) {
+      // Ensure new endTime is after startTime
+      if (slot.startTime && newTime <= timeToMinutes(slot.startTime)) {
         FlashMessageComponent({
           message: "End time must be greater than start time.",
         });
         return;
       }
+    }
+
+    // Check for overlaps with other slots in the same day
+    const isOverlapping = updatedSchedule[dayIndex].slots.some(
+      (otherSlot: TimeSlot, idx: number) => {
+        if (idx === slotIndex) return false; // Skip checking the current slot
+
+        const otherStart = timeToMinutes(otherSlot.startTime);
+        const otherEnd = timeToMinutes(otherSlot.endTime);
+
+        if (type === "startTime") {
+          return newTime < otherEnd && newTime >= otherStart;
+        } else {
+          return newTime > otherStart && newTime <= otherEnd;
+        }
+      },
+    );
+
+    if (isOverlapping) {
+      FlashMessageComponent({
+        message: "Time slot overlaps with another existing slot.",
+      });
+      return;
     }
 
     // Update the slot value

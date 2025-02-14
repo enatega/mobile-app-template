@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import { Appearance } from "react-native";
+import { Appearance, SafeAreaView } from "react-native";
 import {
   DarkTheme,
   DefaultTheme,
