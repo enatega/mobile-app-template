@@ -13,7 +13,12 @@ import { router } from "expo-router";
 
 // Interfaces
 import { IWalletSuccessModalProps } from "@/lib/utils/interfaces/withdraw.interface";
+
+// Hooks
+import { useTranslation } from "react-i18next";
 const SuccessModal = ({ message }: IWalletSuccessModalProps) => {
+  // Hooks
+  const { t } = useTranslation();
   return (
     <View
       style={{
@@ -48,7 +53,7 @@ const SuccessModal = ({ message }: IWalletSuccessModalProps) => {
       />
       <View className="flex flex-col gap-3 items-center justify-center self-center mx-auto w-[80%]">
         <Text className="text-lg font-bold text-center">{message}</Text>
-        <Text>Usually it takes 1-2 business days</Text>
+        <Text>{t("Usually it takes 1-2 business days")}</Text>
       </View>
     </View>
   );

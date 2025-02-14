@@ -3,6 +3,7 @@ import { IRiderTransaction } from "@/lib/utils/interfaces/rider.interface";
 
 // Icons
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 // Core
 import { Text, View } from "react-native";
@@ -14,6 +15,9 @@ export default function RecentTransaction({
   transaction: IRiderTransaction;
   isLast: boolean;
 }) {
+  // Hooks
+  const { t } = useTranslation();
+
   // Constants
   const date = new Date(transaction.createdAt);
   return (
@@ -45,7 +49,7 @@ export default function RecentTransaction({
           }
         />
         <View className="flex flex-col justify-between gap-1">
-          <Text className="font-semibold">{transaction.status}</Text>
+          <Text className="font-semibold">{t(transaction.status)}</Text>
           <Text>{date.toDateString()}</Text>
         </View>
       </View>

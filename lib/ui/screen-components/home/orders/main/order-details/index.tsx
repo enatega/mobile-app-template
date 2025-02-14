@@ -39,16 +39,19 @@ import AccordionItem from "@/lib/ui/useable-components/accordian";
 import WelldoneComponent from "@/lib/ui/useable-components/well-done";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 import { Easing } from "react-native-reanimated";
+import { useTranslation } from "react-i18next";
 
 const { height } = Dimensions.get("window");
 
 export default function OrderDetailScreen() {
   // Ref
   const bottomSheetRef = useRef<BottomSheet>(null);
+
   // Context
   const configuration = useContext(ConfigurationContext);
 
-  // Hook
+  // Hooks
+  const { t } = useTranslation();
   const {
     restaurantAddressPin,
     deliveryAddressPin,
@@ -157,7 +160,7 @@ export default function OrderDetailScreen() {
               {deliveryAddressPin?.location && (
                 <Marker
                   coordinate={deliveryAddressPin.location}
-                  title="Delivery Address"
+                  title={t("Delivery Address")}
                   onPress={() => {
                     linkToMapsApp(
                       deliveryAddressPin.location,
@@ -174,7 +177,7 @@ export default function OrderDetailScreen() {
               {restaurantAddressPin?.location && (
                 <Marker
                   coordinate={restaurantAddressPin.location}
-                  title="Restaurant"
+                  title={t("Restaurant")}
                   onPress={() => {
                     linkToMapsApp(
                       restaurantAddressPin.location,
@@ -193,7 +196,7 @@ export default function OrderDetailScreen() {
                 <Marker.Animated
                   coordinate={{ latitude, longitude }}
                   title="Rider"
-                  description="This is rider's location"
+                  description={t("This is rider's location")}
                   onPress={() => {
                     linkToMapsApp(locationPin.location, locationPin.label);
                   }}
@@ -258,9 +261,9 @@ export default function OrderDetailScreen() {
             </MapView>
           ) : (
             <View className="flex-1 justify-center items-center gap-y-3">
-              <Text className="text-3xl">Map not loaded.</Text>
+              <Text className="text-3xl">{t("Map not loaded.")}</Text>
               <Text className="text-lg text-gray-600">
-                Please check for permissions.
+                {t("Please check for permissions.")}
               </Text>
             </View>
           )}
@@ -286,7 +289,7 @@ export default function OrderDetailScreen() {
             >
               {/* Order ID */}
               <View className="flex-row justify-between mb-4">
-                <Text className="font-bold text-gray-600">Order ID</Text>
+                <Text className="font-bold text-gray-600">{t("Order ID")}</Text>
                 <Text className="text-gray-900">#{order.orderId}</Text>
               </View>
 
@@ -295,7 +298,7 @@ export default function OrderDetailScreen() {
                   <Text>I</Text>
                 </View>
                 <Text className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink text-gray-900">
-                  Store Name
+                  {t("Store Name")}
                 </Text>
               </View>
 
@@ -311,7 +314,7 @@ export default function OrderDetailScreen() {
                 </View>
                 <View>
                   <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
-                    Pickup Order
+                    {t("Pickup Order")}
                   </Text>
                   <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
                     {order?.deliveryAddress?.deliveryAddress}
@@ -322,7 +325,7 @@ export default function OrderDetailScreen() {
               {/* Payment Method */}
               <View className="flex-1 flex-row justify-between items-center mb-4">
                 <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
-                  Payment Method
+                  {t("Payment Method")}
                 </Text>
                 <Text className="font-[Inter] text-base font-semibold  text-left underline-offset-auto decoration-skip-ink text-gray-900  mr-2">
                   {order.paymentMethod}
@@ -332,7 +335,7 @@ export default function OrderDetailScreen() {
               {/* Order Amount */}
               <View className="flex-1 flex-row justify-between mb-4">
                 <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
-                  Order Amount
+                  {t("Order Amount")}
                 </Text>
                 <View className="flex-row gap-x-1">
                   <Text className="font-[Inter] font-semibold text-left text-gray-900">
@@ -340,7 +343,9 @@ export default function OrderDetailScreen() {
                     {order.orderAmount}
                   </Text>
                   <Text className="font-[Inter]   text-left   text-gray-500">
-                    {order.paymentStatus === "PAID" ? "Paid" : "(Not paid yet)"}
+                    {order.paymentStatus === "PAID"
+                      ? t("Paid")
+                      : t("(Not paid yet)")}
                   </Text>
                 </View>
               </View>
@@ -348,7 +353,7 @@ export default function OrderDetailScreen() {
               {/* Divider */}
               <View className="flex-1 h-[1px] bg-gray-300 mb-4" />
 
-              <AccordionItem title="Order Details">
+              <AccordionItem title={t("Order Details")}>
                 <ItemDetails orderData={order} tab={tab} />
               </AccordionItem>
 
@@ -367,7 +372,7 @@ export default function OrderDetailScreen() {
                     <SpinnerComponent />
                   ) : (
                     <Text className="text-center text-white text-lg font-medium">
-                      Pick up
+                      {t("Pick up")}
                     </Text>
                   )}
                 </TouchableOpacity>
@@ -386,7 +391,7 @@ export default function OrderDetailScreen() {
                     <SpinnerComponent />
                   ) : (
                     <Text className="text-center text-white text-lg font-medium">
-                      Mark as Delivered
+                      {t("Mark as Delivered")}
                     </Text>
                   )}
                 </TouchableOpacity>
@@ -405,7 +410,7 @@ export default function OrderDetailScreen() {
                     <SpinnerComponent />
                   ) : (
                     <Text className="text-center text-white text-lg font-medium">
-                      Assign me
+                      {t("Assign me")}
                     </Text>
                   )}
                 </TouchableOpacity>

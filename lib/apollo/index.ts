@@ -140,7 +140,6 @@ const setupApollo = () => {
           message.toLowerCase().includes("unauthenticate") ||
           message.toLowerCase().includes("unauthorize")
         ) {
-          console.log("error......");
           AsyncStorage.removeItem(RIDER_TOKEN)
             .then(() => {})
             .catch((err) => console.log(err));

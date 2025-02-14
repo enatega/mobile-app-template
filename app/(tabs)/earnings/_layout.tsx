@@ -1,23 +1,31 @@
-import EarningBottomBar from "@/lib/ui/screen-components/earnings/view/bottom-bar";
+// Hooks
 import { Stack, usePathname } from "expo-router";
 import { useUserContext } from "@/lib/context/global/user.context";
 
+// Components
+import EarningBottomBar from "@/lib/ui/screen-components/earnings/view/bottom-bar";
+import { useTranslation } from "react-i18next";
+
 export default function StackLayout() {
+  // Hooks
   const { modalVisible, setModalVisible } = useUserContext();
   const pathname = usePathname();
+  const { t } = useTranslation();
+
   return (
     <>
       <Stack
         screenOptions={{
           headerTitle:
             pathname.startsWith("/earnings/earnings-detail") ?
-              "Earnings Summary"
+              t("Earnings Summary")
             : pathname.startsWith("/earnings/earnings-order-details") ?
-              "Deliveries"
-            : "Earnings",
-          headerBackTitle: "",
+              t("Deliveries")
+            : t("Earnings"),
+
           headerTitleAlign: "center",
           headerShadowVisible: false,
+
           contentStyle: {
             backgroundColor: "white",
           },
@@ -25,20 +33,19 @@ export default function StackLayout() {
       >
         <Stack.Screen
           name="index"
-          options={{ headerShown: true, headerTitle: "Earnings Order Details" }}
+          options={{
+            headerShown: true,
+            headerTitle: t("Earnings Order Details"),
+          }}
         />
         <Stack.Screen
           name="(routes)"
           options={{
             headerShown: true,
-            headerTitle: "Earnings Order Details",
-            headerBackTitle: "Earnings",
+            headerTitle: t("Earnings Order Details"),
+            headerBackTitle: t("Earnings"),
           }}
         />
-        {/* <Stack.Screen
-          name="/(routes)/earnings-details"
-          options={{ headerShown: true, headerTitle: "Earning Details" }}
-        />*/}
       </Stack>
       <EarningBottomBar
         modalVisible={modalVisible}

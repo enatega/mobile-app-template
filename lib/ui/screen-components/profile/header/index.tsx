@@ -3,12 +3,14 @@ import { useUserContext } from "@/lib/context/global/user.context";
 
 // Constants
 import { Colors } from "@/lib/utils/constants";
+import { useTranslation } from "react-i18next";
 
 // Core
 import { Text, View } from "react-native";
 
 export default function ProfileHeader() {
   // Hooks
+  const { t } = useTranslation();
   const { dataProfile } = useUserContext();
   return (
     <View className="justify-between flex-row h-[130px] w-[55%] items-center p-4">
@@ -39,7 +41,7 @@ export default function ProfileHeader() {
             color: Colors.light.black,
           }}
         >
-          {dataProfile?.name ?? "rider name"}
+          {dataProfile?.name ?? t("rider name")}
         </Text>
         <Text
           className="font-medium"

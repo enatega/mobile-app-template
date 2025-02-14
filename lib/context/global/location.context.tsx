@@ -17,27 +17,24 @@ export const LocationProvider = ({ children }: ILocationProviderProps) => {
   const [location, setLocation] = useState<ICoodinates>({} as ICoodinates);
 
   const getLocationPermission = async () => {
-    const { status } = await Location.getForegroundPermissionsAsync();
-    if (status === "granted") {
-      setLocationPermission(true);
-    }
-    const currentLocation = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.BestForNavigation,
-    });
-    if (currentLocation) {
-      setLocation(currentLocation.coords as unknown as ICoodinates);
+    try {
+      const { status } = await Location.getForegroundPermissionsAsync();
+      if (status === "granted") {
+        setLocationPermission(true);
+      }
+      const currentLocation = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+      });
+      if (currentLocation) {
+        setLocation(currentLocation.coords as unknown as ICoodinates);
+      }
+    } catch (error) {
+      console.log("Error getting location: ", error);
     }
   };
 
-  // Use Effect
-  useEffect(() => {
-    getLocationPermission();
-  }, []);
-
-  useEffect(() => {
-    if (!locationPermission) return;
-
-    const trackRiderLocation = async () => {
+  const trackRiderLocation = async () => {
+    try {
       if (!locationPermission) return;
 
       locationListener.current = await Location.watchPositionAsync(
@@ -53,7 +50,18 @@ export const LocationProvider = ({ children }: ILocationProviderProps) => {
           });
         },
       );
-    };
+    } catch (error) {
+      console.log("Error getting location: ", error);
+      setLocationPermission(false);
+    }
+  };
+  // Use Effect
+  useEffect(() => {
+    getLocationPermission();
+  }, []);
+
+  useEffect(() => {
+    if (!locationPermission) return;
 
     trackRiderLocation();
 

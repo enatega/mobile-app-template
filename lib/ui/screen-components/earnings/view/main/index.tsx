@@ -29,8 +29,12 @@ import { EarningScreenMainLoading } from "@/lib/ui/skeletons";
 // Components
 import EarningStack from "../earnings-stack";
 import EarningsBarChart from "../../bar-chart";
+import { useTranslation } from "react-i18next";
 
 export default function EarningsMain() {
+  // Hooks
+  const { t } = useTranslation();
+
   // Contexts
   const { userId, setModalVisible } = useUserContext();
 
@@ -78,7 +82,9 @@ export default function EarningsMain() {
         frontColor="#8fe36e"
       />
       <View className="flex flex-row justify-between w-full px-4 py-4">
-        <Text className="text-xl text-black font-bold">Recent Activity</Text>
+        <Text className="text-xl text-black font-bold">
+          {t("Recent Activity")}
+        </Text>
         <TouchableOpacity
           onPress={() => {
             setModalVisible({
@@ -93,14 +99,16 @@ export default function EarningsMain() {
             router.push("/(tabs)/earnings/(routes)/earnings-detail");
           }}
         >
-          <Text className="text-sm text-[#3B82F6] font-bold">See More</Text>
+          <Text className="text-sm text-[#3B82F6] font-bold">
+            {t("See More")}
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
         {riderEarningsData?.riderEarningsGraph?.earnings?.length === 0 &&
           !isRiderEarningsLoading && (
             <Text className="block mx-auto font-bold text-center w-full my-12">
-              No record found.
+              {t("No record found")}
             </Text>
           )}
         {riderEarningsData?.riderEarningsGraph?.earnings?.length &&

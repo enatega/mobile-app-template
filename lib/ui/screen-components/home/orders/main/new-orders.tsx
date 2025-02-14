@@ -18,6 +18,7 @@ import { IOrder } from "@/lib/utils/interfaces/order.interface";
 import { ORDER_TYPE } from "@/lib/utils/types";
 // Icon
 import { WalletIcon } from "@/lib/ui/useable-components/svg";
+import { useTranslation } from "react-i18next";
 
 const { height } = Dimensions.get("window");
 
@@ -25,7 +26,8 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
   // Props
   const { route } = props;
 
-  // Context
+  // Hooks
+  const { t } = useTranslation();
   const {
     loadingAssigned,
     errorAssigned,
@@ -69,7 +71,7 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
     <View className="pt-14 flex-1 bg-white pb-16" style={style.contaienr}>
       {errorAssigned ? (
         <View className="flex-1 justify-center items-center">
-          <Text className="text-2xl">Something went wrong</Text>
+          <Text className="text-2xl">{t("Something went wrong")}</Text>
         </View>
       ) : loadingAssigned ? (
         <View className="flex-1">
@@ -101,10 +103,10 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
                 <WalletIcon height={100} width={100} />
                 {orders?.length === 0 ? (
                   <Text className="font-[Inter] text-[18px] text-base font-[500] text-gray-600">
-                    {NO_ORDER_PROMPT[route.key]}
+                    {t(NO_ORDER_PROMPT[route.key])}
                   </Text>
                 ) : (
-                  <Text>Pull downto refresh</Text>
+                  <Text>{t("Pull down to refresh")}</Text>
                 )}
               </View>
             );
@@ -123,10 +125,10 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
 
           {orders?.length === 0 ? (
             <Text className="font-[Inter] text-[18px] text-base font-[500] text-gray-600">
-              {NO_ORDER_PROMPT[route.key]}
+              {t(NO_ORDER_PROMPT[route.key])}
             </Text>
           ) : (
-            <Text>Pull downto refresh</Text>
+            <Text>{t("Pull down to refresh")}</Text>
           )}
         </View>
       )}

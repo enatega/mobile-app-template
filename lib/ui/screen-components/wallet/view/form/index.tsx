@@ -6,10 +6,13 @@ import { Text } from "react-native";
 import { ReactNativeModal } from "react-native-modal";
 import { View } from "react-native";
 import { TextInput } from "react-native";
-import { useState } from "react";
 
 // Components
 import { CustomContinueButton } from "@/lib/ui/useable-components";
+
+// Hooks
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function WithdrawModal({
   isBottomModalOpen,
@@ -20,6 +23,9 @@ export default function WithdrawModal({
   setAmountErrMsg,
   withdrawRequestLoading,
 }: IWithdrawModalProps) {
+  // Hooks
+  const { t } = useTranslation();
+
   // States
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const [ModalMarginTop, setModalMargintTop] = useState(480);
@@ -39,7 +45,7 @@ export default function WithdrawModal({
       }}
       useNativeDriver={true}
       style={{
-        maxHeight: 350,
+        maxHeight: 370,
         width: "100%",
         height: "100%",
         backgroundColor: "#fff",
@@ -59,11 +65,13 @@ export default function WithdrawModal({
     >
       <View className="flex flex-col justify-between h-[75%] p-2 items-center w-full">
         <View className="flex flex-row justify-between w-full  border-b-gray-300 border-b">
-          <Text className="font-bold text-lg py-2">Available Amount</Text>
+          <Text className="font-bold text-lg py-2">
+            {t("Available Amount")}
+          </Text>
           <Text className="font-bold text-lg">${currentTotal}</Text>
         </View>
         <View className=" flex flex-col gap-3 w-full">
-          <Text className="font-bold text-lg">Enter Amount</Text>
+          <Text className="font-bold text-lg">{t("Enter Amount")}</Text>
           <TextInput
             value={withdrawAmount}
             onChangeText={(val) => handleTextChange(val)}
@@ -82,7 +90,7 @@ export default function WithdrawModal({
         <View>
           <CustomContinueButton
             title={
-              !withdrawRequestLoading ? "Confirm Withdraw" : "Please wait..."
+              !withdrawRequestLoading ? t("Confirm Withdraw") : t("Please wait")
             }
             disabled={withdrawRequestLoading}
             onPress={() =>
@@ -90,6 +98,7 @@ export default function WithdrawModal({
                 setWithdrawAmount(""),
               )
             }
+            style={{ marginTop: 20 }}
           />
         </View>
       </View>

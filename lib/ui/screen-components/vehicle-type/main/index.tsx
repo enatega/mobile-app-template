@@ -9,6 +9,7 @@ import { VEHICLE_TYPE } from "@/lib/utils/constants";
 import { IVehicleTypeItem } from "@/lib/utils/interfaces";
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -28,6 +29,9 @@ export default function VehicleTypeMainScreen() {
   // Context
   const { dataProfile } = useUserContext();
 
+  // Hooks
+  const { t } = useTranslation();
+
   // State
   const [selectedCode, setSelectedCode] = useState<string>(
     VEHICLE_TYPE.find((vt) => vt.code === dataProfile?.vehicleType)?.code || "",
@@ -36,7 +40,7 @@ export default function VehicleTypeMainScreen() {
   // API Hook
   const [mutate, { loading: mutationLoading }] = useMutation(EDIT_RIDER, {
     refetchQueries: [
-      { query: RIDER_PROFILE, variables: { _id: dataProfile?._id } },
+      { query: RIDER_PROFILE, variables: { id: dataProfile?._id } },
     ],
   });
 
@@ -83,14 +87,14 @@ export default function VehicleTypeMainScreen() {
         },
       },
       onCompleted: () => {
-        console.log("completed");
         FlashMessageComponent({
-          message: "Vehicle Type has been updated successfully.",
+          message: t("Vehicle Type has been updated successfully"),
         });
       },
       onError: (error) => {
         FlashMessageComponent({
-          message: error.graphQLErrors[0]?.message ?? "Please try again later",
+          message:
+            error.graphQLErrors[0]?.message ?? t("Please try again later"),
         });
       },
     });
@@ -109,7 +113,7 @@ export default function VehicleTypeMainScreen() {
 
       <View className="h-[20%]">
         <TouchableOpacity
-          className="h-12 bg-green-500 rounded-3xl py-3"
+          className="h-12 bg-green-500 rounded-3xl py-3 mt-10"
           style={{ width: width * 0.9 }}
           onPress={() => onHandlerSubmit()}
         >
@@ -117,7 +121,7 @@ export default function VehicleTypeMainScreen() {
             <SpinnerComponent />
           ) : (
             <Text className="text-center text-white text-lg font-medium">
-              Update
+              {t("Update")}
             </Text>
           )}
         </TouchableOpacity>

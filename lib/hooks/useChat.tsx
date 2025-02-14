@@ -31,7 +31,7 @@ export const useChatScreen = () => {
       variables: { order: orderId },
       fetchPolicy: "network-only",
       onError,
-    }
+    },
   );
   const [send] = useMutation(SEND_CHAT_MESSAGE, { onCompleted, onError });
 
@@ -52,8 +52,8 @@ export const useChatScreen = () => {
         messageInput: {
           message: inputMessage,
           user: {
-            id: dataProfile.rider._id,
-            name: dataProfile.rider.name,
+            id: dataProfile?._id,
+            name: dataProfile?.name,
           },
         },
       },
@@ -88,7 +88,7 @@ export const useChatScreen = () => {
             _id: message.user.id,
             name: message.user.name,
           },
-        }))
+        })),
       );
     }
   }, [chatData]);

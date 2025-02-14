@@ -35,9 +35,9 @@ import "@/i18next";
 // Style
 import "../global.css";
 import { useEffect } from "react";
-import LocationPermissionComponent from "../lib/ui/useable-components/location-permission";
 import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSplashScreen";
 import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
+import { LocationPermissionComp } from "@/lib/ui/useable-components";
 import InternetProvider from "@/lib/context/global/internet-provider";
 
 initSentry();
@@ -76,7 +76,7 @@ function RootLayout() {
                 <UserProvider>
                   <SoundProvider>
                     <AnimatedSplashScreen>
-                      <LocationPermissionComponent>
+                      <LocationPermissionComp>
                         <UnavailableStatus />
 
                         <Stack
@@ -103,7 +103,7 @@ function RootLayout() {
                             options={{ headerShown: false }}
                           />
                         </Stack>
-                      </LocationPermissionComponent>
+                      </LocationPermissionComp>
                     </AnimatedSplashScreen>
                     <StatusBar style="auto" />
                     <FlashMessage position="bottom" />
