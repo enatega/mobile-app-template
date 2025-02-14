@@ -312,11 +312,11 @@ export default function OrderDetailScreen() {
                     color="#111827"
                   />
                 </View>
-                <View>
-                  <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
+                <View className="pl-4 w-full">
+                  <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500 flex-1">
                     {t("Pickup Order")}
                   </Text>
-                  <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
+                  <Text className="font-[Inter] text-base font-bold text-left underline-offset-auto decoration-skip-ink text-gray-900 flex-1">
                     {order?.deliveryAddress?.deliveryAddress}
                   </Text>
                 </View>
