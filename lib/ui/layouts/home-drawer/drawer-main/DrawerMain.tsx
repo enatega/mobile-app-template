@@ -34,6 +34,9 @@ export default function DrawerMain() {
           borderRadius: 0,
           marginTop: 4,
         },
+        drawerStyle: {
+          marginBottom: 45,
+        },
       }}
     >
       <Drawer.Screen
