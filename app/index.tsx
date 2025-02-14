@@ -71,6 +71,7 @@ function App() {
         );
         if (lastNotificationHandledId === _id) return;
         await AsyncStorage.setItem("@lastNotificationHandledId", _id);
+
         router.navigate("/order-detail");
         router.setParams({ itemId: _id, order });
       }
