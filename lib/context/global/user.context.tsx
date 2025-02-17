@@ -101,7 +101,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
         document: SUBSCRIPTION_ASSIGNED_RIDER,
         variables: { riderId: dataProfile?.rider?._id },
         updateQuery: (prev, { subscriptionData }) => {
-          console.log("running subscription");
+          console.log("running subscription -> SUBSCRIPTION_ASSIGNED_RIDER");
 
           if (!subscriptionData.data) return prev;
           if (subscriptionData.data.subscriptionAssignRider.origin === "new") {
@@ -127,10 +127,13 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
           return prev;
         },
       });
+
       const unsubZoneOrder = subscribeToMore({
-        document: SUBSCRIPTION_ZONE_ORDERS,
+        document: SUBSCRIPTION_ZONE_ORDERS, // Previously known as SUBSCRIPTION_UNASSIGNED_ORDER
         variables: { zoneId: dataProfile?.rider?.zone?._id },
         updateQuery: (prev, { subscriptionData }) => {
+          console.log("running subscription -> SUBSCRIPTION_ZONE_ORDERS");
+
           if (!subscriptionData.data) return prev;
 
           if (subscriptionData.data.subscriptionZoneOrders.origin === "new") {
