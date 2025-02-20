@@ -10,13 +10,14 @@ import UserContext from "../context/global/user.context";
 import { CHAT } from "@/lib/apollo/queries";
 import { SEND_CHAT_MESSAGE } from "@/lib/apollo/mutations/chat.mutation";
 import { SUBSCRIPTION_NEW_MESSAGE } from "@/lib/apollo/subscriptions";
+import { IMessage } from "react-native-gifted-chat";
 
 // Interface
 
 export const useChatScreen = () => {
   const route = useRoute();
 
-  const { id: orderId } = route.params;
+  const { id: orderId } = route.params as { id: string };
 
   const { dataProfile } = useContext(UserContext);
   // States
@@ -37,7 +38,11 @@ export const useChatScreen = () => {
     onCompleted /* , onError */,
   });
 
-  function onCompleted({ sendChatMessage: messageResult }) {
+  function onCompleted({
+    sendChatMessage: messageResult,
+  }: {
+    sendChatMessage: { success: boolean; message: string };
+  }) {
     if (!messageResult?.success) {
       Alert.alert("Error", messageResult.message);
     }
@@ -82,7 +87,7 @@ export const useChatScreen = () => {
   useEffect(() => {
     if (chatData) {
       setMessages(
-        chatData?.chat?.map((message) => ({
+        chatData?.chat?.map((message: IMessage) => ({
           _id: message.id,
           text: message.message,
           createdAt: message.createdAt,
