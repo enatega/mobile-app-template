@@ -5,7 +5,7 @@ import {
   IRiderEarnings,
   IRiderEarningsArray,
 } from "./rider-earnings.interface";
-import { ApolloError, ApolloQueryResult, NetworkStatus } from "@apollo/client";
+import { ApolloError, NetworkStatus } from "@apollo/client";
 import { IOrder } from "./order.interface";
 import { LocationPermissionResponse } from "expo-location";
 
