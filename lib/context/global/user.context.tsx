@@ -27,6 +27,7 @@ import {
   IRiderEarningsArray,
 } from "@/lib/utils/interfaces/rider-earnings.interface";
 import { asyncStorageEmitter } from "@/lib/services/async-storage";
+import { RIDER_TOKEN } from "@/lib/utils/constants";
 
 const UserContext = createContext<IUserContextProps>({} as IUserContextProps);
 
@@ -80,7 +81,8 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     // onError: error2,
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
-    pollInterval: 10000,
+    // pollInterval: 15000,
+
     skip: !userId,
   });
 
@@ -157,13 +159,19 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     locationListener.current = await watchPositionAsync(
       { accuracy: LocationAccuracy.BestForNavigation, timeInterval: 10000 },
       async (location) => {
-        client.mutate({
-          mutation: UPDATE_LOCATION,
-          variables: {
-            latitude: location.coords.latitude.toString(),
-            longitude: location.coords.longitude.toString(),
-          },
-        });
+        try {
+          const token = await AsyncStorage.getItem(RIDER_TOKEN);
+          if (!token) return;
+          client.mutate({
+            mutation: UPDATE_LOCATION,
+            variables: {
+              latitude: location.coords.latitude.toString(),
+              longitude: location.coords.longitude.toString(),
+            },
+          });
+        } catch (error) {
+          console.error(error);
+        }
       },
     );
   };

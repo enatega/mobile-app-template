@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { IGlobalComponentProps } from "./global.interface";
 import { IRiderProfile } from "./user.interface";
 import { ORDER_TYPE } from "../types";
+import { IRestaurantProfile } from "./resturant.interface";
 
 export interface IOrderComponentProps extends IGlobalComponentProps {
   order: IOrder;
@@ -35,8 +36,10 @@ export interface IOrder {
   createdAt: string;
   acceptedAt: string;
   deliveryAddress: {
-    deliveryCharges: ReactNode;
     deliveryAddress: string;
+    location: {
+      coordinates: Array<number>;
+    };
   };
   orderAmount: number;
   orderStatus: string;
@@ -45,4 +48,5 @@ export interface IOrder {
   isPickedUp: boolean;
   isRiderRinged: boolean;
   rider: IRiderProfile;
+  restaurant: IRestaurantProfile;
 }

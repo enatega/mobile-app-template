@@ -56,7 +56,6 @@ const useLogin = () => {
   }: IRiderLoginCompleteResponse) {
     setIsLoading(false);
     if (riderLogin) {
-      console.log({ userId: riderLogin.userId });
       //  await AsyncStorage.setItem("rider-id", riderLogin.userId);
 
       await setItem("rider-id", riderLogin.userId);

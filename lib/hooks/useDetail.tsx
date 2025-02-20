@@ -102,7 +102,7 @@ const useDetails = (orderData: IOrder) => {
     if (graphQLErrors) message = graphQLErrors.map((o) => o.message).join(", ");
 
     // FlashMessageComponent({ message: message });
-    console.log({ message });
+    console.error({ message });
   }
 
   async function update(cache, { data: result }) {

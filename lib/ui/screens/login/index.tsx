@@ -29,6 +29,8 @@ import useLogin from "@/lib/hooks/useLogin";
 
 // Interface
 import { ILoginInitialValues } from "@/lib/utils/interfaces";
+import setupApollo from "@/lib/apollo";
+import { FlashMessageComponent } from "../../useable-components";
 
 const initial: ILoginInitialValues = {
   username: "",
@@ -36,14 +38,13 @@ const initial: ILoginInitialValues = {
 };
 
 const LoginScreen = () => {
-  // Hooks
-  const { t } = useTranslation();
-
   // States
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [initialValues, setInitialValues] = useState(initial);
 
   // Hooks
+  const client = setupApollo();
+  const { t } = useTranslation();
   const { onLogin, creds, isLogging } = useLogin();
 
   // Handlers
@@ -57,8 +58,18 @@ const LoginScreen = () => {
   };
 
   const onInit = () => {
-    if (!creds?.username) return;
-    setInitialValues(creds);
+    try {
+      client
+        ?.clearStore()
+        .catch((err) => console.log("Apollo clearStore error:", err));
+
+      if (!creds?.username) return;
+      setInitialValues(creds);
+    } catch (err) {
+      FlashMessageComponent({
+        message: err?.message ?? "Something went wrong. Please refresh.",
+      });
+    }
   };
 
   // Use Effect

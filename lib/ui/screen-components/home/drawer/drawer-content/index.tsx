@@ -98,7 +98,9 @@ export default function CustomDrawerContent(
 
         {/* Logout Button */}
         <TouchableOpacity
-          onPress={logout}
+          onPress={() => {
+            if (logout) logout();
+          }}
           className="flex-row justify-between items-center px-4 py-2 border-b-[0.5px]"
           style={{ borderColor: Colors.light.borderLineColor }}
         >

@@ -69,13 +69,13 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
   // Render
   return (
     <View className="pt-14 flex-1 bg-white pb-16" style={style.contaienr}>
-      {errorAssigned ? (
-        <View className="flex-1 justify-center items-center">
-          <Text className="text-2xl">{t("Something went wrong")}</Text>
-        </View>
-      ) : loadingAssigned ? (
+      {loadingAssigned ? (
         <View className="flex-1">
           <Spinner />
+        </View>
+      ) : errorAssigned ? (
+        <View className="flex-1 justify-center items-center">
+          <Text className="text-2xl">{t("Something went wrong")}</Text>
         </View>
       ) : orders?.length > 0 ? (
         <FlatList

@@ -144,6 +144,7 @@ export const RIDER_ORDERS = gql`
       restaurant {
         _id
         name
+        image
         address
         location {
           coordinates

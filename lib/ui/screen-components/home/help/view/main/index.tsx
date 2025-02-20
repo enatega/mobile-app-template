@@ -12,32 +12,54 @@ import HelpAccordian from "../../accordian";
 import { FAQs } from "@/lib/utils/constants";
 import { useFocusEffect } from "expo-router";
 import * as Linking from "expo-linking";
-import { FlashMessageComponent } from "@/lib/ui/useable-components";
 
 export default function HelpMain() {
   // Hooks
   const { t } = useTranslation();
 
-  const openWhatsAppChat = async () => {
-    const phoneNumber = "+1(307)776%E2%80%918999";
+  const openWhatsAppStore = () => {
+    const appStoreUrl =
+      "https://apps.apple.com/app/whatsapp-messenger/id310633997";
+    const playStoreUrl =
+      "https://play.google.com/store/apps/details?id=com.whatsapp";
 
-    if (Platform.OS === "android") {
-      const androidUrl = `whatsapp://send?phone=${phoneNumber}`;
-      Linking.openURL(androidUrl);
-    } else if (Platform.OS === "ios") {
-      const iosUrl = `https://wa.me/${phoneNumber.replace("+", "")}`;
-      try {
+    const storeUrl = Platform.OS === "ios" ? appStoreUrl : playStoreUrl;
+
+    Linking.canOpenURL(storeUrl)
+      .then((supported) => {
+        if (supported) {
+          Linking.openURL(storeUrl);
+        } else {
+          console.error("Cannot open URL:", storeUrl);
+        }
+      })
+      .catch((err) => console.error("Error opening URL:", err));
+  };
+
+  const openWhatsAppChat = async () => {
+    try {
+      const phoneNumber = "+1(307)776%E2%80%918999";
+
+      if (Platform.OS === "android") {
+        const androidUrl = `whatsapp://send?phone=${phoneNumber}`;
+        const status = await Linking.openURL(androidUrl);
+
+        if (!status) {
+          openWhatsAppStore();
+        }
+      } else if (Platform.OS === "ios") {
+        const iosUrl = `https://wa.me/${phoneNumber.replace("+", "")}`;
+
         const supported = await Linking.canOpenURL(iosUrl);
         if (supported) {
           await Linking.openURL(iosUrl);
         } else {
-          FlashMessageComponent({
-            message: "WhatsApp is not installed on the device",
-          });
+          openWhatsAppStore();
         }
-      } catch (error) {
-        console.error("Error opening URL", error);
       }
+    } catch (error) {
+      console.error("Error opening URL", error);
+      openWhatsAppStore();
     }
   };
 
@@ -48,15 +70,15 @@ export default function HelpMain() {
   });
 
   return (
-    <View className="flex flex-col w-full h-[95%] bg-gray-100 dark:bg-gray-900">
+    <View className="flex-1 w-full bg-gray-100 dark:bg-gray-900 pb-16">
       <StatusBar barStyle="light-content" />
 
-      <View className="flex w-full h-full items-start justify-start p-4">
+      <View className="h-[90%] p-4">
         <FlatList
           className="flex flex-col w-[99%] ml-1 overflow-x-hidden"
           data={FAQs}
           keyExtractor={(item) => "Faq-" + item.id}
-          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View className="h-4" />}
           renderItem={({ item }) => (
             <HelpAccordian heading={t(item.heading)}>
@@ -66,19 +88,19 @@ export default function HelpMain() {
             </HelpAccordian>
           )}
         />
+      </View>
 
-        <View className=" bottom-6 w-full flex items-center">
-          <TouchableOpacity
-            activeOpacity={0.7}
-            className="w-[90%] h-12 rounded-full bg-green-500 flex flex-row items-center justify-center gap-2 shadow-lg"
-            onPress={openWhatsAppChat}
-          >
-            <FontAwesome name="whatsapp" size={24} color="white" />
-            <Text className="text-white font-semibold text-lg">
-              {t("whatsAppText")}
-            </Text>
-          </TouchableOpacity>
-        </View>
+      <View className="w-full flex items-center mt-4">
+        <TouchableOpacity
+          activeOpacity={0.7}
+          className="w-[90%] h-12 rounded-full bg-green-500 flex flex-row items-center justify-center gap-2 shadow-lg"
+          onPress={openWhatsAppChat}
+        >
+          <FontAwesome name="whatsapp" size={24} color="white" />
+          <Text className="text-white font-semibold text-lg">
+            {t("whatsAppText")}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
