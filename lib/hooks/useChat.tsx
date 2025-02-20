@@ -21,7 +21,7 @@ export const useChatScreen = () => {
   const { dataProfile } = useContext(UserContext);
   // States
   const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState(null);
+  const [inputMessage, setInputMessage] = useState("");
   const [image, setImage] = useState([]);
 
   // API
@@ -30,19 +30,21 @@ export const useChatScreen = () => {
     {
       variables: { order: orderId },
       fetchPolicy: "network-only",
-      onError,
+      //, onError,
     },
   );
-  const [send] = useMutation(SEND_CHAT_MESSAGE, { onCompleted, onError });
+  const [send] = useMutation(SEND_CHAT_MESSAGE, {
+    onCompleted /* , onError */,
+  });
 
   function onCompleted({ sendChatMessage: messageResult }) {
     if (!messageResult?.success) {
       Alert.alert("Error", messageResult.message);
     }
   }
-  function onError(error) {
+  /* function onError() {
     Alert.alert("Error", error.message);
-  }
+  } */
 
   //Handler
   const onSend = () => {
@@ -50,7 +52,7 @@ export const useChatScreen = () => {
       variables: {
         orderId: orderId,
         messageInput: {
-          message: inputMessage,
+          message: String(inputMessage),
           user: {
             id: dataProfile?._id,
             name: dataProfile?.name,
@@ -58,7 +60,7 @@ export const useChatScreen = () => {
         },
       },
     });
-    setInputMessage(null);
+    setInputMessage("");
     setImage([]);
   };
 

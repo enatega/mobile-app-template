@@ -1,5 +1,5 @@
 // Core
-import { View, Platform, StyleSheet } from "react-native";
+import { View, Platform, StyleSheet, KeyboardAvoidingView } from "react-native";
 
 // Gifted Chat
 import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
@@ -90,37 +90,39 @@ export default function ChatMain() {
   // };
 
   return (
-    <View className="flex-1" style={styles.chatContainer}>
-      <GiftedChat
-        messages={messages}
-        user={{
-          _id: profile?.rider?._id ?? "",
-        }}
-        renderBubble={renderBubble}
-        renderSend={renderSend}
-        scrollToBottom
-        scrollToBottomComponent={scrollToBottomComponent}
-        renderAvatar={null}
-        renderUsernameOnMessage
-        // renderChatEmpty={renderChatEmpty}
-        inverted={Platform.OS !== "web" || messages.length === 0}
-        timeTextStyle={{
-          left: { color: "blue" },
-          right: { color: "green" },
-        }}
-        placeholder={t("Chats Here")}
-        // textInputStyle={{ paddingTop: 10 }}
-        // renderAccessory={image.length > 0 ? renderAccessory : null}
-        text={inputMessage ?? ""}
-        onInputTextChanged={(m) => setInputMessage(m)}
-      />
-    </View>
+    <KeyboardAvoidingView className="flex-1">
+      <View className="flex-1" style={styles.chatContainer}>
+        <GiftedChat
+          messages={messages}
+          user={{
+            _id: profile?.rider?._id ?? "",
+          }}
+          renderBubble={renderBubble}
+          renderSend={renderSend}
+          scrollToBottom
+          scrollToBottomComponent={scrollToBottomComponent}
+          renderAvatar={null}
+          renderUsernameOnMessage
+          // renderChatEmpty={renderChatEmpty}
+          inverted={Platform.OS !== "web" || messages.length === 0}
+          timeTextStyle={{
+            left: { color: "blue" },
+            right: { color: "green" },
+          }}
+          placeholder={t("Chats Here")}
+          // textInputStyle={{ paddingTop: 10 }}
+          // renderAccessory={image.length > 0 ? renderAccessory : null}
+          text={inputMessage ?? ""}
+          onInputTextChanged={(m) => setInputMessage(String(m ?? ""))}
+        />
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   chatContainer: {
-    marginBottom: Platform.OS === "android" ? "80px" : 0,
+    marginBottom: 0,
   },
   rowDisplay: {
     display: "flex",

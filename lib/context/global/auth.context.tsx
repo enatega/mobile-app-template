@@ -30,14 +30,23 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({
 
   const logout = async () => {
     try {
-      console.log("logout called");
-      client.clearStore();
-      await AsyncStorage.removeItem(RIDER_TOKEN);
-      await AsyncStorage.removeItem("rider-id");
+      // Clear storage first to ensure logout happens immediately
+      await AsyncStorage.multiRemove([RIDER_TOKEN, "rider-id"]);
 
-      if (await Location.hasStartedLocationUpdatesAsync("RIDER_LOCATION")) {
-        await Location.stopLocationUpdatesAsync("RIDER_LOCATION");
+      // Navigate to login immediately after clearing storage
+
+      // Stop location updates if they were started
+      try {
+        const hasLocationUpdates =
+          await Location.hasStartedLocationUpdatesAsync("RIDER_LOCATION");
+        if (hasLocationUpdates) {
+          await Location.stopLocationUpdatesAsync("RIDER_LOCATION");
+        }
+      } catch (locationError) {
+        console.log("Error stopping location updates:", locationError);
       }
+
+      // Reset token state
       setToken("");
       router.replace("/login");
     } catch (e) {

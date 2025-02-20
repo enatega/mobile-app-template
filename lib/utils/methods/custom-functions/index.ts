@@ -1,37 +1,63 @@
 import { ORDER_STATUS_ENUM } from "../../enums";
 import { IRestaurantProfile, IReview } from "../../interfaces";
 import { IOrder } from "../../interfaces/order.interface";
+// function calculateDistance(
+//   latS: number,
+//   lonS: number,
+//   latD: number,
+//   lonD: number,
+// ) {
+//   const R = 6371; // km
+//   const dLat = toRad(latD - latS);
+//   const dLon = toRad(lonD - lonS);
+//   const lat1 = toRad(latS);
+//   const lat2 = toRad(latD);
+
+//   const a =
+//     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+//     Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+//   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//   const d = R * c;
+//   return d;
+// }
+
 function calculateDistance(
   latS: number,
   lonS: number,
   latD: number,
   lonD: number,
+  unit: "km" | "miles" = "km"
 ) {
-  const R = 6371; // km
+  const R = unit === "km" ? 6371 : 3958.8; // Radius of Earth in km or miles
+  const toRad = (angle: number) => (angle * Math.PI) / 180;
+
   const dLat = toRad(latD - latS);
   const dLon = toRad(lonD - lonS);
   const lat1 = toRad(latS);
   const lat2 = toRad(latD);
 
   const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+    Math.sin(dLat / 2) ** 2 +
+    Math.sin(dLon / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const d = R * c;
-  return d;
+  return R * c;
 }
+
 function toRad(Value: number) {
   return (Value * Math.PI) / 180;
 }
 const calulateRemainingTime = (order: IOrder) => {
-  const expectedTime = [
-    ORDER_STATUS_ENUM.ACCEPTED,
-    ORDER_STATUS_ENUM.ASSIGNED,
-  ].includes(order?.orderStatus)
-    ? order?.preparationTime
+  const expectedTime =
+    (
+      [ORDER_STATUS_ENUM.ACCEPTED, ORDER_STATUS_ENUM.ASSIGNED].includes(
+        order?.orderStatus
+      )
+    ) ?
+      order?.preparationTime
     : order?.completionTime;
   const remainingTime = Math.floor(
-    (new Date(expectedTime).getTime() - Date.now()) / 1000 / 60,
+    (new Date(expectedTime).getTime() - Date.now()) / 1000 / 60
   );
   return remainingTime > 0 ? remainingTime : 0;
 };
@@ -67,7 +93,7 @@ function groupAndCount(array = [], key: string) {
 function sortReviews(reviews: IReview[], sortBy: string) {
   if (sortBy === "newest") {
     return reviews.sort(
-      (a: IReview, b: IReview) => Number(b.createdAt) - Number(a.createdAt),
+      (a: IReview, b: IReview) => Number(b.createdAt) - Number(a.createdAt)
     );
   } else if (sortBy === "highest") {
     return reviews.sort((a: IReview, b: IReview) => b.rating - a.rating);
@@ -79,11 +105,11 @@ function sortReviews(reviews: IReview[], sortBy: string) {
 function calculateAmount(
   costType: string,
   deliveryRate: number,
-  distance: number,
+  distance: number
 ) {
-  return costType === "fixed"
-    ? deliveryRate
-    : Math.ceil(distance) * deliveryRate;
+  return costType === "fixed" ? deliveryRate : (
+      Math.ceil(distance) * deliveryRate
+    );
 }
 
 const isOpen = (restaurant: IRestaurantProfile) => {
@@ -94,7 +120,7 @@ const isOpen = (restaurant: IRestaurantProfile) => {
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const todaysTimings = restaurant?.openingTimes?.find(
-    (o) => o.day === ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][day],
+    (o) => o.day === ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][day]
   );
   if (!todaysTimings) return false;
 

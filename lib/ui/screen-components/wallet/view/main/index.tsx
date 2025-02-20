@@ -202,7 +202,7 @@ export default function WalletMain() {
         </View>
       )}
       {riderCurrentWithdrawRequestData?.riderCurrentWithdrawRequest
-        .requestAmount !== 0 &&
+        ?.requestAmount !== 0 &&
         riderCurrentWithdrawRequestData?.riderCurrentWithdrawRequest && (
           <View>
             <Text className="font-bold text-lg bg-white p-5 mt-4">

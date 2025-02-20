@@ -117,7 +117,7 @@ export default function EarningBottomBar({
             }}
           >
             <Text className="text-md text-[#3B82F6] font-bold">
-              ${totalEarnings - totalTips}{" "}
+              ${totalEarnings - totalTips}
             </Text>
             <Ionicons name="arrow-forward" size={23} />
           </TouchableOpacity>
