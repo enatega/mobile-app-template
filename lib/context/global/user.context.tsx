@@ -183,10 +183,6 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     const { unsubZoneOrder, unsubAssignOrder } = subscribeNewOrders;
     return () => {
       if (dataProfile?.rider?.zone?._id) {
-        console.log(
-          "🚀 ~ return ~ dataProfile?.rider?.zone?._id:",
-          dataProfile?.rider?.zone?._id,
-        );
         setZoneId(dataProfile?.rider?.zone?._id);
         unsubZoneOrder();
       }
