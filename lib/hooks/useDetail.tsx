@@ -24,13 +24,15 @@ const useDetails = (orderData: IOrder) => {
   // Hooks
   const { t } = useTranslation();
   const { assignedOrders, loadingAssigned } = useContext(UserContext);
-  const [order, setOrder] = useState(orderData);
+  const [order, setOrder] = useState<IOrder>(orderData);
 
   useEffect(() => {
     if (!loadingAssigned && order) {
-      setOrder(assignedOrders.find((o) => o._id === order?._id));
+      setOrder(
+        assignedOrders?.find((o) => o._id === order?._id) ?? ({} as IOrder),
+      );
     }
-  }, [assignedOrders, order]);
+  }, [assignedOrders]);
 
   const preparationTime = {
     hours: new Date(order?.preparationTime).getHours(),
@@ -110,7 +112,7 @@ const useDetails = (orderData: IOrder) => {
       const data = cache.readQuery({ query: RIDER_ORDERS });
       if (data) {
         const index = data.riderOrders.findIndex(
-          (o) => o._id === result.assignOrder._id,
+          (o: IOrder) => o._id === result.assignOrder._id,
         );
         if (index > -1) {
           data.riderOrders[index].rider = result.assignOrder.rider;
