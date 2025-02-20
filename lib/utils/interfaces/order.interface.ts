@@ -31,6 +31,10 @@ export interface IOrder {
     name: string;
     phone: string;
   };
+  restaurant : {
+    name: string;
+    logo:string
+  }
   paymentStatus: string;
   createdAt: string;
   acceptedAt: string;

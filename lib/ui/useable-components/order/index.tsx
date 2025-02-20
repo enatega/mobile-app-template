@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { useContext } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, Image } from "react-native";
 
 // Components
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
@@ -88,11 +88,20 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
 
             {/* Store Image and Name */}
             <View className="flex-1 flex-row justify-start items-center gap-x-4">
-              <View className="h-8 w-8 bg-gray-400 justify-center items-center">
-                <Text>I</Text>
+              <View
+                className={`h-8 w-8 bg-gray-400 ${order.restaurant.logo ? "justify-start" : "justify-center"} items-center`}
+              >
+                {order.restaurant.logo ? (
+                  <Image
+                    source={{ uri: order.restaurant.logo }}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <Text>ST</Text>
+                )}
               </View>
               <Text className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink text-gray-900">
-                {t("Store Name")}
+                {order?.restaurant.name.toString()}
               </Text>
             </View>
 
