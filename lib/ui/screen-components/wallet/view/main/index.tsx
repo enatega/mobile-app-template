@@ -2,7 +2,7 @@
 import {
   IRiderByIdResponse,
   IRiderCurrentWithdrawRequestResponse,
-  IRiderEarningsResponse,
+  // IRiderEarningsResponse,
   IRiderTransactionHistoryResponse,
 } from "@/lib/utils/interfaces/rider.interface";
 import { ILazyQueryResult } from "@/lib/utils/interfaces";
@@ -25,7 +25,6 @@ import { CREATE_WITHDRAW_REQUEST } from "@/lib/apollo/mutations/withdraw-request
 import {
   RIDER_BY_ID,
   RIDER_CURRENT_WITHDRAW_REQUEST,
-  RIDER_EARNINGS,
   RIDER_TRANSACTIONS_HISTORY,
 } from "@/lib/apollo/queries";
 import { GraphQLError } from "graphql";
@@ -50,11 +49,6 @@ export default function WalletMain() {
   const { userId } = useUserContext();
 
   // Queries
-  const { fetch: fetchRiderEarnings, loading: isRiderEarningsLoading } =
-    useLazyQueryQL(RIDER_EARNINGS) as ILazyQueryResult<
-      IRiderEarningsResponse | undefined,
-      undefined
-    >;
 
   const {
     data: riderTransactionData,
@@ -130,8 +124,18 @@ export default function WalletMain() {
         });
       },
       refetchQueries: [
-        { query: RIDER_BY_ID, variables: { id: userId } },
-        { query: RIDER_EARNINGS, variables: { id: userId } },
+        {
+          query: RIDER_BY_ID,
+          variables: { riderId: userId },
+        },
+        {
+          query: RIDER_TRANSACTIONS_HISTORY,
+          variables: { userId: userId, userType: "RIDER" },
+        },
+        {
+          query: RIDER_CURRENT_WITHDRAW_REQUEST,
+          variables: { riderId: userId },
+        },
       ],
     });
 
@@ -167,17 +171,17 @@ export default function WalletMain() {
   // Loading state
   const isLoading =
     createWithDrawRequestLoading ||
-    isRiderEarningsLoading ||
     isRiderProfileLoading ||
     isRiderTransactionLoading ||
     isRiderCurrentWithdrawRequestLoading ||
     !riderProfileData?.rider.currentWalletAmount;
+  // isRiderEarningsLoading ||
 
   // UseEffects
   useEffect(() => {
+    // fetchRiderEarnings();
     if (userId) {
       fetchRiderProfile();
-      fetchRiderEarnings();
       fetchRiderTransactions();
       fetchRiderCurrentWithdrawRequest({
         riderId: userId,

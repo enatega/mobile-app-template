@@ -296,16 +296,18 @@ export default function OrderDetailScreen() {
               </View>
 
               <View className="flex-1 flex-row justify-start items-center gap-x-4 mb-4">
-                <View className="h-8 w-8 bg-gray-400 justify-center items-center">
-                  <Text>I</Text>
-                </View>
+                <Image
+                  src={order?.restaurant?.image}
+                  style={{ width: 32, height: 30, borderRadius: 8 }}
+                />
+
                 <Text className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink text-gray-900">
-                  {t("Store Name")}
+                  {order?.restaurant?.name}
                 </Text>
               </View>
 
               {/* Pick Up Order */}
-              <View className="flex-1 flex-row items-center gap-x-2 mb-4">
+              <View className="w-[90%] flex-row items-center gap-x-2 mb-4">
                 <View>
                   <IconSymbol
                     name="apartment"
@@ -314,12 +316,12 @@ export default function OrderDetailScreen() {
                     color="#111827"
                   />
                 </View>
-                <View className="pl-4 w-full">
-                  <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500 flex-1">
+                <View>
+                  <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
                     {t("Pickup Order")}
                   </Text>
-                  <Text className="font-[Inter] text-base font-bold text-left underline-offset-auto decoration-skip-ink text-gray-900 flex-1">
-                    {order?.deliveryAddress?.deliveryAddress}
+                  <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
+                    {order?.restaurant?.address ?? "-"}
                   </Text>
                 </View>
               </View>
@@ -330,26 +332,23 @@ export default function OrderDetailScreen() {
                   {t("Payment Method")}
                 </Text>
                 <Text className="font-[Inter] text-base font-semibold  text-left underline-offset-auto decoration-skip-ink text-gray-900  mr-2">
-                  {order.paymentMethod}
+                  {order?.paymentMethod}
                 </Text>
               </View>
 
               {/* Order Amount */}
-              <View className="flex-1 flex-row justify-between mb-4">
-                <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
+              <View className="w-[99%] flex-row justify-between">
+                <Text className="flex-1 font-[Inter] text-[16px] text-base font-[500] text-gray-600">
                   {t("Order Amount")}
                 </Text>
-                <View className="flex-row gap-x-1">
-                  <Text className="font-[Inter] font-semibold text-left text-gray-900">
-                    {configuration?.currencySymbol}
-                    {order.orderAmount}
-                  </Text>
-                  <Text className="font-[Inter]   text-left   text-gray-500">
-                    {order.paymentStatus === "PAID"
-                      ? t("Paid")
-                      : t("(Not paid yet)")}
-                  </Text>
-                </View>
+
+                <Text className="flex-1 font-[Inter] font-semibold text-right text-gray-900">
+                  {configuration?.currencySymbol}
+                  {order?.orderAmount}{" "}
+                  {order.paymentStatus === "PAID"
+                    ? t("Paid")
+                    : t("(Not paid yet)")}
+                </Text>
               </View>
 
               {/* Divider */}

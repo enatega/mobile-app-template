@@ -4,7 +4,12 @@ import { RIDER_PROFILE } from "@/lib/apollo/queries";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { FlashMessageComponent } from "@/lib/ui/useable-components";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
-import { BikeRidingIcon } from "@/lib/ui/useable-components/svg";
+import {
+  BikeRidingIcon,
+  CarIcon,
+  MotorBikeIcon,
+  TruckIcon,
+} from "@/lib/ui/useable-components/svg";
 import { VEHICLE_TYPE } from "@/lib/utils/constants";
 import { IVehicleTypeItem } from "@/lib/utils/interfaces";
 import { useMutation } from "@apollo/client";
@@ -20,9 +25,9 @@ import {
 
 const vehicleMap: Record<string, JSX.Element> = {
   bicycle: <BikeRidingIcon />,
-  motorbike: <BikeRidingIcon />,
-  car: <BikeRidingIcon />,
-  pickup_truck: <BikeRidingIcon />,
+  motorbike: <MotorBikeIcon />,
+  car: <CarIcon />,
+  pickup_truck: <TruckIcon />,
 };
 
 export default function VehicleTypeMainScreen() {

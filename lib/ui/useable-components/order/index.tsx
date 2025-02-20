@@ -14,7 +14,7 @@ import { ConfigurationContext } from "@/lib/context/global/configuration.context
 import useOrder from "@/lib/hooks/useOrder";
 
 // Cion
-import { ChatIcon } from "../svg";
+import { BikeRidingIcon, ChatIcon, ClockIcon } from "../svg";
 
 // Hooks
 import { useTranslation } from "react-i18next";
@@ -32,7 +32,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
   const router = useRouter();
 
   return (
-    <View className="flex-1">
+    <View className="h-fit">
       {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ? (
         <View />
       ) : null}
@@ -80,13 +80,13 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             <Text className="font-[Inter] text-base font-bold  text-left decoration-skip-ink-0 text-gray-600">
               {t("Order ID")}
             </Text>
-            <Text className="font-[Inter] text-[16px] text-base font-semibold  text-right underline-offset-auto decoration-skip-ink text-gray-900  mr-2">
+            <Text className="font-[Inter] text-[16px] text-base font-semibold  text-right underline-offset-auto decoration-skip-ink text-gray-900">
               #{order?.orderId}
             </Text>
           </View>
 
           {/* Store Image and Name */}
-          <View className="flex-1 flex-row justify-start items-center gap-x-4">
+          <View className="w-[90%] flex-row justify-start items-center gap-x-4">
             {/* <View className="h-8 w-8 bg-gray-400 justify-center items-center"> */}
             {/* <View className="w-[60px] h-[70px] bg-gray-200 rounded-[8px]"> */}
             <Image
@@ -101,7 +101,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           </View>
 
           {/* Pick Up Order */}
-          <View className="flex-1 flex-row items-center gap-x-2">
+          <View className="w-[90%] flex-row items-center gap-x-2">
             <View>
               <IconSymbol
                 name="apartment"
@@ -110,7 +110,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 color="#111827"
               />
             </View>
-            <View className="w-[90%">
+            <View>
               <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
                 {t("Pickup Order")}
               </Text>
@@ -121,7 +121,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           </View>
 
           {/* Delivery Order */}
-          <View className="flex-1 flex-row items-center gap-x-2">
+          <View className="w-[90%] flex-row items-center gap-x-2">
             <View>
               <IconSymbol
                 name="home"
@@ -130,7 +130,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 color="#111827"
               />
             </View>
-            <View className="w-[90%]">
+            <View>
               <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
                 {t("Delivery Order")}
               </Text>
@@ -141,24 +141,24 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           </View>
 
           {/* Price/Time/Distance */}
-          <View className="flex-1 flex-row justify-between items-center">
-            {/* <View className=" flex-row gap-x-1">
+          <View className="w-[99%] flex-row justify-between items-center">
+            {/* <View className="flex-row gap-x-1">
               <IconSymbol size={20} name="currency-exchange" color="#6b7280" />
               <Text className="font-[Inter] text-base font-medium leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
                 0.71
               </Text>
             </View> */}
 
-            <View className=" flex-row gap-x-1">
-              <IconSymbol size={20} name="access-time" color="#6b7280" />
-              <Text className="font-[Inter] text-base font-medium leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
+            <View className="flex-1 flex-row justify-start  items-center gap-x-1">
+              <ClockIcon color="#6b7280" />
+              <Text className="font-[Inter] text-base font-medium  text-left underline-offset-auto decoration-skip-ink text-gray-500">
                 {time}
               </Text>
             </View>
 
-            <View className="flex-row gap-x-1">
-              <IconSymbol size={20} name="directions-bike" color="#6b7280" />
-              <Text className="font-[Inter] text-base font-medium leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
+            <View className="flex-1 flex-row justify-end items-center gap-x-1">
+              <BikeRidingIcon color="#6b7280" />
+              <Text className="font-[Inter] text-base font-medium text-gray-500">
                 {calculateDistance(
                   Number(order?.restaurant?.location?.coordinates[0]),
                   Number(order?.restaurant?.location?.coordinates[1]),
@@ -173,31 +173,26 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           </View>
 
           {/* Payment Method */}
-          <View className="flex-1 flex-row justify-between items-center">
-            <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
+          <View className="w-[99%] flex-row justify-between items-center">
+            <Text className="flex-1 font-[Inter] text-[16px] text-base font-[500] text-gray-600">
               {t("Payment Method")}
             </Text>
-            <Text className="font-[Inter] text-base font-semibold  text-left underline-offset-auto decoration-skip-ink text-gray-900  mr-2">
+            <Text className="flex-1 font-[Inter] text-base font-semibold text-right underline-offset-auto decoration-skip-ink text-gray-900">
               {order?.paymentMethod}
             </Text>
           </View>
 
           {/* Order Amount */}
-          <View className="flex-1 flex-row justify-between">
-            <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
+          <View className="w-[99%] flex-row justify-between">
+            <Text className="flex-1 font-[Inter] text-[16px] text-base font-[500] text-gray-600">
               {t("Order Amount")}
             </Text>
-            <View className="flex-row gap-x-1">
-              <Text className="font-[Inter] font-semibold text-left text-gray-900">
-                {configuration?.currencySymbol}
-                {order?.orderAmount}
-              </Text>
-              <Text className="font-[Inter]   text-left   text-gray-500">
-                {order.paymentStatus === "PAID"
-                  ? t("Paid")
-                  : t("(Not paid yet)")}
-              </Text>
-            </View>
+
+            <Text className="flex-1 font-[Inter] font-semibold text-right text-gray-900">
+              {configuration?.currencySymbol}
+              {order?.orderAmount}{" "}
+              {order.paymentStatus === "PAID" ? t("Paid") : t("(Not paid yet)")}
+            </Text>
           </View>
 
           {["ASSIGNED", "PICKED"].includes(order.orderStatus) && (
