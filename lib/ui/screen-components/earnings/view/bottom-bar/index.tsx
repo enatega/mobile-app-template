@@ -91,7 +91,7 @@ export default function EarningBottomBar({
           <Text>${totalEarnings}</Text>
         </View>
         <View className="flex flex-row justify-between items-center flex-2 p-5">
-          <Text className="font-bold text-md">Tips</Text>
+          <Text className="font-bold text-md">{t("Tips")}</Text>
           <Text className="font-bold text-md">${totalTips}</Text>
         </View>
         <View className="flex flex-row justify-between p-5 ">

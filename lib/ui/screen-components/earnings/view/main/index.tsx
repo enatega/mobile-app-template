@@ -30,6 +30,7 @@ import { EarningScreenMainLoading } from "@/lib/ui/skeletons";
 import EarningStack from "../earnings-stack";
 import EarningsBarChart from "../../bar-chart";
 import { useTranslation } from "react-i18next";
+import formatNumber from "@/lib/utils/methods/num-formatter";
 
 export default function EarningsMain() {
   // Hooks
@@ -59,12 +60,12 @@ export default function EarningsMain() {
             <Text
               style={{
                 color: "#000",
-                fontSize: 14,
+                fontSize: 10,
                 fontWeight: "600",
-                marginBottom: 1,
+                marginBottom: 0,
               }}
             >
-              ${earning.totalEarningsSum}
+              ${formatNumber(earning.totalEarningsSum)}
             </Text>
           );
         },
@@ -77,9 +78,13 @@ export default function EarningsMain() {
     <View className="bg-white">
       <EarningsBarChart
         data={barData}
-        width={330}
-        height={280}
+        width={700}
+        height={200}
         frontColor="#8fe36e"
+        barStyle={{ marginTop: 15 }}
+        topLabelContainerStyle={{}}
+        xAxisLabelTextStyle={{ display: "flex", fontSize: 9 }}
+        yAxisTextStyle={{ fontSize: 8 }}
       />
       <View className="flex flex-row justify-between w-full px-4 py-4">
         <Text className="text-xl text-black font-bold">
@@ -105,33 +110,12 @@ export default function EarningsMain() {
         </TouchableOpacity>
       </View>
       <View>
-        {/* {riderEarningsData?.riderEarningsGraph?.earnings?.length === 0 &&
-          !isRiderEarningsLoading && (
-            <Text className="block mx-auto font-bold text-center w-full my-12">
-              {t('No record found')}
-            </Text>
-          )} */}
-        {/* {riderEarningsData?.riderEarningsGraph?.earnings?.length &&
-          riderEarningsData?.riderEarningsGraph?.earnings
-            ?.slice(0, 4)
-            ?.map((earning: IRiderEarnings, index) => (
-              <EarningStack
-                date={earning.date}
-                earning={earning.totalEarningsSum}
-                totalDeliveries={earning.earningsArray.length}
-                _id={earning._id}
-                tip={earning.totalTipsSum}
-                earningsArray={earning.earningsArray}
-                key={index}
-                setModalVisible={setModalVisible}
-              />
-            ))} */}
-
         <FlatList
           data={riderEarningsData?.riderEarningsGraph?.earnings}
+          contentContainerClassName="scroll-smooth"
           keyExtractor={(_, index) => index.toString()}
           ListEmptyComponent={
-            <Text className="block mx-auto font-bold text-center w-full my-12">
+            <Text className="block mx-auto font-bold text-center w-full my-12 ">
               {t("No record found")}
             </Text>
           }

@@ -7,8 +7,9 @@ export default function EarningsBarChart(props: BarChartPropsType) {
   return (
     <View className="mt-2">
       <BarChart
-        barWidth={65}
-        noOfSections={4}
+        barWidth={30}
+        noOfSections={7}
+        disableScroll={true}
         barBorderRadius={4}
         yAxisThickness={0}
         xAxisThickness={0}
