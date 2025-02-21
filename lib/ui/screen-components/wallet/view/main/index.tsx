@@ -188,6 +188,7 @@ export default function WalletMain() {
       });
     }
   }, [userId]);
+  console.warn(riderTransactionData?.transactionHistory);
   if (isLoading) return <WalletScreenMainLoading />;
   return (
     <View className="flex flex-col justify-between  w-[100%] h-full bg-white">

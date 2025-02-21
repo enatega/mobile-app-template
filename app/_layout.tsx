@@ -59,6 +59,9 @@ function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+  ErrorUtils.setGlobalHandler((error, isFatal) => {
+    console.error("Global Error Caught:", {error, isFatal});
+  });
 
   if (!loaded) {
     return null;

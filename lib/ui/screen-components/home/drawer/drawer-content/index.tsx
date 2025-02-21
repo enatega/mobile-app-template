@@ -15,9 +15,14 @@ import { Colors } from "@/lib/utils/constants";
 import CustomDrawerHeader from "@/lib/ui/screen-components/home/drawer/drawer-header";
 
 // UI-Componetns
-import { LogoutIcon, RightArrowIcon } from "@/lib/ui/useable-components/svg";
+import {
+  LogoutIcon,
+  RightArrowIcon,
+  UserIcon,
+} from "@/lib/ui/useable-components/svg";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
+import { router } from "expo-router";
 
 export default function CustomDrawerContent(
   props: DrawerContentComponentProps,
@@ -39,7 +44,6 @@ export default function CustomDrawerContent(
       }}
     >
       <CustomDrawerHeader />
-
       {/* Drawer Items with Right Arrow */}
       <ScrollView
         style={{
@@ -52,51 +56,79 @@ export default function CustomDrawerContent(
         {props.state.routes.map((route, index) => {
           const isFocused = props.state.index === index;
           const { options } = props.descriptors[route.key];
-
-          return (
-            <TouchableOpacity
-              key={route.key}
-              onPress={() => props.navigation.navigate(route.name)}
-              className="flex-row justify-between items-center px-4 py-3 border-b-[0.5px]"
-              style={{
-                backgroundColor: isFocused
-                  ? Colors.light.lowOpacityPrimaryColor
-                  : "",
-                borderColor: Colors.light.borderLineColor,
-              }}
-            >
-              {/* Left Icon and Label */}
-              <View className="flex-row items-center gap-3">
-                <View
-                  className="h-[40px] w-[40px] rounded-full items-center justify-center"
-                  style={{
-                    backgroundColor: Colors.light.sidebarIconBackground,
-                  }}
-                >
-                  {options.drawerIcon
-                    ? options.drawerIcon({
-                        color: Colors.light.black,
-                        size: 16,
-                        focused: true,
-                      })
-                    : null}
+          if (route.name === "profile") {
+            return (
+              <TouchableOpacity
+                key={route.key}
+                onPress={() => {
+                  router.replace("/(tabs)/profile");
+                }}
+                className={`flex-row justify-between items-center px-4 py-3 border-b-[0.5px]`}
+                style={{ borderColor: Colors.light.borderLineColor }}
+              >
+                <View className="flex-row items-center gap-3">
+                  <View
+                    className="h-[30px] w-[40px] rounded-full items-center justify-center"
+                    style={{
+                      backgroundColor: Colors.light.sidebarIconBackground,
+                    }}
+                  >
+                    <UserIcon
+                      width={16}
+                      height={16}
+                      color={Colors.light.black}
+                    />
+                  </View>
+                  <Text className="text-sm font-semibold">{t("Profile")}</Text>
                 </View>
-                <Text className="text-sm font-semibold">
-                  {(options.drawerLabel as string) ?? route.name}
-                </Text>
-              </View>
+              </TouchableOpacity>
+            );
+          } else
+            return (
+              <TouchableOpacity
+                key={route.key}
+                onPress={() => props.navigation.navigate(route.name)}
+                className={`flex-row justify-between items-center px-4 py-3 border-b-[0.5px]`}
+                style={{
+                  backgroundColor: isFocused
+                    ? Colors.light.lowOpacityPrimaryColor
+                    : "",
+                  borderColor: Colors.light.borderLineColor,
+                }}
+              >
+                {/* Left Icon and Label */}
+                <View className="flex-row items-center gap-3">
+                  <View
+                    className="h-[40px] w-[40px] rounded-full items-center justify-center"
+                    style={{
+                      backgroundColor: Colors.light.sidebarIconBackground,
+                    }}
+                  >
+                    {options.drawerIcon
+                      ? options.drawerIcon({
+                          color: Colors.light.black,
+                          size: 16,
+                          focused: true,
+                        })
+                      : null}
+                  </View>
+                  <Text className="text-sm font-semibold">
+                    {(options.drawerLabel as string) ?? route.name}
+                  </Text>
+                </View>
 
-              {/* Right Arrow Icon */}
-              <RightArrowIcon
-                color={Colors.light.black}
-                height={20}
-                width={20}
-              />
-            </TouchableOpacity>
-          );
+                {/* Right Arrow Icon */}
+                <RightArrowIcon
+                  color={Colors.light.black}
+                  height={20}
+                  width={20}
+                />
+              </TouchableOpacity>
+            );
         })}
 
         {/* Logout Button */}
+
         <TouchableOpacity
           onPress={() => {
             if (logout) logout();
