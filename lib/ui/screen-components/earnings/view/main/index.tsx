@@ -51,7 +51,7 @@ export default function EarningsMain() {
 
   const barData: barDataItem[] =
     riderEarningsData?.riderEarningsGraph.earnings
-      .slice(0, 7)
+      .slice(0, 5)
       .map((earning: IRiderEarnings) => ({
         value: earning.totalEarningsSum,
         label: earning._id,
