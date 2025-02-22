@@ -8,7 +8,10 @@ import {
 import { ILazyQueryResult } from "@/lib/utils/interfaces";
 
 // Components
-import { CustomContinueButton } from "@/lib/ui/useable-components";
+import {
+  CustomContinueButton,
+  NoRecordFound,
+} from "@/lib/ui/useable-components";
 import RecentTransaction from "../recent-transactions";
 import { FlashMessageComponent } from "@/lib/ui/useable-components";
 import WithdrawModal from "../form";
@@ -173,9 +176,7 @@ export default function WalletMain() {
     createWithDrawRequestLoading ||
     isRiderProfileLoading ||
     isRiderTransactionLoading ||
-    isRiderCurrentWithdrawRequestLoading ||
-    !riderProfileData?.rider.currentWalletAmount;
-  // isRiderEarningsLoading ||
+    isRiderCurrentWithdrawRequestLoading;
 
   // UseEffects
   useEffect(() => {
@@ -192,7 +193,7 @@ export default function WalletMain() {
   if (isLoading) return <WalletScreenMainLoading />;
   return (
     <View className="flex flex-col justify-between  w-[100%] h-full bg-white">
-      {!isLoading && riderProfileData?.rider.currentWalletAmount && (
+      {!isLoading && (
         <View className="flex flex-column gap-4 items-center bg-gray-100 m-4 p-4 rounded-lg">
           <Text className="text-[18px] text-[#4B5563] font-[600]">
             {t("Current Balance")}
@@ -251,6 +252,9 @@ export default function WalletMain() {
               />
             );
           },
+        )}
+        {!riderTransactionData?.transactionHistory?.data?.length && (
+          <NoRecordFound />
         )}
       </ScrollView>
 

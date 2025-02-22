@@ -58,7 +58,7 @@ export default function EarningsMain() {
           new Date(String(b.date)).setHours(23, 59, 59, 999),
       )
       .map((earning: IRiderEarnings) => ({
-        value: earning.totalEarningsSum,
+        value: Math.abs(earning.totalEarningsSum),
         label: earning._id,
         topLabelComponent: () => {
           return (
