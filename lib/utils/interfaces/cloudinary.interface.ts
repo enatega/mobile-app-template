@@ -1,6 +1,7 @@
 import { ExternalPathString } from "expo-router"
 
 export interface ICloudinaryResponse {
+  error: Error
   access_mode: string
   asset_id: string
   bytes: number

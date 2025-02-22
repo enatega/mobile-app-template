@@ -85,8 +85,9 @@ export default function VehiclePlateForm({
         ...prev,
         isUploading: true,
       }));
+
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: "images",
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
@@ -96,40 +97,33 @@ export default function VehiclePlateForm({
         const formData = new FormData();
         formData.append("file", {
           uri: result.assets[0].uri,
-          name: `license_${Date.now()}.jpg`, // Unique name
+          name: `license_${Date.now()}.jpg`,
           type: "image/jpeg",
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any);
-        formData.append("upload_preset", process.env.CLOUDINARY_UPLOAD_PRESET);
-        formData.append("cloud_name", process.env.CLOUDINARY_CLOUD_NAME);
-        await fetch(process.env.CLOUDINARY_UPLOAD_URL, {
-          method: "POST",
-          body: formData,
-        })
-          .then((resp) =>
-            resp
-              .json()
-              .then((data: ICloudinaryResponse) => {
-                setCloudinaryResponse(data);
-                setFormData((prev) => ({ ...prev, image: data.secure_url }));
-              })
-              .catch((err) => {
-                console.error(err);
-                setIsLoading((prev) => ({
-                  ...prev,
-                  isUploading: false,
-                }));
-              }),
-          )
-          .catch((err) => console.error({ err }));
-        setIsLoading((prev) => ({
-          ...prev,
-          isUploading: false,
-        }));
+
+        // ✅ Make sure upload_preset is inside formData, not in the URL
+        formData.append("upload_preset", "rider_data");
+
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/do1ia4vzf/image/upload",
+          {
+            method: "POST",
+            body: formData,
+          },
+        );
+
+        const data: ICloudinaryResponse = await response.json();
+        if (!response.ok) {
+          throw new Error(data?.error?.message || "Failed to upload image");
+        }
+
+        setCloudinaryResponse(data);
+        setFormData((prev) => ({ ...prev, image: data.secure_url }));
       }
     } catch (error) {
       console.error(error);
-      return showMessage({
+      showMessage({
         message: t("Failed to upload image"),
         type: "danger",
       });

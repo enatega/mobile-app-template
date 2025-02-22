@@ -139,7 +139,7 @@ export default function EarningDetailsDateFilter({
           />
           <CustomContinueButton
             onPress={() => handleFilterSubmit()}
-            title={isFiltering ? t("Please Wait...") : t("Apply Filter")}
+            title={isFiltering ? t("Please Wait") : t("Apply Filter")}
             disabled={isFiltering}
           />
         </View>

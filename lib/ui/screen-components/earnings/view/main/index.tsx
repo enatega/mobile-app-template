@@ -52,6 +52,11 @@ export default function EarningsMain() {
   const barData: barDataItem[] =
     riderEarningsData?.riderEarningsGraph.earnings
       .slice(0, 5)
+      .sort(
+        (a, b) =>
+          new Date(String(a.date)).setHours(0, 0, 0, 0) -
+          new Date(String(b.date)).setHours(23, 59, 59, 999),
+      )
       .map((earning: IRiderEarnings) => ({
         value: earning.totalEarningsSum,
         label: earning._id,
