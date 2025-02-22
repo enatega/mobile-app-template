@@ -204,8 +204,9 @@ export const de = {
   "Delivery Address": "Lieferadresse",
   "Order marked as": "Bestellung markiert als",
   "Enable Location For Better Experience": "Standort aktivieren für eine bessere Erfahrung",
-  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible": 
+  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible":
     "Wir benötigen Ihren Standort, um nahegelegene Restaurants zu finden, eine genaue Lieferung zu gewährleisten und den bestmöglichen Service zu bieten",
   "Logout": "Abmelden",
-  "Work Schedule": "Arbeitszeitplan"
+  "Work Schedule": "Arbeitszeitplan",
+  "Orders": "Bestellungen"
 }

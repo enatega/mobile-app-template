@@ -219,5 +219,6 @@ export const fr = {
   "End time must be greater than start time": "L'heure de fin doit être postérieure à l'heure de début.",
   "Update Schedule": "Mettre à jour le planning",
   "Select Time Slot": "Sélectionner un créneau horaire",
-  "Work Schedule": "Emploi du temps"
+  "Work Schedule": "Emploi du temps",
+  "Orders": "Commandes"
 }

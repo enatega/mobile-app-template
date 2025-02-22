@@ -219,6 +219,7 @@ export const he = {
   "End time must be greater than start time": "שעת הסיום חייבת להיות אחרי שעת ההתחלה.",
   "Update Schedule": "עדכון לוח זמנים",
   "Select Time Slot": "בחר חלון זמן",
-  "Work Schedule": "לוח זמנים לעבודה"
+  "Work Schedule": "לוח זמנים לעבודה",
+  "Orders": "הזמנות"
 }
 
