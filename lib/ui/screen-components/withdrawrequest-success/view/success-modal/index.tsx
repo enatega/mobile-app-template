@@ -1,6 +1,5 @@
 // Core
-import { Image, View } from "react-native";
-import { Text } from "react-native";
+import { Image, Text, View } from "react-native";
 
 // Icons
 import { Ionicons } from "@expo/vector-icons";
@@ -15,9 +14,11 @@ import { router } from "expo-router";
 import { IWalletSuccessModalProps } from "@/lib/utils/interfaces/withdraw.interface";
 
 // Hooks
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { useTranslation } from "react-i18next";
 const SuccessModal = ({ message }: IWalletSuccessModalProps) => {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
   return (
     <View
@@ -25,7 +26,7 @@ const SuccessModal = ({ message }: IWalletSuccessModalProps) => {
         shadowRadius: 480,
         shadowOpacity: 1,
         shadowColor: "black",
-        backgroundColor: "white",
+        backgroundColor: appTheme.themeBackground,
         justifyContent: "center",
         alignItems: "center",
         maxHeight: 400,
@@ -52,8 +53,15 @@ const SuccessModal = ({ message }: IWalletSuccessModalProps) => {
         resizeMode="contain"
       />
       <View className="flex flex-col gap-3 items-center justify-center self-center mx-auto w-[80%]">
-        <Text className="text-lg font-bold text-center">{message}</Text>
-        <Text>{t("Usually it takes 1-2 business days")}</Text>
+        <Text
+          className="text-lg font-bold text-center"
+          style={{ color: appTheme.fontMainColor }}
+        >
+          {message}
+        </Text>
+        <Text style={{ color: appTheme.fontSecondColor }}>
+          {t("Usually it takes 1-2 business days")}
+        </Text>
       </View>
     </View>
   );

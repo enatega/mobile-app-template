@@ -1,4 +1,5 @@
 // Interfaces
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { IRiderTransaction } from "@/lib/utils/interfaces/rider.interface";
 
 // Icons
@@ -16,6 +17,7 @@ export default function RecentTransaction({
   isLast: boolean;
 }) {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
 
   // Constants
@@ -49,14 +51,24 @@ export default function RecentTransaction({
           }
         />
         <View className="flex flex-col justify-between gap-1">
-          <Text className="font-semibold">{t(transaction.status)}</Text>
-          <Text>{date.toDateString()}</Text>
+          <Text
+            className="font-semibold"
+            style={{ color: appTheme.fontMainColor }}
+          >
+            {t(transaction.status)}
+          </Text>
+          <Text style={{ color: appTheme.fontSecondColor }}>
+            {date.toDateString()}
+          </Text>
         </View>
       </View>
       <Text
         className="font-bold text-md"
         style={{
-          color: transaction.status === "REQUESTED" ? "#0EA5E9" : "black",
+          color:
+            transaction.status === "REQUESTED"
+              ? "#0EA5E9"
+              : appTheme.fontMainColor,
         }}
       >
         ${transaction?.amountTransferred}

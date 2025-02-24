@@ -1,26 +1,26 @@
 // Interfaces
+import { ILazyQueryResult } from "@/lib/utils/interfaces";
 import {
   IRiderByIdResponse,
   IRiderCurrentWithdrawRequestResponse,
   // IRiderEarningsResponse,
   IRiderTransactionHistoryResponse,
 } from "@/lib/utils/interfaces/rider.interface";
-import { ILazyQueryResult } from "@/lib/utils/interfaces";
 
 // Components
 import {
   CustomContinueButton,
+  FlashMessageComponent,
   NoRecordFound,
 } from "@/lib/ui/useable-components";
-import RecentTransaction from "../recent-transactions";
-import { FlashMessageComponent } from "@/lib/ui/useable-components";
 import WithdrawModal from "../form";
+import RecentTransaction from "../recent-transactions";
 
 // Hooks
-import { useEffect, useState } from "react";
+import { useUserContext } from "@/lib/context/global/user.context";
 import { useLazyQueryQL } from "@/lib/hooks/useLazyQueryQL";
 import { useMutation } from "@apollo/client";
-import { useUserContext } from "@/lib/context/global/user.context";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // GraphQL
@@ -36,14 +36,15 @@ import { GraphQLError } from "graphql";
 import { router } from "expo-router";
 
 // Core
-import { ScrollView, Alert } from "react-native";
-import { Text, View } from "react-native";
+import { Alert, ScrollView, Text, View } from "react-native";
 
 // Skeletons
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { WalletScreenMainLoading } from "@/lib/ui/skeletons";
 
 export default function WalletMain() {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
 
   // States
@@ -192,13 +193,25 @@ export default function WalletMain() {
   console.warn(riderTransactionData?.transactionHistory);
   if (isLoading) return <WalletScreenMainLoading />;
   return (
-    <View className="flex flex-col justify-between  w-[100%] h-full bg-white">
+    <View
+      className="flex flex-col justify-between  w-[100%] h-full "
+      style={{ backgroundColor: appTheme.screenBackground }}
+    >
       {!isLoading && (
-        <View className="flex flex-column gap-4 items-center bg-gray-100 m-4 p-4 rounded-lg">
-          <Text className="text-[18px] text-[#4B5563] font-[600]">
+        <View
+          className="flex flex-column gap-4 items-center m-4 p-4 rounded-lg"
+          style={{ backgroundColor: appTheme.themeBackground }}
+        >
+          <Text
+            className="text-[18px] font-[600]"
+            style={{ color: appTheme.secondaryTextColor }}
+          >
             {t("Current Balance")}
           </Text>
-          <Text className="font-semibold text-[32px]">
+          <Text
+            className="font-semibold text-[32px]"
+            style={{ color: appTheme.fontMainColor }}
+          >
             ${riderProfileData?.rider.currentWalletAmount ?? 0}
           </Text>
           <CustomContinueButton
@@ -210,8 +223,18 @@ export default function WalletMain() {
       {riderCurrentWithdrawRequestData?.riderCurrentWithdrawRequest
         ?.requestAmount !== 0 &&
         riderCurrentWithdrawRequestData?.riderCurrentWithdrawRequest && (
-          <View>
-            <Text className="font-bold text-lg bg-white p-5 mt-4">
+          <View
+            style={{
+              backgroundColor: appTheme.themeBackground,
+              borderBottomColor: appTheme.borderLineColor,
+              borderTopColor: "transparen",
+              borderBottomWidth: 1,
+            }}
+          >
+            <Text
+              className="font-bold text-lg p-5 mt-4"
+              style={{ color: appTheme.fontMainColor }}
+            >
               {t("Pending Request")}
             </Text>
             <RecentTransaction
@@ -234,11 +257,20 @@ export default function WalletMain() {
             />
           </View>
         )}
-      <Text className="font-bold text-lg bg-white p-5 mt-4">
+      <Text
+        className="font-bold text-lg  p-5 mt-4"
+        style={{
+          backgroundColor: appTheme.themeBackground,
+          borderBottomColor: appTheme.borderLineColor,
+          borderTopColor: "transparent",
+          borderBottomWidth: 1,
+          color: appTheme.fontMainColor,
+        }}
+      >
         {t("Recent Transactions")}
       </Text>
 
-      <ScrollView style={{ backgroundColor: "white" }}>
+      <ScrollView style={{ backgroundColor: appTheme.themeBackground }}>
         {riderTransactionData?.transactionHistory.data.map(
           (transaction, index) => {
             return (
