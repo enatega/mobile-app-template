@@ -19,17 +19,19 @@ import EarningDetailsHeader from "../header";
 import EarningsDetailStacks from "./earnings";
 
 // Skeletons
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { EarningsSummaryMainLoading } from "@/lib/ui/skeletons";
-import EarningDetailsDateFilter from "../date-filter";
-import { showMessage } from "react-native-flash-message";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { showMessage } from "react-native-flash-message";
+import EarningDetailsDateFilter from "../date-filter";
 
 export default function EarningDetailsMain({
   dateFilter,
   setDateFilter,
 }: IEarningDetailsMainProps) {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
 
   // States
@@ -109,7 +111,7 @@ export default function EarningDetailsMain({
   if (isRiderEarningsLoading || isFiltering)
     return <EarningsSummaryMainLoading />;
   return (
-    <View>
+    <View style={{ backgroundColor: appTheme.screenBackground }}>
       <EarningDetailsDateFilter
         dateFilter={dateFilter}
         setDateFilter={setDateFilter}

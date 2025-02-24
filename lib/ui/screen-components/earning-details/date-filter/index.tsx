@@ -101,7 +101,7 @@ export default function EarningDetailsDateFilter({
 
   const datesBeGetter = getMarkedDates();
   return (
-    <View className="p-4">
+    <View className="p-4" style={{ backgroundColor: appTheme.themeBackground }}>
       <View className="flex flex-row items-center justify-between w-full px-2">
         <TouchableOpacity
           onPress={() => setIsDateFilterVisible((prev) => !prev)}
@@ -109,7 +109,9 @@ export default function EarningDetailsDateFilter({
         >
           <View className="flex flex-row items-center gap-2">
             <Ionicons name="filter" color={appTheme.primary} size={25} />
-            <Text>{t("Date Filter")}</Text>
+            <Text style={{ color: appTheme.fontMainColor }}>
+              {t("Date Filter")}
+            </Text>
           </View>
         </TouchableOpacity>
         {(dateFilter.startDate || dateFilter.endDate) && (
@@ -124,15 +126,26 @@ export default function EarningDetailsDateFilter({
           >
             <View className="flex flex-row items-center gap-2">
               <Ionicons name="remove-sharp" color={"red"} size={25} />
-              <Text>{t("Clear Filters")}</Text>
+              <Text style={{ color: appTheme.fontSecondColor }}>
+                {t("Clear Filters")}
+              </Text>
             </View>
           </TouchableOpacity>
         )}
       </View>
       {isDateFilterVisible && (
-        <View>
+        <View style={{ backgroundColor: appTheme.themeBackground }}>
           <Calendar
+            enableSwipeMonths={true}
             initalDate={""}
+            style={{
+              backgroundColor: appTheme.themeBackground,
+              color: appTheme.mainTextColor,
+            }}
+            headerStyle={{
+              backgroundColor: appTheme.themeBackground,
+              color: appTheme.mainTextColor,
+            }}
             onDayPress={(day: DateData) => handleDayPress(day)}
             markedDates={{
               ...datesBeGetter,
@@ -140,6 +153,7 @@ export default function EarningDetailsDateFilter({
           />
           <CustomContinueButton
             onPress={() => handleFilterSubmit()}
+            style={{ marginTop: 12 }}
             title={isFiltering ? t("Please Wait") : t("Apply Filter")}
             disabled={isFiltering}
           />

@@ -1,6 +1,5 @@
 // Core
-import { FlatList, TouchableOpacity, View } from "react-native";
-import { Text } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 // Contexts
 import { useUserContext } from "@/lib/context/global/user.context";
@@ -27,13 +26,15 @@ import { router } from "expo-router";
 import { EarningScreenMainLoading } from "@/lib/ui/skeletons";
 
 // Components
-import EarningStack from "../earnings-stack";
-import EarningsBarChart from "../../bar-chart";
-import { useTranslation } from "react-i18next";
+import { useApptheme } from "@/lib/context/global/theme.context";
 import formatNumber from "@/lib/utils/methods/num-formatter";
+import { useTranslation } from "react-i18next";
+import EarningsBarChart from "../../bar-chart";
+import EarningStack from "../earnings-stack";
 
 export default function EarningsMain() {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
 
   // Contexts
@@ -64,7 +65,7 @@ export default function EarningsMain() {
           return (
             <Text
               style={{
-                color: "#000",
+                color: appTheme.fontMainColor,
                 fontSize: 10,
                 fontWeight: "600",
                 marginBottom: 0,
@@ -80,19 +81,27 @@ export default function EarningsMain() {
   if (isRiderEarningsLoading) return <EarningScreenMainLoading />;
 
   return (
-    <View className="bg-white">
+    <View style={{ backgroundColor: appTheme.screenBackground }}>
       <EarningsBarChart
         data={barData}
         width={700}
         height={200}
-        frontColor="#8fe36e"
+        frontColor={appTheme.primary}
         barStyle={{ marginTop: 15 }}
-        topLabelContainerStyle={{}}
-        xAxisLabelTextStyle={{ display: "flex", fontSize: 9 }}
-        yAxisTextStyle={{ fontSize: 8 }}
+        rulesColor={appTheme.secondaryTextColor}
+        topLabelTextStyle={{ color: appTheme.primary }}
+        xAxisLabelTextStyle={{
+          display: "flex",
+          fontSize: 9,
+          color: appTheme.fontMainColor,
+        }}
+        yAxisTextStyle={{ fontSize: 8, color: appTheme.fontSecondColor }}
       />
       <View className="flex flex-row justify-between w-full px-4 py-4">
-        <Text className="text-xl text-black font-bold">
+        <Text
+          className="text-xl font-bold"
+          style={{ color: appTheme.fontMainColor }}
+        >
           {t("Recent Activity")}
         </Text>
         <TouchableOpacity
@@ -119,8 +128,12 @@ export default function EarningsMain() {
           data={riderEarningsData?.riderEarningsGraph?.earnings}
           contentContainerClassName="scroll-smooth"
           keyExtractor={(_, index) => index.toString()}
+          style={{ height: "55%" }}
           ListEmptyComponent={
-            <Text className="block mx-auto font-bold text-center w-full my-12 ">
+            <Text
+              className="block mx-auto font-bold text-center w-full my-12 "
+              style={{ color: appTheme.fontSecondColor }}
+            >
               {t("No record found")}
             </Text>
           }
