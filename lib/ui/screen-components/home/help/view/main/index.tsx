@@ -1,4 +1,8 @@
+import { useApptheme } from "@/lib/context/global/theme.context";
+import { FAQs } from "@/lib/utils/constants";
 import { FontAwesome } from "@expo/vector-icons";
+import * as Linking from "expo-linking";
+import { useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -9,12 +13,10 @@ import {
   View,
 } from "react-native";
 import HelpAccordian from "../../accordian";
-import { FAQs } from "@/lib/utils/constants";
-import { useFocusEffect } from "expo-router";
-import * as Linking from "expo-linking";
 
 export default function HelpMain() {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
 
   const openWhatsAppStore = () => {
@@ -70,7 +72,10 @@ export default function HelpMain() {
   });
 
   return (
-    <View className="flex-1 w-full bg-gray-100 dark:bg-gray-900 pb-16">
+    <View
+      className="flex-1 w-full dark:bg-gray-900 pb-16"
+      style={{ backgroundColor: appTheme.screenBackground }}
+    >
       <StatusBar barStyle="light-content" />
 
       <View className="h-[90%] p-4">
@@ -82,7 +87,7 @@ export default function HelpMain() {
           ItemSeparatorComponent={() => <View className="h-4" />}
           renderItem={({ item }) => (
             <HelpAccordian heading={t(item.heading)}>
-              <Text className="text-gray-600 dark:text-gray-300">
+              <Text style={{ color: appTheme.fontSecondColor }}>
                 {t(item.description)}
               </Text>
             </HelpAccordian>
