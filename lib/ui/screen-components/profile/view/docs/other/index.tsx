@@ -25,7 +25,14 @@ export default function OtherDetailsSection() {
           {t("Other information")}
         </Text>
       </View>
-      <View className="flex flex-col gap-3 item-start justify-between w-full  bg-gray-200 h-20 p-4 rounded-md my-4">
+      <View
+        className="flex flex-col gap-3 item-start justify-between w-full   h-20 p-4 rounded-md my-4"
+        style={{
+          backgroundColor: appTheme.themeBackground,
+          borderWidth: 1,
+          borderColor: appTheme.borderLineColor,
+        }}
+      >
         <Text style={{ color: appTheme.fontSecondColor }}>{t("Email")}</Text>
         <View className="flex-1 h-12 text-base text-black">
           <Text className="h-12" style={{ color: appTheme.fontSecondColor }}>
@@ -33,7 +40,14 @@ export default function OtherDetailsSection() {
           </Text>
         </View>
       </View>
-      <View className="flex flex-col gap-3 item-start justify-between w-full  bg-gray-200 h-20 p-4 rounded-md my-4">
+      <View
+        className="flex flex-col gap-3 item-start justify-between w-full   h-20 p-4 rounded-md my-4"
+        style={{
+          backgroundColor: appTheme.themeBackground,
+          borderWidth: 1,
+          borderColor: appTheme.borderLineColor,
+        }}
+      >
         <Text style={{ color: appTheme.fontSecondColor }}>{t("Password")}</Text>
         <View className="flex-1 h-12 text-base text-black">
           <Text className="h-12" style={{ color: appTheme.fontSecondColor }}>
@@ -41,7 +55,14 @@ export default function OtherDetailsSection() {
           </Text>
         </View>
       </View>
-      <View className="flex flex-col gap-3 item-start justify-between w-full  bg-gray-200 h-20 p-4 rounded-md my-4">
+      <View
+        className="flex flex-col gap-3 item-start justify-between w-full   h-20 p-4 rounded-md my-4"
+        style={{
+          backgroundColor: appTheme.themeBackground,
+          borderWidth: 1,
+          borderColor: appTheme.borderLineColor,
+        }}
+      >
         <Text style={{ color: appTheme.fontSecondColor }}>{t("Phone")}</Text>
         <View className="flex-1 h-12 text-base text-black">
           <Text className="h-12" style={{ color: appTheme.fontSecondColor }}>
