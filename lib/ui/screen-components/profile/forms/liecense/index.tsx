@@ -11,7 +11,12 @@ import FormHeader from "../form-header";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 // React Native Calendars
-import { Calendar, DateData } from "react-native-calendars";
+// import { Calendar, DateData } from 'react-native-calendars'
+
+// RNC Calendar
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 
 // Flash Message
 import { showMessage } from "react-native-flash-message";
@@ -34,6 +39,7 @@ import { Skeleton } from "moti/skeleton";
 // Hooks
 import { useMutation } from "@apollo/client";
 import { useUserContext } from "@/lib/context/global/user.context";
+import { useTranslation } from "react-i18next";
 
 // GraphQL
 import { UPDATE_LICENSE } from "@/lib/apollo/mutations/rider.mutation";
@@ -42,8 +48,9 @@ import { RIDER_PROFILE } from "@/lib/apollo/queries";
 // Interfaces
 import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
 import { ICloudinaryResponse } from "@/lib/utils/interfaces/cloudinary.interface";
-import { useTranslation } from "react-i18next";
 
+type IOSMode = "date" | "time" | "datetime" | "countdown";
+type AndroidMode = "date" | "time";
 export default function DrivingLicenseForm({
   setIsFormOpened,
 }: {
@@ -59,13 +66,24 @@ export default function DrivingLicenseForm({
     isCalendarVisible: false,
     isSubmitting: false,
   });
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
   const [cloudinaryResponse, setCloudinaryResponse] =
     useState<ICloudinaryResponse | null>(null);
   const [formData, setFormData] = useState({
-    expiryDate: "",
+    expiryDate: new Date(),
     image: "",
     number: "",
   });
+  const [error, setError] = useState<{
+    field: "image" | "number" | "expiryDate" | null;
+    message: string | null;
+  }>({
+    field: null,
+    message: null,
+  });
+
   // Mutations
   const [mutateLicense] = useMutation(UPDATE_LICENSE, {
     onError: (error) => {
@@ -74,6 +92,10 @@ export default function DrivingLicenseForm({
         type: "danger",
       });
       console.error("Failed to update license", error);
+      setError({
+        field: "image",
+        message: t("Failed to upload image"),
+      });
     },
     onCompleted: () => {
       setIsLoading({
@@ -85,14 +107,16 @@ export default function DrivingLicenseForm({
     refetchQueries: [{ query: RIDER_PROFILE, variables: { id: userId } }],
   });
 
+  // Handlers
   const pickImage = async () => {
     try {
       setIsLoading((prev) => ({
         ...prev,
         isUploading: true,
       }));
+
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: "images",
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
@@ -102,40 +126,38 @@ export default function DrivingLicenseForm({
         const formData = new FormData();
         formData.append("file", {
           uri: result.assets[0].uri,
-          name: `license_${Date.now()}.jpg`, // Unique name
+          name: `license_${Date.now()}.jpg`,
           type: "image/jpeg",
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any);
+
+        // ✅ Make sure upload_preset is inside formData, not in the URL
         formData.append("upload_preset", "rider_data");
-        formData.append("cloud_name", "do1ia4vzf");
-        await fetch("https://api.cloudinary.com/v1_1/do1ia4vzf/image/upload", {
-          method: "POST",
-          body: formData,
-        })
-          .then((resp) =>
-            resp
-              .json()
-              .then((data: ICloudinaryResponse) => {
-                setCloudinaryResponse(data);
-                setFormData((prev) => ({ ...prev, image: data.secure_url }));
-              })
-              .catch((err) => {
-                console.error(err);
-                setIsLoading((prev) => ({
-                  ...prev,
-                  isUploading: false,
-                }));
-              }),
-          )
-          .catch((err) => console.error({ err }));
-        setIsLoading((prev) => ({
-          ...prev,
-          isUploading: false,
-        }));
+
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/do1ia4vzf/image/upload",
+          {
+            method: "POST",
+            body: formData,
+          },
+        );
+
+        const data: ICloudinaryResponse = await response.json();
+
+        if (!response.ok) {
+          setError({
+            field: "image",
+            message: t("Failed to upload image"),
+          });
+          throw new Error(data?.error?.message || t("Failed to upload image"));
+        }
+
+        setCloudinaryResponse(data);
+        setFormData((prev) => ({ ...prev, image: data.secure_url }));
       }
     } catch (error) {
       console.error(error);
-      return showMessage({
+      showMessage({
         message: t("Failed to upload image"),
         type: "danger",
       });
@@ -147,8 +169,29 @@ export default function DrivingLicenseForm({
     }
   };
 
+  const onDateChange = (
+    _: DateTimePickerEvent,
+    selectedDate: Date | undefined,
+  ) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    if (currentDate) {
+      setDate(currentDate);
+    }
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const showMode = (currentMode: any) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
+
   // Handlers
-  const handleInputChange = (name: string, value: string) => {
+  const handleInputChange = (name: string, value: string | Date) => {
     setFormData({ ...formData, [name]: value });
   };
 
@@ -159,28 +202,41 @@ export default function DrivingLicenseForm({
         isSubmitting: true,
       }));
       if (!formData.expiryDate) {
+        setError({
+          field: "expiryDate",
+          message: t("Please select an expiry date"),
+        });
         return showMessage({
           message: t("Please select an expiry date"),
           type: "danger",
         });
       } else if (!formData.number) {
+        setError({
+          field: "number",
+          message: t("Please enter a license number"),
+        });
         return showMessage({
           message: t("Please enter a license number"),
           type: "danger",
         });
       } else if (!formData.image) {
+        setError({
+          field: "image",
+          message: t("Please upload an image"),
+        });
         return showMessage({
           message: t("Please upload an image"),
           type: "danger",
         });
+      } else {
+        await mutateLicense({
+          variables: {
+            updateRiderLicenseDetailsId: userId,
+            licenseDetails: formData,
+          },
+        });
+        setIsFormOpened(null);
       }
-      await mutateLicense({
-        variables: {
-          updateRiderLicenseDetailsId: userId,
-          licenseDetails: formData,
-        },
-      });
-      setIsFormOpened(null);
     } catch (error) {
       console.error(error);
     } finally {
@@ -190,58 +246,29 @@ export default function DrivingLicenseForm({
       }));
     }
   };
-
   useEffect(() => {
     setFormData({
-      expiryDate: new Date(
-        dataProfile?.licenseDetails?.expiryDate ?? "",
-      ).toDateString(),
+      expiryDate: new Date(dataProfile?.licenseDetails?.expiryDate ?? ""),
       image: dataProfile?.licenseDetails?.image ?? "",
       number: String(dataProfile?.licenseDetails?.number ?? ""),
     });
   }, []);
+  useEffect(() => {
+    if (date) {
+      setFormData((prev) => ({
+        ...prev,
+        expiryDate: date,
+      }));
+    }
+  }, [date]);
   return (
     <View className="w-full items-center justify-center">
-      {isLoading.isCalendarVisible && (
-        <View
-          style={{
-            top: 0,
-            position: "absolute",
-            width: "95%",
-            gap: 10,
-            backgroundColor: "transparent",
-            padding: 8,
-            marginLeft: 10,
-            borderRadius: 12,
-          }}
-        >
-          <Calendar
-            initialDate={formData.expiryDate}
-            style={{ width: "100%", height: "80%" }}
-            onDayPress={(day: DateData) =>
-              handleInputChange("expiryDate", day.dateString)
-            }
-            markedDates={{
-              [formData.expiryDate]: { selected: true, marked: true },
-            }}
-          />
-          <CustomContinueButton
-            title={t("Done")}
-            onPress={() =>
-              setIsLoading((prev) => ({
-                ...prev,
-                isCalendarVisible: false,
-              }))
-            }
-          />
-        </View>
-      )}
       {!isLoading.isCalendarVisible && (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View
             className={`flex flex-col justify-between w-full p-3 h-[95%] my-auto mt-0 -z-1`}
           >
-            <FormHeader title="Driving License" />
+            <FormHeader title={t("Driving License")} />
             <View>
               <View className="flex flex-col w-full mb-2">
                 <Text>{t("License No")}</Text>
@@ -250,31 +277,48 @@ export default function DrivingLicenseForm({
                   onChangeText={(licenseNo) =>
                     handleInputChange("number", licenseNo)
                   }
-                  className="w-full rounded-md border border-gray-300 p-3 my-2"
+                  className={`w-full rounded-md border ${error.field === "number" && error.message ? "border-red-600" : "border-gray-300"} p-3 my-2`}
                 />
+                {error.field === "number" && error.message && (
+                  <Text className="text-red-600">{error.message}</Text>
+                )}
               </View>
               <View className="flex flex-col w-full my-2">
                 <Text>{t("License Expiry Date")}</Text>
                 <TouchableOpacity
                   onPress={() => {
-                    setIsLoading((prev) => ({
-                      ...prev,
-                      isCalendarVisible: true,
-                    }));
+                    // setIsLoading((prev) => ({
+                    //   ...prev,
+                    //   isCalendarVisible: true,
+                    // }))
+                    showDatepicker();
                     Keyboard.dismiss();
                   }}
-                  className="w-full rounded-md border border-gray-300 p-3 my-2"
+                  className={`w-full rounded-md border ${error.field === "expiryDate" && error.message ? "border-red-600" : "border-gray-300"} p-3 my-2`}
                 >
-                  <Text className="text-gray-400">
-                    {formData.expiryDate ?? new Date().toDateString()}
-                  </Text>
+                  {!show && (
+                    <Text className="text-gray-400">{date.toDateString()}</Text>
+                  )}
+                  <View>
+                    {show && (
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode as IOSMode | AndroidMode | undefined}
+                        onChange={onDateChange}
+                      />
+                    )}
+                  </View>
                 </TouchableOpacity>
+                {error.field === "expiryDate" && error.message && (
+                  <Text className="text-red-600">{error.message}</Text>
+                )}
               </View>
               <View className="flex flex-col w-full my-2">
                 <Text>{t("Add License Document")}</Text>
                 {!cloudinaryResponse?.secure_url || !formData.image ? (
                   <TouchableOpacity
-                    className="w-full rounded-md border border-dashed border-gray-300 p-3 h-28 items-center justify-center"
+                    className={`w-full rounded-md border border-dashed ${error.field === "image" && error.message ? "border-red-600" : "border-gray-300"} p-3 h-28 items-center justify-center`}
                     onPress={pickImage}
                   >
                     {isLoading.isUploading ? (
@@ -283,6 +327,9 @@ export default function DrivingLicenseForm({
                       </MotiView>
                     ) : (
                       <UploadIcon />
+                    )}
+                    {error.field === "image" && error.message && (
+                      <Text className="text-red-600">{error.message}</Text>
                     )}
                   </TouchableOpacity>
                 ) : (

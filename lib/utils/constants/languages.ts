@@ -32,7 +32,7 @@ export const LANGUAGES = [
   {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     icon: require('@/lib/assets/images/israeli-flag.png'),
-    value: 'Israeli',
+    value: 'Hebrew',
     code: 'he',
   },
   {

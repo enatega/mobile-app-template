@@ -218,5 +218,5 @@ export const en = {
   "End time must be greater than start time":"End time must be greater than start time.",
   "Update Schedule":"Update Schedule",
   "Select Time Slot":"Select Time Slot",
-  
+  "Orders": "Orders"
 };

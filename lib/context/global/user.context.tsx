@@ -104,8 +104,6 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
       document: SUBSCRIPTION_ASSIGNED_RIDER,
       variables: { riderId: dataProfile?.rider?._id ?? userId },
       updateQuery: (prev, { subscriptionData }) => {
-        console.log("running subscription -> SUBSCRIPTION_ASSIGNED_RIDER");
-
         if (!subscriptionData.data) return prev;
         if (subscriptionData.data.subscriptionAssignRider.origin === "new") {
           return {
@@ -135,8 +133,6 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
       document: SUBSCRIPTION_ZONE_ORDERS, // Previously known as SUBSCRIPTION_UNASSIGNED_ORDER
       variables: { zoneId: dataProfile?.rider?.zone?._id ?? zoneId },
       updateQuery: (prev, { subscriptionData }) => {
-        console.log("running subscription -> SUBSCRIPTION_ZONE_ORDERS");
-
         if (!subscriptionData.data) return prev;
 
         if (subscriptionData.data.subscriptionZoneOrders.origin === "new") {
@@ -150,10 +146,6 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
         return prev;
       },
     }),
-    // return { unsubZoneOrder, unsubAssignOrder };
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   const trackRiderLocation = async () => {
@@ -183,15 +175,21 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     const { unsubZoneOrder, unsubAssignOrder } = subscribeNewOrders;
     return () => {
       if (dataProfile?.rider?.zone?._id) {
-        console.log(
-          "🚀 ~ return ~ dataProfile?.rider?.zone?._id:",
-          dataProfile?.rider?.zone?._id,
-        );
         setZoneId(dataProfile?.rider?.zone?._id);
-        unsubZoneOrder();
+        try {
+          unsubZoneOrder();
+        } catch (err) {
+          console.error("err in unsubZoneOrder", err);
+        }
       }
 
-      if (unsubAssignOrder) unsubAssignOrder();
+      if (unsubAssignOrder) {
+        try {
+          unsubAssignOrder();
+        } catch (err) {
+          console.error("err in unsubAssignOrder", err);
+        }
+      }
     };
   }, [dataProfile]);
 

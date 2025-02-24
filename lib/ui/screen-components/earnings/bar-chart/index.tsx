@@ -1,5 +1,5 @@
 // Core
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 
 // Chart
 import { BarChart, BarChartPropsType } from "react-native-gifted-charts";
@@ -7,8 +7,9 @@ export default function EarningsBarChart(props: BarChartPropsType) {
   return (
     <View className="mt-2">
       <BarChart
-        barWidth={65}
-        noOfSections={4}
+        barWidth={Platform.OS === "ios" ? 50 : 40}
+        noOfSections={7}
+        disableScroll={true}
         barBorderRadius={4}
         yAxisThickness={0}
         xAxisThickness={0}

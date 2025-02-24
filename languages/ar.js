@@ -207,5 +207,6 @@ export const ar = {
   "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible": 
     "نحن بحاجة إلى موقعك للعثور على المطاعم القريبة، وضمان التوصيل الدقيق، وتقديم أفضل خدمة ممكنة",
   "Logout": "تسجيل الخروج",
-  "Work Schedule": "جدول العمل"
+  "Work Schedule": "جدول العمل",
+  "Orders": "الطلبات"
 }

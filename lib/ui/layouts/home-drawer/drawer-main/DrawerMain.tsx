@@ -10,7 +10,7 @@ import CustomDrawerContent from "@/lib/ui/screen-components/home/drawer/drawer-c
 // Icons
 import {
   LanguageIcon,
-  UserIcon,
+  // UserIcon,
   HomeIcon,
   AboutIcon,
   CardIcon,
@@ -20,19 +20,20 @@ import {
   BikeRidingIcon,
   ClockIcon,
 } from "@/lib/ui/useable-components/svg";
+import { Ionicons } from "@expo/vector-icons";
 
+// Core
+import { TouchableOpacity } from "react-native";
+
+// React Navigation
+import { DrawerActions } from "@react-navigation/native";
 // Hooks
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { DrawerActions } from "@react-navigation/native";
-import { useEffect } from "react";
 
 export default function DrawerMain() {
   // Hooks
   const { t } = useTranslation();
 
-  useEffect(() => {}, []);
   return (
     <Drawer
       drawerContent={CustomDrawerContent}
@@ -78,16 +79,26 @@ export default function DrawerMain() {
           ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="profile"
+        listeners={{
+          drawerItemPress: (e) => {
+            e.preventDefault();
+            router.push("/profile")
+          },
+        }}        
         options={{
-          drawerLabel: t("Profile"),
-          title: t("Profile"),
+          drawerLabel: t('Profile'),
+          title: t('Profile'),
           drawerIcon: ({ color, size }) => (
-            <UserIcon color={color} height={size} width={size} />
+            <UserIcon
+              color={color}
+              height={size}
+              width={size}
+            />
           ),
         }}
-      />
+      /> */}
       <Drawer.Screen
         name="language"
         options={{

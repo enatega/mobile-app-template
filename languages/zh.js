@@ -219,5 +219,6 @@ export const zh = {
   "End time must be greater than start time": "结束时间必须晚于开始时间。",
   "Update Schedule": "更新日程",
   "Select Time Slot": "选择时间段",
-  "Work Schedule": "工作时间表"
+  "Work Schedule": "工作时间表",
+  "Orders": "订单"
 };

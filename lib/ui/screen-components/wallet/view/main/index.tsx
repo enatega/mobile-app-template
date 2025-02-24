@@ -2,13 +2,16 @@
 import {
   IRiderByIdResponse,
   IRiderCurrentWithdrawRequestResponse,
-  IRiderEarningsResponse,
+  // IRiderEarningsResponse,
   IRiderTransactionHistoryResponse,
 } from "@/lib/utils/interfaces/rider.interface";
 import { ILazyQueryResult } from "@/lib/utils/interfaces";
 
 // Components
-import { CustomContinueButton } from "@/lib/ui/useable-components";
+import {
+  CustomContinueButton,
+  NoRecordFound,
+} from "@/lib/ui/useable-components";
 import RecentTransaction from "../recent-transactions";
 import { FlashMessageComponent } from "@/lib/ui/useable-components";
 import WithdrawModal from "../form";
@@ -25,7 +28,6 @@ import { CREATE_WITHDRAW_REQUEST } from "@/lib/apollo/mutations/withdraw-request
 import {
   RIDER_BY_ID,
   RIDER_CURRENT_WITHDRAW_REQUEST,
-  RIDER_EARNINGS,
   RIDER_TRANSACTIONS_HISTORY,
 } from "@/lib/apollo/queries";
 import { GraphQLError } from "graphql";
@@ -50,11 +52,6 @@ export default function WalletMain() {
   const { userId } = useUserContext();
 
   // Queries
-  const { fetch: fetchRiderEarnings, loading: isRiderEarningsLoading } =
-    useLazyQueryQL(RIDER_EARNINGS) as ILazyQueryResult<
-      IRiderEarningsResponse | undefined,
-      undefined
-    >;
 
   const {
     data: riderTransactionData,
@@ -130,8 +127,18 @@ export default function WalletMain() {
         });
       },
       refetchQueries: [
-        { query: RIDER_BY_ID, variables: { id: userId } },
-        { query: RIDER_EARNINGS, variables: { id: userId } },
+        {
+          query: RIDER_BY_ID,
+          variables: { riderId: userId },
+        },
+        {
+          query: RIDER_TRANSACTIONS_HISTORY,
+          variables: { userId: userId, userType: "RIDER" },
+        },
+        {
+          query: RIDER_CURRENT_WITHDRAW_REQUEST,
+          variables: { riderId: userId },
+        },
       ],
     });
 
@@ -167,27 +174,26 @@ export default function WalletMain() {
   // Loading state
   const isLoading =
     createWithDrawRequestLoading ||
-    isRiderEarningsLoading ||
     isRiderProfileLoading ||
     isRiderTransactionLoading ||
-    isRiderCurrentWithdrawRequestLoading ||
-    !riderProfileData?.rider.currentWalletAmount;
+    isRiderCurrentWithdrawRequestLoading;
 
   // UseEffects
   useEffect(() => {
+    // fetchRiderEarnings();
     if (userId) {
       fetchRiderProfile();
-      fetchRiderEarnings();
       fetchRiderTransactions();
       fetchRiderCurrentWithdrawRequest({
         riderId: userId,
       });
     }
   }, [userId]);
+  console.warn(riderTransactionData?.transactionHistory);
   if (isLoading) return <WalletScreenMainLoading />;
   return (
     <View className="flex flex-col justify-between  w-[100%] h-full bg-white">
-      {!isLoading && riderProfileData?.rider.currentWalletAmount && (
+      {!isLoading && (
         <View className="flex flex-column gap-4 items-center bg-gray-100 m-4 p-4 rounded-lg">
           <Text className="text-[18px] text-[#4B5563] font-[600]">
             {t("Current Balance")}
@@ -246,6 +252,9 @@ export default function WalletMain() {
               />
             );
           },
+        )}
+        {!riderTransactionData?.transactionHistory?.data?.length && (
+          <NoRecordFound />
         )}
       </ScrollView>
 
