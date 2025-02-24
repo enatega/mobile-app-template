@@ -18,6 +18,7 @@ export default function Layout() {
       screenOptions={{
         tabBarIcon: () => null,
         tabBarActiveTintColor: appTheme.primary,
+
         headerShown: false,
         tabBarIconStyle: {
           display: "none",
@@ -30,11 +31,13 @@ export default function Layout() {
               borderBottomWidth: focused ? 2 : 0, // Bottom border when selected
               borderBottomColor: focused ? appTheme.primary : "transparent", // Black border for active tab
               paddingBottom: 8, // Space between text and border
+
+              backgroundColor: appTheme.themeBackground,
             }}
           >
             <Text
               style={{
-                color: focused ? "black" : "#6B7280",
+                color: focused ? appTheme.fontMainColor : "#6B7280",
                 fontWeight: 500,
                 fontSize: 14,
                 fontFamily: "Inter",
@@ -60,7 +63,8 @@ export default function Layout() {
         tabBarPosition: "bottom",
         tabBarItemStyle: {
           height: 40,
-          backgroundColor: "transparent",
+          // backgroundColor: "transparent",
+          backgroundColor: appTheme.themeBackground,
         },
 
         tabBarStyle: Platform.select({
@@ -70,7 +74,9 @@ export default function Layout() {
             height: 30,
             shadowColor: "white",
             shadowOpacity: 0,
+            backgroundColor: appTheme.themeBackground,
             paddingTop: 20,
+            color: appTheme.fontMainColor,
           },
           android: {
             position: "absolute",
@@ -79,7 +85,9 @@ export default function Layout() {
             shadowColor: "white",
             shadowOpacity: 0,
             paddingTop: 20,
+            backgroundColor: appTheme.themeBackground,
             elevation: 0,
+            color: appTheme.fontMainColor,
           },
         }),
       }}
