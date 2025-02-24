@@ -1,8 +1,10 @@
-import { Colors } from "@/lib/utils/constants";
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { Stack } from "expo-router";
 import { Platform } from "react-native";
 
 export default function OrderDetailLayour() {
+  // Hooks
+  const { appTheme } = useApptheme();
   return (
     <Stack
       screenOptions={{
@@ -13,7 +15,7 @@ export default function OrderDetailLayour() {
 
           default: {
             position: "absolute",
-            backgroundColor: Colors.light.white,
+            backgroundColor: appTheme.themeBackground,
             elevation: 0, // Shadow for Android
             shadowColor: "white", // Shadow for iOS
             shadowOpacity: 0,

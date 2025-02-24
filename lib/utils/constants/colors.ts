@@ -17,7 +17,7 @@ export const Colors = {
     orderUncomplete: "#fe0000",
     horizontalLine: "#B8B8B8",
     buttonBackground: "#AAC810",
-    buttonText: "#FFF",
+    buttonText: "black",
     buttonBackgroundPink: "#AAC810",
     buttonTextPink: "#FFF",
     textErrorColor: "#FA7751",
@@ -34,13 +34,13 @@ export const Colors = {
     lowOpacityPrimaryColor: "rgba(144, 227, 109, 0.15)",
     mainTextColor: "#000000",
     switchButtonColor: "#4F46E5",
-    sidebarIconBackground: '#E5E7EB',
-    borderLineColor: 'rgb(181, 181, 181)',
+    sidebarIconBackground: "#E5E7EB",
+    borderLineColor: "rgb(181, 181, 181)",
   },
   dark: {
     primary: "#A5C616", // Slightly darker green to avoid too much brightness
     themeBackground: "#1E1E1E", // Dark gray for background
-    iconColor: "#CCCCCC", // Light gray for icons
+    iconColor: "black", // Light gray for icons
     tagColor: "#8CA30D", // Muted green for tags
     iconPink: "#8CA30D",
     radioColor: "#1E1E1E", // Matches the dark background
@@ -50,7 +50,7 @@ export const Colors = {
     orderUncomplete: "#FF6B6B", // Softer red for dark mode
     horizontalLine: "#444444", // Dark gray for dividers
     buttonBackground: "#8CA30D", // Darker green for buttons
-    buttonText: "#1E1E1E", // Light text for buttons
+    buttonText: "#FFFF", // Light text for buttons
     buttonBackgroundPink: "#8CA30D",
     buttonTextPink: "#1E1E1E",
     textErrorColor: "#FF8A50", // Softer orange for errors
@@ -63,10 +63,11 @@ export const Colors = {
     white: "#E0E0E0", // Light gray instead of pure white
     black: "#000",
     secondaryTextColor: "#4B5563",
-    lowOpacityPrimaryColor: "rgba(144, 227, 109, 0.15)",
+    lowOpacityPrimaryColor: "gray",
     mainTextColor: "#f2f2f2",
     switchButtonColor: "#4F46E5",
-    sidebarIconBackground: '#E5E7EB',
-    borderLineColor: 'rgb(181, 181, 181)',
+    sidebarIconBackground: "#E5E7EB",
+    borderLineColor: "rgb(181, 181, 181)",
+    tabNaviatorBackground: "#1F2937",
   },
 };

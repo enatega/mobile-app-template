@@ -1,21 +1,22 @@
-import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
+import { Text, View } from "react-native";
 
-import { useState } from "react";
-import { Colors } from "@/lib/utils/constants";
-import CustomSwitch from "@/lib/ui/useable-components/switch-button";
-import { useUserContext } from "@/lib/context/global/user.context";
 import { UPDATE_AVAILABILITY } from "@/lib/apollo/mutations/rider.mutation";
-import { MutationTuple, useMutation } from "@apollo/client";
 import { RIDER_PROFILE } from "@/lib/apollo/queries";
-import { showMessage } from "react-native-flash-message";
+import { useApptheme } from "@/lib/context/global/theme.context";
+import { useUserContext } from "@/lib/context/global/user.context";
+import CustomSwitch from "@/lib/ui/useable-components/switch-button";
 import { IRiderProfile } from "@/lib/utils/interfaces";
+import { MutationTuple, useMutation } from "@apollo/client";
+import { useState } from "react";
+import { showMessage } from "react-native-flash-message";
 
 const CustomDrawerHeader = () => {
   // States
   const [isEnabled, setIsEnabled] = useState(true);
 
   // Hook
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
   const { dataProfile, userId } = useUserContext();
 
@@ -38,17 +39,18 @@ const CustomDrawerHeader = () => {
   }) as MutationTuple<IRiderProfile | undefined, { id: string }>;
   return (
     <View
-      className={` bg-[${Colors.light.primary}] w-full h-[15%] flex-row justify-between p-4 bottom-4`}
+      className={` w-full h-[15%] flex-row justify-between p-3 pt-6 top-0 bottom-4`}
+      style={{ backgroundColor: appTheme.primary }}
     >
       <View className="justify-between">
         <View
           className="w-[32px] h-[32px] rounded-full items-center justify-center overflow-hidden"
-          style={{ backgroundColor: Colors.light.white }}
+          style={{ backgroundColor: appTheme.white }}
         >
           <Text
             className="text-[16px] font-semibold"
             style={{
-              color: Colors.light.primary,
+              color: appTheme.primary,
             }}
           >
             {dataProfile?.name
@@ -68,7 +70,7 @@ const CustomDrawerHeader = () => {
           <Text
             className="font-semibold text-[16px]"
             style={{
-              color: Colors.light.black,
+              color: appTheme.black,
             }}
           >
             {dataProfile?.name ?? t("rider name")}
@@ -76,7 +78,7 @@ const CustomDrawerHeader = () => {
           <Text
             className="font-medium"
             style={{
-              color: Colors.light.secondaryTextColor,
+              color: appTheme.secondaryTextColor,
             }}
           >
             {dataProfile?._id.substring(0, 9).toUpperCase() ?? "rider id"}
@@ -87,7 +89,7 @@ const CustomDrawerHeader = () => {
       <View className="items-end justify-end gap-2">
         <Text
           className="text-md"
-          style={{ color: Colors.light.secondaryTextColor }}
+          style={{ color: appTheme.secondaryTextColor }}
         >
           {t("Availability")}
         </Text>
@@ -100,7 +102,7 @@ const CustomDrawerHeader = () => {
         />
         <Text
           className="text-xs font-medium"
-          style={{ color: Colors.light.secondaryTextColor }}
+          style={{ color: appTheme.secondaryTextColor }}
         >
           {isEnabled ? t("Available") : t("Not Available")}
         </Text>

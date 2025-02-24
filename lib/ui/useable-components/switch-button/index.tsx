@@ -1,9 +1,11 @@
-import { View, Switch, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Colors } from "@/lib/utils/constants";
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { CustomSwitchProps } from "@/lib/utils/interfaces/custom-input-switch";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Switch, TouchableOpacity, View } from "react-native";
 
 const CustomSwitch = ({ value, onToggle, isDisabled }: CustomSwitchProps) => {
+  // Hooks
+  const { appTheme } = useApptheme();
   return (
     <TouchableOpacity
       disabled={isDisabled}
@@ -15,8 +17,8 @@ const CustomSwitch = ({ value, onToggle, isDisabled }: CustomSwitchProps) => {
         className="w-16 h-8 rounded-full flex-row items-center px-1"
         style={{
           backgroundColor: value
-            ? Colors.light.switchButtonColor
-            : Colors.light.secondaryTextColor,
+            ? appTheme.switchButtonColor
+            : appTheme.secondaryTextColor,
         }}
       >
         {value ? (
@@ -24,7 +26,7 @@ const CustomSwitch = ({ value, onToggle, isDisabled }: CustomSwitchProps) => {
             <MaterialIcons
               name="check"
               size={20}
-              color={Colors.light.switchButtonColor}
+              color={appTheme.switchButtonColor}
             />
           </View>
         ) : (
@@ -32,7 +34,7 @@ const CustomSwitch = ({ value, onToggle, isDisabled }: CustomSwitchProps) => {
             <MaterialIcons
               name="close"
               size={20}
-              color={Colors.light.secondaryTextColor}
+              color={appTheme.secondaryTextColor}
             />
           </View>
         )}

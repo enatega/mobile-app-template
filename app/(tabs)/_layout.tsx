@@ -1,63 +1,59 @@
-import { Tabs, usePathname } from 'expo-router'
-import { Platform } from 'react-native'
+import { Tabs, usePathname } from "expo-router";
+import { Platform } from "react-native";
 
 // UI Components
-import { HapticTab } from '@/lib/ui/useable-components/HapticTab'
+import { HapticTab } from "@/lib/ui/useable-components/HapticTab";
 import {
-  HomeIcon,
-  WalletIcon,
   CurrencyIcon,
+  HomeIcon,
   PersonIcon,
-} from '@/lib/ui/useable-components/svg'
-
-// Constants
-import { Colors } from '@/lib/utils/constants/colors'
+  WalletIcon,
+} from "@/lib/ui/useable-components/svg";
 
 // Hooks
-import { useColorScheme } from '@/lib/hooks/useColorScheme'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useApptheme } from "@/lib/context/global/theme.context";
+import { StatusBar, StatusBarStyle } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const RootLayout = () => {
   // States
-  const [tabKey, setTabKey] = useState(1)
+  const [tabKey, setTabKey] = useState(1);
 
   // Hooks
-
-  const colorScheme = useColorScheme()
-  const pathName = usePathname()
-  const { t } = useTranslation()
-
+  const pathName = usePathname();
+  const { t } = useTranslation();
+  const { appTheme, currentTheme } = useApptheme();
 
   useEffect(() => {
-    if (pathName.startsWith('/wallet/success')) {
-      setTabKey((prev) => prev + 1) // Force a re-render of the tab bar
+    if (pathName.startsWith("/wallet/success")) {
+      setTabKey((prev) => prev + 1); // Force a re-render of the tab bar
     }
-  }, [pathName])
+  }, [pathName]);
 
   return (
     <Tabs
       key={tabKey}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'dark'].primary,
+        tabBarActiveTintColor: appTheme.primary,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarStyle: Platform.select({
           ios: {
-            position: 'absolute',
-            backgroundColor: '#1F2937',
+            position: "absolute",
+            backgroundColor: "#1F2937",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderTopWidth: 0.5, // Optional border at the top
-            shadowColor: '#000', // Shadow for iOS
+            shadowColor: "#000", // Shadow for iOS
             shadowOffset: { width: 0, height: -5 },
             shadowOpacity: 0.1,
             shadowRadius: 5,
             // display: isDrawerOpen === 'open' ? 'none' : 'flex',
           },
           android: {
-            position: 'absolute',
-            backgroundColor: '#1F2937',
+            position: "absolute",
+            backgroundColor: "#1F2937",
             // display: (isDrawerOpen === 'open'||pathName.startsWith('/wallet/success') )? 'none' : 'flex',
 
             borderTopLeftRadius: 20,
@@ -71,11 +67,16 @@ const RootLayout = () => {
         }),
       }}
     >
+      <StatusBar
+        backgroundColor={appTheme.themeBackground}
+        style={currentTheme as StatusBarStyle}
+      />
       <Tabs.Screen
         name="home"
         options={{
-          href:"/(tabs)/home/orders",
-          title: t('Home'),
+          href: "/(tabs)/home/orders",
+
+          title: t("Home"),
           tabBarIcon: ({ color }) => (
             // <IconSymbol size={28} name="home" color={color} />
             <HomeIcon
@@ -89,7 +90,7 @@ const RootLayout = () => {
       <Tabs.Screen
         name="wallet"
         options={{
-          title: t('Wallet'),
+          title: t("Wallet"),
           tabBarIcon: ({ color }) => (
             <WalletIcon
               color={color}
@@ -102,7 +103,7 @@ const RootLayout = () => {
       <Tabs.Screen
         name="earnings"
         options={{
-          title: t('Earnings'),
+          title: t("Earnings"),
           tabBarIcon: ({ color }) => (
             <CurrencyIcon
               color={color}
@@ -115,7 +116,7 @@ const RootLayout = () => {
       <Tabs.Screen
         name="profile"
         options={{
-          title: t('Profile'),
+          title: t("Profile"),
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <PersonIcon
@@ -127,7 +128,7 @@ const RootLayout = () => {
         }}
       />
     </Tabs>
-  )
-}
+  );
+};
 
-export default RootLayout
+export default RootLayout;

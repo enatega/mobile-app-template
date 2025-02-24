@@ -1,86 +1,79 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import { Appearance } from 'react-native'
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from '@react-navigation/native'
-import { useFonts } from 'expo-font'
-import { Stack } from 'expo-router'
-import * as SplashScreen from 'expo-splash-screen'
-import { StatusBar } from 'expo-status-bar'
-import 'react-native-reanimated'
-import { ApolloProvider } from '@apollo/client'
+import { ApolloProvider } from "@apollo/client";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import "react-native-reanimated";
 // import * as Sentry from "sentry-expo";
-import * as Sentry from '@sentry/react-native'
+import * as Sentry from "@sentry/react-native";
 
-import { useColorScheme } from '@/lib/hooks/useColorScheme'
-
-import FlashMessage from 'react-native-flash-message'
+import FlashMessage from "react-native-flash-message";
 
 // Service
-import setupApollo from '@/lib/apollo'
+import setupApollo from "@/lib/apollo";
 
 // Context
-import { AuthProvider } from '@/lib/context/global/auth.context'
-import { UserProvider } from '@/lib/context/global/user.context'
-import { SoundProvider } from '@/lib/context/global/sound.context'
-import { LocationProvider } from '@/lib/context/global/location.context'
-import { ConfigurationProvider } from '@/lib/context/global/configuration.context'
+import { AuthProvider } from "@/lib/context/global/auth.context";
+import { ConfigurationProvider } from "@/lib/context/global/configuration.context";
+import { LocationProvider } from "@/lib/context/global/location.context";
+import { SoundProvider } from "@/lib/context/global/sound.context";
+import { UserProvider } from "@/lib/context/global/user.context";
 // Service
-import { initSentry } from '@/lib/utils/service'
+import { initSentry } from "@/lib/utils/service";
 // Locale
-import '@/i18next'
+import "@/i18next";
 
 // Style
-import '../global.css'
-import { useEffect } from 'react'
-import AnimatedSplashScreen from '@/lib/ui/useable-components/splash/AnimatedSplashScreen'
-import UnavailableStatus from '@/lib/ui/useable-components/unavailable-status'
-import { LocationPermissionComp } from '@/lib/ui/useable-components'
-import InternetProvider from '@/lib/context/global/internet-provider'
-import {
-  requestMediaLibraryPermissionsAsync,
-} from 'expo-image-picker'
+import InternetProvider from "@/lib/context/global/internet-provider";
+import AppThemeProvidor, {
+  useApptheme,
+} from "@/lib/context/global/theme.context";
+import { LocationPermissionComp } from "@/lib/ui/useable-components";
+import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSplashScreen";
+import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
+import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
+import { useEffect } from "react";
+import "../global.css";
 
-initSentry()
+initSentry();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen?.preventAutoHideAsync()
+SplashScreen?.preventAutoHideAsync();
 
 function RootLayout() {
-  const colorScheme = useColorScheme()
+  // Hooks
+  const { currentTheme } = useApptheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../lib/assets/fonts/SpaceMono-Regular.ttf'),
-    Inter: require('../lib/assets/fonts/Inter.ttf'),
-  })
-  const client = setupApollo()
+    SpaceMono: require("../lib/assets/fonts/SpaceMono-Regular.ttf"),
+    Inter: require("../lib/assets/fonts/Inter.ttf"),
+  });
+  const client = setupApollo();
 
   // Permissions
   async function grantCameraAndGalleryPermissions() {
-    await requestMediaLibraryPermissionsAsync()
+    await requestMediaLibraryPermissionsAsync();
   }
   // Use Effect
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync()
+      SplashScreen.hideAsync();
     }
-  }, [loaded])
+  }, [loaded]);
   ErrorUtils.setGlobalHandler((error, isFatal) => {
-    console.error('Global Error Caught:', { error, isFatal })
-  })
+    console.error("Global Error Caught:", { error, isFatal });
+  });
   useEffect(() => {
-    grantCameraAndGalleryPermissions()
-  }, [])
+    grantCameraAndGalleryPermissions();
+  }, []);
 
   if (!loaded) {
-    return null
+    return null;
   }
 
-  Appearance.setColorScheme('light') // Forces light mode
-
+  console.log(currentTheme);
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <AppThemeProvidor>
       <AnimatedSplashScreen>
         <InternetProvider>
           <ApolloProvider client={client}>
@@ -91,7 +84,6 @@ function RootLayout() {
                     <SoundProvider>
                       <LocationPermissionComp>
                         <UnavailableStatus />
-
                         <Stack
                           screenOptions={{
                             headerShown: false,
@@ -117,7 +109,7 @@ function RootLayout() {
                           />
                         </Stack>
                       </LocationPermissionComp>
-                      <StatusBar style="auto" />
+                      <StatusBar style="inverted" />
                       <FlashMessage position="bottom" />
                     </SoundProvider>
                   </UserProvider>
@@ -127,8 +119,8 @@ function RootLayout() {
           </ApolloProvider>
         </InternetProvider>
       </AnimatedSplashScreen>
-    </ThemeProvider>
-  )
+    </AppThemeProvidor>
+  );
 }
 
-export default Sentry.wrap(RootLayout)
+export default Sentry.wrap(RootLayout);

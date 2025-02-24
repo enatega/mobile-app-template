@@ -1,8 +1,8 @@
 // Hooks
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 
 // Constants
-import { Colors } from "@/lib/utils/constants";
 import { useTranslation } from "react-i18next";
 
 // Core
@@ -10,18 +10,19 @@ import { Text, View } from "react-native";
 
 export default function ProfileHeader() {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
   const { dataProfile } = useUserContext();
   return (
     <View className="justify-between flex-row h-[8rem] w-[58%] items-center p-4">
       <View
         className="w-[54px] h-[54px] rounded-full items-center justify-center overflow-hidden"
-        style={{ backgroundColor: Colors.light.white }}
+        style={{ backgroundColor: appTheme.white }}
       >
         <Text
           className="text-[16px] font-semibold"
           style={{
-            color: Colors.light.primary,
+            color: appTheme.primary,
           }}
         >
           {dataProfile?.name
@@ -38,7 +39,7 @@ export default function ProfileHeader() {
         <Text
           className="font-semibold text-[16px]"
           style={{
-            color: Colors.light.black,
+            color: appTheme.black,
           }}
         >
           {dataProfile?.name ?? t("rider name")}
@@ -46,7 +47,7 @@ export default function ProfileHeader() {
         <Text
           className="font-medium"
           style={{
-            color: Colors.light.secondaryTextColor,
+            color: appTheme.secondaryTextColor,
           }}
         >
           {dataProfile?._id.substring(0, 9).toUpperCase() ?? "rider id"}

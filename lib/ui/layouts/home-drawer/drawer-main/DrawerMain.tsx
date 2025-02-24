@@ -1,41 +1,48 @@
 // Expo
 import { Drawer } from "expo-router/drawer";
 
-// Constants
-import { Colors } from "@/lib/utils/constants";
-
 // Components
 import CustomDrawerContent from "@/lib/ui/screen-components/home/drawer/drawer-content";
 
 // Icons
 import {
-  LanguageIcon,
+  AboutIcon,
+  BikeRidingIcon,
+  CardIcon,
+  ClockIcon,
+  HelpIcon,
   // UserIcon,
   HomeIcon,
-  AboutIcon,
-  CardIcon,
-  HelpIcon,
-  PrivacyIcon,
+  LanguageIcon,
   PageIcon,
-  BikeRidingIcon,
-  ClockIcon,
+  PrivacyIcon,
 } from "@/lib/ui/useable-components/svg";
 import { Ionicons } from "@expo/vector-icons";
 
 // Core
-import { TouchableOpacity } from "react-native";
+import { ColorSchemeName, TouchableOpacity } from "react-native";
 
 // React Navigation
 import { DrawerActions } from "@react-navigation/native";
 // Hooks
+
+import { AppTheme } from "@/lib/utils/interfaces/app-theme";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function DrawerMain() {
-  // Hooks
+const DrawerMain = ({
+  currentTheme,
+  appTheme,
+}: {
+  currentTheme: ColorSchemeName;
+  appTheme: AppTheme;
+}) => {
   const { t } = useTranslation();
+  console.log("rendered drawer");
 
   return (
     <Drawer
+      key={currentTheme}
       drawerContent={CustomDrawerContent}
       initialRouteName="orders"
       screenOptions={({ navigation }) => ({
@@ -50,21 +57,22 @@ export default function DrawerMain() {
               }}
               style={{ marginLeft: 16 }}
             >
-              <Ionicons name="menu" size={24} color="black" />
+              <Ionicons name="menu" size={24} color={appTheme.primary} />
             </TouchableOpacity>
           );
         },
         drawerHideStatusBarOnOpen: true,
-        drawerActiveBackgroundColor: Colors.light.lowOpacityPrimaryColor,
-        drawerActiveTintColor: Colors.light.mainTextColor,
+        drawerActiveBackgroundColor: appTheme?.lowOpacityPrimaryColor,
+        drawerActiveTintColor: appTheme?.mainTextColor,
         headerShadowVisible: false,
         headerTitleAlign: "center",
         drawerStatusBarAnimation: "slide",
         drawerItemStyle: {
           borderRadius: 0,
-          marginTop: 4,
+          // marginTop: 4,
         },
         drawerStyle: {
+          backgroundColor: appTheme?.themeBackground,
           marginBottom: 45,
         },
       })}
@@ -75,37 +83,25 @@ export default function DrawerMain() {
           drawerLabel: t("Home"),
           title: t("Orders"),
           drawerIcon: ({ color, size }) => (
-            <HomeIcon color={color} height={size} width={size} />
-          ),
-        }}
-      />
-      {/* <Drawer.Screen
-        name="profile"
-        listeners={{
-          drawerItemPress: (e) => {
-            e.preventDefault();
-            router.push("/profile")
-          },
-        }}        
-        options={{
-          drawerLabel: t('Profile'),
-          title: t('Profile'),
-          drawerIcon: ({ color, size }) => (
-            <UserIcon
-              color={color}
+            <HomeIcon
+              color={appTheme.iconColor ?? color}
               height={size}
               width={size}
             />
           ),
         }}
-      /> */}
+      />
       <Drawer.Screen
         name="language"
         options={{
           drawerLabel: t("Language"),
           title: t("Language"),
           drawerIcon: ({ color, size }) => (
-            <LanguageIcon color={color} height={size} width={size} />
+            <LanguageIcon
+              color={appTheme.iconColor ?? color}
+              height={size}
+              width={size}
+            />
           ),
         }}
       />
@@ -115,7 +111,11 @@ export default function DrawerMain() {
           drawerLabel: t("Vehicle Type"),
           title: t("Vehicle Type"),
           drawerIcon: ({ color, size }) => (
-            <BikeRidingIcon color={color} height={size} width={size} />
+            <BikeRidingIcon
+              color={appTheme.iconColor ?? color}
+              height={size}
+              width={size}
+            />
           ),
         }}
       />
@@ -126,7 +126,11 @@ export default function DrawerMain() {
           drawerLabel: t("Work Schedule"),
           title: "Work Schedule",
           drawerIcon: ({ color, size }) => (
-            <ClockIcon color={color} height={size} width={size} />
+            <ClockIcon
+              color={appTheme.iconColor ?? color}
+              height={size}
+              width={size}
+            />
           ),
         }}
       />
@@ -136,7 +140,11 @@ export default function DrawerMain() {
           drawerLabel: t("Product Page"),
           title: t("Product Page"),
           drawerIcon: ({ color, size }) => (
-            <PageIcon color={color} height={size} width={size} />
+            <PageIcon
+              color={appTheme.iconColor ?? color}
+              height={size}
+              width={size}
+            />
           ),
         }}
       />
@@ -146,7 +154,11 @@ export default function DrawerMain() {
           drawerLabel: t("Privacy Policy"),
           title: t("Privacy Policy"),
           drawerIcon: ({ color, size }) => (
-            <PrivacyIcon color={color} height={size} width={size} />
+            <PrivacyIcon
+              color={appTheme.iconColor ?? color}
+              height={size}
+              width={size}
+            />
           ),
         }}
       />
@@ -156,7 +168,11 @@ export default function DrawerMain() {
           drawerLabel: t("Bank Management"),
           title: t("Bank Management"),
           drawerIcon: ({ color, size }) => (
-            <CardIcon color={color} height={size} width={size} />
+            <CardIcon
+              color={appTheme.iconColor ?? color}
+              height={size}
+              width={size}
+            />
           ),
         }}
       />
@@ -166,7 +182,11 @@ export default function DrawerMain() {
           drawerLabel: t("About Us"),
           title: t("About US"),
           drawerIcon: ({ color, size }) => (
-            <AboutIcon color={color} height={size} width={size} />
+            <AboutIcon
+              color={appTheme.iconColor ?? color}
+              height={size}
+              width={size}
+            />
           ),
         }}
       />
@@ -176,10 +196,16 @@ export default function DrawerMain() {
           drawerLabel: t("Help"),
           title: t("Help"),
           drawerIcon: ({ color, size }) => (
-            <HelpIcon color={color} height={size} width={size} />
+            <HelpIcon
+              color={appTheme.iconColor ?? color}
+              height={size}
+              width={size}
+            />
           ),
         }}
       />
     </Drawer>
   );
-}
+};
+
+export default memo(DrawerMain);

@@ -12,11 +12,11 @@ import { Alert } from "react-native";
 
 // Core
 import {
-  TouchableWithoutFeedback,
+  Keyboard,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
   View,
-  Keyboard,
 } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
@@ -115,7 +115,7 @@ export default function BankManagementMain() {
           bussinessDetails: {
             bankName: formData.bankName,
             accountName: formData.accountName,
-            accountNumber: Number(formData.accountNumber),
+            accountNumber: String(formData.accountNumber),
             accountCode: formData.accountCode,
           },
         },

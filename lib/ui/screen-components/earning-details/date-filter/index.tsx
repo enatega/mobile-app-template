@@ -1,6 +1,6 @@
 // Utils
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { CustomContinueButton } from "@/lib/ui/useable-components";
-import { Colors } from "@/lib/utils/constants";
 
 // Interfaces
 import {
@@ -29,6 +29,7 @@ export default function EarningDetailsDateFilter({
   refetchDeafult,
 }: IEarningDetailsMainProps & IEarningsDateFilterProps) {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
 
   // Handlers
@@ -63,11 +64,11 @@ export default function EarningDetailsDateFilter({
       markedDates[dateFilter.startDate] = {
         startingDay: true,
         marked: true,
-        color: Colors.light.primary,
-        dotColor: Colors.light.primary,
-        selectedColor: Colors.light.primary,
-        selectedTextColor: Colors.light.primary,
-        textColor: Colors.light.primary,
+        color: appTheme.primary,
+        dotColor: appTheme.primary,
+        selectedColor: appTheme.primary,
+        selectedTextColor: appTheme.primary,
+        textColor: appTheme.primary,
       };
     }
 
@@ -75,11 +76,11 @@ export default function EarningDetailsDateFilter({
       markedDates[dateFilter.endDate] = {
         endingDay: true,
         marked: true,
-        color: Colors.light.primary,
-        dotColor: Colors.light.primary,
-        selectedColor: Colors.light.primary,
-        selectedTextColor: Colors.light.primary,
-        textColor: Colors.light.primary,
+        color: appTheme.primary,
+        dotColor: appTheme.primary,
+        selectedColor: appTheme.primary,
+        selectedTextColor: appTheme.primary,
+        textColor: appTheme.primary,
       };
 
       // Mark the dates in between
@@ -107,7 +108,7 @@ export default function EarningDetailsDateFilter({
           className="flex flex-row gap-2 items-center"
         >
           <View className="flex flex-row items-center gap-2">
-            <Ionicons name="filter" color={Colors.light.primary} size={25} />
+            <Ionicons name="filter" color={appTheme.primary} size={25} />
             <Text>{t("Date Filter")}</Text>
           </View>
         </TouchableOpacity>

@@ -1,7 +1,7 @@
+import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev";
 import * as Updates from "expo-updates";
 import { useContext } from "react";
 import { ConfigurationContext } from "./lib/context/global/configuration.context";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 const getEnvVars = (env = Updates.channel) => {
   const configuration = useContext(ConfigurationContext);
   if (__DEV__) {
@@ -23,8 +23,8 @@ const getEnvVars = (env = Updates.channel) => {
   }
 
   return {
-    GRAPHQL_URL: "http://192.168.0.105:8001/graphql",
-    WS_GRAPHQL_URL: "ws://192.168.0.105:8001/graphql",
+    GRAPHQL_URL: "http://192.168.0.106:8001/graphql",
+    WS_GRAPHQL_URL: "ws://192.168.0.106:8001/graphql",
     // GRAPHQL_URL: "https://enatega-multivendor-revamp.up.railway.app/graphql",
     // WS_GRAPHQL_URL: "wss://enatega-multivendor-revamp.up.railway.app/graphql",
     SENTRY_DSN:

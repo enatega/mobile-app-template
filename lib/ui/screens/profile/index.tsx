@@ -1,23 +1,28 @@
 // Core
-import { FlatList, SafeAreaView } from "react-native";
 import { useEffect, useState } from "react";
+import { FlatList, SafeAreaView } from "react-native";
 
 // Components
 import ProfileHeader from "../../screen-components/profile/header";
 import ProfileMain from "../../screen-components/profile/view/main";
 
 // Types & Interfaces
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
+import { Keyboard } from "react-native";
+import ReactNativeModal from "react-native-modal";
 import DrivingLicenseForm from "../../screen-components/profile/forms/liecense";
 import VehiclePlateForm from "../../screen-components/profile/forms/vehicle";
-import ReactNativeModal from "react-native-modal";
-import { Keyboard } from "react-native";
 
 export default function ComponentName() {
+  // States
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [isFormOpened, setIsFormOpened] =
     useState<TRiderProfileBottomBarBit>(null);
 
+  // Hooks
+  const { appTheme } = useApptheme();
+  console.warn(appTheme.themeBackground);
   // UseEffects
   useEffect(() => {
     const isOpened = Keyboard.addListener("keyboardDidShow", () => {
@@ -31,9 +36,8 @@ export default function ComponentName() {
       isClosed.remove();
     };
   }, [Keyboard, isKeyboardVisible]);
-
   return (
-    <SafeAreaView className="bg-white">
+    <SafeAreaView style={{ backgroundColor: appTheme.themeBackground }}>
       <FlatList
         data={[
           <ProfileHeader />,
