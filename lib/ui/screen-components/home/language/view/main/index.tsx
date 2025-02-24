@@ -1,4 +1,5 @@
 // Constants
+import { useApptheme } from "@/lib/context/global/theme.context";
 import {
   CustomContinueButton,
   CustomRadioButton,
@@ -16,15 +17,20 @@ export default function LanguageMain() {
   const [isSelected, setIsSelected] = useState("");
 
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
 
   return (
-    <View className="h-[85%] w-[90%] items-center justify-between mx-auto  p-4">
+    <View
+      className="h-[85%] w-[90%] items-center justify-between mx-auto  p-4"
+      style={{ backgroundColor: appTheme.screenBackground }}
+    >
       {LANGUAGES.map((lng, index) => {
         return (
           <View
             key={`lng-${index}`}
             className="w-full mx-auto flex flex-row items-center justify-between border-b-2 border-b-gray-300 h-12"
+            style={{ backgroundColor: appTheme.themeBackground }}
           >
             <View className="flex flex-row gap-3 items-center justify-center px-3">
               <View className="overflow-hidden items-center justify-start w-8 h-6">
@@ -35,7 +41,7 @@ export default function LanguageMain() {
                   className="max-w-8 max-h-8"
                 />
               </View>
-              <Text>{lng.value}</Text>
+              <Text style={{ color: appTheme.fontMainColor }}>{lng.value}</Text>
             </View>
             <View>
               <CustomRadioButton
