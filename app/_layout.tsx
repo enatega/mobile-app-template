@@ -25,15 +25,14 @@ import "@/i18next";
 
 // Style
 import InternetProvider from "@/lib/context/global/internet-provider";
-import AppThemeProvidor, {
-  useApptheme,
-} from "@/lib/context/global/theme.context";
+import AppThemeProvidor from "@/lib/context/global/theme.context";
 import RootStackLayout from "@/lib/ui/layouts/root-layout";
 import { LocationPermissionComp } from "@/lib/ui/useable-components";
 import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSplashScreen";
 import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
 import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import "../global.css";
 
 initSentry();
@@ -43,7 +42,7 @@ SplashScreen?.preventAutoHideAsync();
 
 function RootLayout() {
   // Hooks
-  const { currentTheme } = useApptheme();
+  const { i18n } = useTranslation();
   const [loaded] = useFonts({
     SpaceMono: require("../lib/assets/fonts/SpaceMono-Regular.ttf"),
     Inter: require("../lib/assets/fonts/Inter.ttf"),
@@ -54,6 +53,7 @@ function RootLayout() {
   async function grantCameraAndGalleryPermissions() {
     await requestMediaLibraryPermissionsAsync();
   }
+
   // Use Effect
   useEffect(() => {
     if (loaded) {
@@ -71,7 +71,6 @@ function RootLayout() {
     return null;
   }
 
-  console.log(currentTheme);
   return (
     <AppThemeProvidor>
       <AnimatedSplashScreen>

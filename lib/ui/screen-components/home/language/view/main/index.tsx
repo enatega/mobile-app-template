@@ -5,8 +5,9 @@ import {
   CustomRadioButton,
 } from "@/lib/ui/useable-components";
 import { LANGUAGES } from "@/lib/utils/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { changeLanguage } from "i18next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // Core
@@ -15,11 +16,46 @@ import { Image, Text, View } from "react-native";
 export default function LanguageMain() {
   // States
   const [isSelected, setIsSelected] = useState("");
+  const [isChangingLang, setIsChangingLang] = useState(false);
 
   // Hooks
   const { appTheme } = useApptheme();
   const { t } = useTranslation();
 
+  // Handlers
+  const handleLanguageSelection = async (selectedLanguage: string) => {
+    setIsSelected(selectedLanguage);
+    await AsyncStorage.setItem("lang", selectedLanguage);
+  };
+  const handleSetCurrentLanguage = async () => {
+    try {
+      const lng = await AsyncStorage.getItem("lang");
+      if (lng) {
+        changeLanguage(lng);
+        changeLanguage(isSelected);
+      }
+      if (lng) {
+        setIsSelected(lng);
+      }
+    } catch (error) {
+      console.error({ error });
+    }
+  };
+  const handleSubmission = async () => {
+    try {
+      setIsChangingLang(true);
+      await AsyncStorage.setItem("lang", isSelected);
+      changeLanguage(isSelected);
+      setIsChangingLang(false);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // UseEffects
+  useEffect(() => {
+    handleSetCurrentLanguage();
+  }, [isSelected]);
   return (
     <View
       className="h-[85%] w-[90%] items-center justify-between mx-auto  p-4"
@@ -48,9 +84,7 @@ export default function LanguageMain() {
                 label={lng.code}
                 isSelected={lng.code === isSelected}
                 showLabel={false}
-                onPress={() => {
-                  setIsSelected(lng.code);
-                }}
+                onPress={() => handleLanguageSelection(lng.code)}
               />
             </View>
           </View>
@@ -58,10 +92,8 @@ export default function LanguageMain() {
       })}
       <View>
         <CustomContinueButton
-          title={t("Update Language")}
-          onPress={() => {
-            changeLanguage(isSelected);
-          }}
+          title={isChangingLang ? t("Please wait") : t("Update Language")}
+          onPress={() => handleSubmission()}
         />
       </View>
     </View>

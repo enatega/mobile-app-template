@@ -56,7 +56,7 @@ export default function ChatMain() {
             color: appTheme.fontMainColor,
           },
           left: {
-            color: appTheme.fontSecondColor,
+            color: appTheme.fontMainColor,
           },
         }}
         wrapperStyle={{
@@ -124,13 +124,16 @@ export default function ChatMain() {
           // renderChatEmpty={renderChatEmpty}
           inverted={Platform.OS !== "web" || messages.length === 0}
           timeTextStyle={{
-            left: { color: appTheme.switchButtonColor },
+            left: { color: appTheme.fontMainColor },
             right: { color: appTheme.primary },
           }}
           placeholder={t("Chats Here")}
           // textInputStyle={{ paddingTop: 10 }}
           // renderAccessory={image.length > 0 ? renderAccessory : null}
           text={inputMessage ?? ""}
+          messagesContainerStyle={{
+            backgroundColor: appTheme.screenBackground,
+          }}
           onInputTextChanged={(m) => setInputMessage(String(m ?? ""))}
         />
       </View>
