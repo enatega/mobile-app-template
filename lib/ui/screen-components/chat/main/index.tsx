@@ -1,15 +1,17 @@
 // Core
-import { View, Platform, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 
 // Gifted Chat
-import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { useChatScreen } from "@/lib/hooks/useChat";
 import { SendIcon } from "@/lib/ui/useable-components/svg";
 import { FontAwesome } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
 
 export default function ChatMain() {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
   const {
     messages,
@@ -29,7 +31,7 @@ export default function ChatMain() {
     return (
       <Send {...props} sendButtonProps={{ ...props, onPress: onSend }}>
         <View className="m-2">
-          <SendIcon width={30} height={30} />
+          <SendIcon width={30} height={30} color={appTheme.fontMainColor} />
         </View>
       </Send>
     );
@@ -51,23 +53,32 @@ export default function ChatMain() {
         {...props}
         textStyle={{
           right: {
-            color: "white",
+            color: appTheme.fontMainColor,
           },
           left: {
-            color: "black",
+            color: appTheme.fontSecondColor,
           },
         }}
         wrapperStyle={{
-          right: styles.bubbleRight,
-          left: styles.bubbleLeft,
+          right: {
+            ...styles.bubbleRight,
+            backgroundColor: appTheme.themeBackground,
+          },
+          left: { ...styles.bubbleLeft, backgroundColor: appTheme.primary },
         }}
-        usernameStyle={{ color: "black" }}
+        usernameStyle={{ color: appTheme.fontMainColor }}
       />
     );
   };
 
   const scrollToBottomComponent = () => {
-    return <FontAwesome name="angle-double-down" size={22} color="green" />;
+    return (
+      <FontAwesome
+        name="angle-double-down"
+        size={22}
+        color={appTheme.primary}
+      />
+    );
   };
 
   // const renderAccessory = (props) => {
@@ -91,7 +102,13 @@ export default function ChatMain() {
 
   return (
     <KeyboardAvoidingView className="flex-1">
-      <View className="flex-1" style={styles.chatContainer}>
+      <View
+        className="flex-1"
+        style={[
+          styles.chatContainer,
+          { backgroundColor: appTheme.screenBackground },
+        ]}
+      >
         <GiftedChat
           messages={messages}
           user={{
@@ -101,13 +118,14 @@ export default function ChatMain() {
           renderSend={renderSend}
           scrollToBottom
           scrollToBottomComponent={scrollToBottomComponent}
+          // messagesContainerStyle
           renderAvatar={null}
           renderUsernameOnMessage
           // renderChatEmpty={renderChatEmpty}
           inverted={Platform.OS !== "web" || messages.length === 0}
           timeTextStyle={{
-            left: { color: "blue" },
-            right: { color: "green" },
+            left: { color: appTheme.switchButtonColor },
+            right: { color: appTheme.primary },
           }}
           placeholder={t("Chats Here")}
           // textInputStyle={{ paddingTop: 10 }}
@@ -148,7 +166,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   bubbleRight: {
-    backgroundColor: "black",
     padding: 5,
     marginBottom: 5,
     borderTopLeftRadius: 15,
@@ -157,7 +174,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 0,
   },
   bubbleLeft: {
-    backgroundColor: "green",
     padding: 5,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,

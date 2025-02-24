@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { useContext } from "react";
-import { View, TouchableOpacity, Text, Image } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 // Components
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
@@ -17,8 +17,9 @@ import useOrder from "@/lib/hooks/useOrder";
 import { BikeRidingIcon, ChatIcon, ClockIcon } from "../svg";
 
 // Hooks
-import { useTranslation } from "react-i18next";
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { calculateDistance } from "@/lib/utils/methods/custom-functions";
+import { useTranslation } from "react-i18next";
 
 const Order = ({ order, tab }: IOrderComponentProps) => {
   // Hook
@@ -28,6 +29,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
   const configuration = useContext(ConfigurationContext);
 
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -46,10 +48,16 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           });
         }}
       >
-        <View className="flex-1 gap-y-4 bg-gray-50 border border-gray-100 border-1 rounded-[8px] m-4 p-2">
+        <View
+          className="flex-1 gap-y-4  border border-gray-100 border-1 rounded-[8px] m-4 p-2"
+          style={{ backgroundColor: appTheme.themeBackground }}
+        >
           {/* Status */}
           <View className="flex-1 flex-row justify-between items-center">
-            <Text className="font-[Inter] text-base font-bold  text-left decoration-skip-ink-0 text-gray-600">
+            <Text
+              className="font-[Inter] text-base font-bold  text-left decoration-skip-ink-0 "
+              style={{ color: appTheme.fontSecondColor }}
+            >
               {t("Status")}
             </Text>
             <View
@@ -77,10 +85,16 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
 
           {/* Order ID */}
           <View className="flex-1 flex-row justify-between items-center">
-            <Text className="font-[Inter] text-base font-bold  text-left decoration-skip-ink-0 text-gray-600">
+            <Text
+              className="font-[Inter] text-base font-bold  text-left decoration-skip-ink-0 "
+              style={{ color: appTheme.fontSecondColor }}
+            >
               {t("Order ID")}
             </Text>
-            <Text className="font-[Inter] text-[16px] text-base font-semibold  text-right underline-offset-auto decoration-skip-ink text-gray-900">
+            <Text
+              className="font-[Inter] text-[16px] text-base font-semibold  text-right underline-offset-auto decoration-skip-ink "
+              style={{ color: appTheme.fontMainColor }}
+            >
               #{order?.orderId}
             </Text>
           </View>
@@ -95,7 +109,10 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             />
             {/* </View> */}
             {/* </View> */}
-            <Text className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink text-gray-900">
+            <Text
+              className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink "
+              style={{ color: appTheme.fontMainColor }}
+            >
               {order?.restaurant?.name}
             </Text>
           </View>
@@ -114,7 +131,10 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
                 {t("Pickup Order")}
               </Text>
-              <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
+              <Text
+                className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink "
+                style={{ color: appTheme.fontMainColor }}
+              >
                 {order?.restaurant?.address ?? "-"}
               </Text>
             </View>
@@ -134,7 +154,10 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
                 {t("Delivery Order")}
               </Text>
-              <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
+              <Text
+                className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink "
+                style={{ color: appTheme.fontMainColor }}
+              >
                 {order?.deliveryAddress?.deliveryAddress ?? "-"}
               </Text>
             </View>
@@ -174,21 +197,33 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
 
           {/* Payment Method */}
           <View className="w-[99%] flex-row justify-between items-center">
-            <Text className="flex-1 font-[Inter] text-[16px] text-base font-[500] text-gray-600">
+            <Text
+              className="flex-1 font-[Inter] text-[16px] text-base font-[500] "
+              style={{ color: appTheme.fontSecondColor }}
+            >
               {t("Payment Method")}
             </Text>
-            <Text className="flex-1 font-[Inter] text-base font-semibold text-right underline-offset-auto decoration-skip-ink text-gray-900">
+            <Text
+              className="flex-1 font-[Inter] text-base font-semibold text-right underline-offset-auto decoration-skip-ink "
+              style={{ color: appTheme.fontMainColor }}
+            >
               {order?.paymentMethod}
             </Text>
           </View>
 
           {/* Order Amount */}
           <View className="w-[99%] flex-row justify-between">
-            <Text className="flex-1 font-[Inter] text-[16px] text-base font-[500] text-gray-600">
+            <Text
+              className="flex-1 font-[Inter] text-[16px] text-base font-[500] "
+              style={{ color: appTheme.fontSecondColor }}
+            >
               {t("Order Amount")}
             </Text>
 
-            <Text className="flex-1 font-[Inter] font-semibold text-right text-gray-900">
+            <Text
+              className="flex-1 font-[Inter] font-semibold text-right "
+              style={{ color: appTheme.fontMainColor }}
+            >
               {configuration?.currencySymbol}
               {order?.orderAmount}{" "}
               {order.paymentStatus === "PAID" ? t("Paid") : t("(Not paid yet)")}
@@ -215,10 +250,16 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               </TouchableOpacity>
               {/* Order Comment */}
               <View className="flex-1">
-                <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
+                <Text
+                  className="font-[Inter] text-[16px] text-base font-[500] "
+                  style={{ color: appTheme.fontSecondColor }}
+                >
                   {t("Order Comment")}
                 </Text>
-                <Text className="font-[Inter] text-[16px] italic font-medium text-gray-900">
+                <Text
+                  className="font-[Inter] text-[16px] italic font-medium "
+                  style={{ color: appTheme.fontMainColor }}
+                >
                   {t("No Comment")}
                 </Text>
               </View>

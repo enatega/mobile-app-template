@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import { useEffect, useState, useContext } from "react";
-import { View, Text, Dimensions, Platform, StyleSheet } from "react-native";
 import { NetworkStatus } from "@apollo/client";
+import { useContext, useEffect, useState } from "react";
+import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 // Context
@@ -17,6 +17,7 @@ import { IOrder } from "@/lib/utils/interfaces/order.interface";
 // Type
 import { ORDER_TYPE } from "@/lib/utils/types";
 // Icon
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { WalletIcon } from "@/lib/ui/useable-components/svg";
 import { useTranslation } from "react-i18next";
 
@@ -27,6 +28,7 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
   const { route } = props;
 
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
   const {
     loadingAssigned,
@@ -68,14 +70,22 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
 
   // Render
   return (
-    <View className="pt-14 flex-1 bg-white pb-16" style={style.contaienr}>
+    <View
+      className="pt-14 flex-1 pb-16"
+      style={[style.contaienr, { backgroundColor: appTheme.screenBackground }]}
+    >
       {loadingAssigned ? (
         <View className="flex-1">
           <Spinner />
         </View>
       ) : errorAssigned ? (
         <View className="flex-1 justify-center items-center">
-          <Text className="text-2xl">{t("Something went wrong")}</Text>
+          <Text
+            className="text-2xl"
+            style={{ color: appTheme.fontSecondColor }}
+          >
+            {t("Something went wrong")}
+          </Text>
         </View>
       ) : orders?.length > 0 ? (
         <FlatList
@@ -100,13 +110,22 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
                   alignItems: "center",
                 }}
               >
-                <WalletIcon height={100} width={100} />
+                <WalletIcon
+                  height={100}
+                  width={100}
+                  color={appTheme.fontMainColor}
+                />
                 {orders?.length === 0 ? (
-                  <Text className="font-[Inter] text-[18px] text-base font-[500] text-gray-600">
+                  <Text
+                    className="font-[Inter] text-[18px] text-base font-[500]"
+                    style={{ color: appTheme.fontSecondColor }}
+                  >
                     {t(NO_ORDER_PROMPT[route.key])}
                   </Text>
                 ) : (
-                  <Text>{t("Pull down to refresh")}</Text>
+                  <Text style={{ color: appTheme.fontSecondColor }}>
+                    {t("Pull down to refresh")}
+                  </Text>
                 )}
               </View>
             );
@@ -121,14 +140,19 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
             alignItems: "center",
           }}
         >
-          <WalletIcon height={100} width={100} />
+          <WalletIcon height={100} width={100} color={appTheme.fontMainColor} />
 
           {orders?.length === 0 ? (
-            <Text className="font-[Inter] text-[18px] text-base font-[500] text-gray-600">
+            <Text
+              className="font-[Inter] text-[18px] text-base font-[500]"
+              style={{ color: appTheme.fontSecondColor }}
+            >
               {t(NO_ORDER_PROMPT[route.key])}
             </Text>
           ) : (
-            <Text>{t("Pull down to refresh")}</Text>
+            <Text style={{ color: appTheme.fontSecondColor }}>
+              {t("Pull down to refresh")}
+            </Text>
           )}
         </View>
       )}
