@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { ApolloProvider } from "@apollo/client";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
@@ -29,6 +28,7 @@ import InternetProvider from "@/lib/context/global/internet-provider";
 import AppThemeProvidor, {
   useApptheme,
 } from "@/lib/context/global/theme.context";
+import RootStackLayout from "@/lib/ui/layouts/root-layout";
 import { LocationPermissionComp } from "@/lib/ui/useable-components";
 import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSplashScreen";
 import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
@@ -84,30 +84,7 @@ function RootLayout() {
                     <SoundProvider>
                       <LocationPermissionComp>
                         <UnavailableStatus />
-                        <Stack
-                          screenOptions={{
-                            headerShown: false,
-                          }}
-                          initialRouteName="(tabs)"
-                        >
-                          <Stack.Screen
-                            name="login"
-                            options={{ headerShown: false }}
-                          />
-                          <Stack.Screen
-                            name="(tabs)"
-                            options={{ headerShown: false }}
-                          />
-                          <Stack.Screen name="+not-found" />
-                          <Stack.Screen
-                            name="order-detail"
-                            options={{ headerShown: false }}
-                          />
-                          <Stack.Screen
-                            name="chat"
-                            options={{ headerShown: false }}
-                          />
-                        </Stack>
+                        <RootStackLayout />
                       </LocationPermissionComp>
                       <StatusBar style="inverted" />
                       <FlashMessage position="bottom" />

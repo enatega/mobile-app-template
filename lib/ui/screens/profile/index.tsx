@@ -37,8 +37,9 @@ export default function ComponentName() {
     };
   }, [Keyboard, isKeyboardVisible]);
   return (
-    <SafeAreaView style={{ backgroundColor: appTheme.themeBackground }}>
+    <SafeAreaView style={{ backgroundColor: appTheme.screenBackground }}>
       <FlatList
+        style={{ backgroundColor: appTheme.screenBackground }}
         data={[
           <ProfileHeader />,
           <ProfileMain
@@ -70,7 +71,9 @@ export default function ComponentName() {
                       ? "45%"
                       : "65%",
             width: "100%",
-            backgroundColor: "#fff",
+            backgroundColor: appTheme.themeBackground,
+            borderWidth: 1,
+            borderColor: appTheme.borderLineColor,
             borderRadius: 20,
             padding: 2,
             alignItems: "center",

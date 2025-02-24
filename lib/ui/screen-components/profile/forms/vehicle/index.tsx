@@ -1,4 +1,5 @@
 // Core
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   Keyboard,
   Text,
@@ -7,19 +8,18 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Dispatch, SetStateAction, useState } from "react";
 
 // Components
-import FormHeader from "../form-header";
 import { CustomContinueButton } from "@/lib/ui/useable-components";
+import FormHeader from "../form-header";
 
 // Expo
 import * as ImagePicker from "expo-image-picker";
 import { Link } from "expo-router";
 
 // Icons
-import { Ionicons } from "@expo/vector-icons";
 import { UploadIcon } from "@/lib/assets/svg";
+import { Ionicons } from "@expo/vector-icons";
 
 // Skeletons
 import { MotiView } from "moti";
@@ -33,10 +33,11 @@ import { UPDATE_VEHICLE } from "@/lib/apollo/mutations/rider.mutation";
 import { RIDER_PROFILE } from "@/lib/apollo/queries";
 
 // Types & Interfaces
-import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
 import { ICloudinaryResponse } from "@/lib/utils/interfaces/cloudinary.interface";
+import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
 
 // Hooks
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
@@ -49,6 +50,7 @@ export default function VehiclePlateForm({
   // Hooks
   const { t } = useTranslation();
   const { userId } = useUserContext();
+  const { appTheme } = useApptheme();
 
   // States
   const [isLoading, setIsLoading] = useState({
@@ -179,7 +181,9 @@ export default function VehiclePlateForm({
           <FormHeader title={t("Vehicle Plate")} />
           <View>
             <View className="flex flex-col w-full my-2">
-              <Text>{t("Plate No")}</Text>
+              <Text style={{ color: appTheme.fontMainColor }}>
+                {t("Plate No")}
+              </Text>
               <TextInput
                 value={formData.number}
                 onChangeText={(licenseNo) =>
@@ -189,7 +193,9 @@ export default function VehiclePlateForm({
               />
             </View>
             <View className="flex flex-col w-full my-2">
-              <Text>{t("Add Registration Document")}</Text>
+              <Text style={{ color: appTheme.fontMainColor }}>
+                {t("Add Registration Document")}
+              </Text>
               {!cloudinaryResponse?.secure_url ? (
                 <TouchableOpacity
                   className="w-full rounded-md border border-dashed border-gray-300 p-3 h-28 items-center justify-center"
@@ -207,13 +213,18 @@ export default function VehiclePlateForm({
                 <View className="flex flex-row justify-between border border-gray-300 rounded-md p-4 my-2">
                   <View className="flex flex-row gap-2">
                     <Ionicons name="image" size={20} color="#3F51B5" />
-                    <Text className="text-[#3F51B5] border-b-2 border-b-[#3F51B5]">
+                    <Text
+                      className="text-[#3F51B5] border-b-2 border-b-[#3F51B5]"
+                      style={{ color: appTheme.fontSecondColor }}
+                    >
                       {cloudinaryResponse.original_filename}.
                       {cloudinaryResponse.format}
                     </Text>
                   </View>
                   <View className="flex flex-row">
-                    <Text>{cloudinaryResponse.bytes / 1000}KB</Text>
+                    <Text style={{ color: appTheme.fontSecondColor }}>
+                      {cloudinaryResponse.bytes / 1000}KB
+                    </Text>
                     <Link
                       download={cloudinaryResponse.secure_url}
                       href={cloudinaryResponse.secure_url}

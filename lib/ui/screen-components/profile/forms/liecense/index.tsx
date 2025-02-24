@@ -1,4 +1,5 @@
 // Core
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Keyboard,
   Text,
@@ -8,7 +9,6 @@ import {
   View,
 } from "react-native";
 import FormHeader from "../form-header";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 // React Native Calendars
 // import { Calendar, DateData } from 'react-native-calendars'
@@ -37,8 +37,8 @@ import { MotiView } from "moti";
 import { Skeleton } from "moti/skeleton";
 
 // Hooks
-import { useMutation } from "@apollo/client";
 import { useUserContext } from "@/lib/context/global/user.context";
+import { useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
 
 // GraphQL
@@ -46,8 +46,9 @@ import { UPDATE_LICENSE } from "@/lib/apollo/mutations/rider.mutation";
 import { RIDER_PROFILE } from "@/lib/apollo/queries";
 
 // Interfaces
-import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { ICloudinaryResponse } from "@/lib/utils/interfaces/cloudinary.interface";
+import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
 
 type IOSMode = "date" | "time" | "datetime" | "countdown";
 type AndroidMode = "date" | "time";
@@ -59,6 +60,7 @@ export default function DrivingLicenseForm({
   // Hooks
   const { t } = useTranslation();
   const { userId, dataProfile } = useUserContext();
+  const { appTheme } = useApptheme();
 
   // States
   const [isLoading, setIsLoading] = useState({
@@ -246,6 +248,8 @@ export default function DrivingLicenseForm({
       }));
     }
   };
+
+  // UseEffects
   useEffect(() => {
     setFormData({
       expiryDate: new Date(dataProfile?.licenseDetails?.expiryDate ?? ""),
@@ -271,20 +275,25 @@ export default function DrivingLicenseForm({
             <FormHeader title={t("Driving License")} />
             <View>
               <View className="flex flex-col w-full mb-2">
-                <Text>{t("License No")}</Text>
+                <Text style={{ color: appTheme.fontMainColor }}>
+                  {t("License No")}
+                </Text>
                 <TextInput
                   value={formData.number}
                   onChangeText={(licenseNo) =>
                     handleInputChange("number", licenseNo)
                   }
                   className={`w-full rounded-md border ${error.field === "number" && error.message ? "border-red-600" : "border-gray-300"} p-3 my-2`}
+                  style={{ color: appTheme.fontMainColor }}
                 />
                 {error.field === "number" && error.message && (
                   <Text className="text-red-600">{error.message}</Text>
                 )}
               </View>
               <View className="flex flex-col w-full my-2">
-                <Text>{t("License Expiry Date")}</Text>
+                <Text style={{ color: appTheme.fontMainColor }}>
+                  {t("License Expiry Date")}
+                </Text>
                 <TouchableOpacity
                   onPress={() => {
                     // setIsLoading((prev) => ({
@@ -297,13 +306,22 @@ export default function DrivingLicenseForm({
                   className={`w-full rounded-md border ${error.field === "expiryDate" && error.message ? "border-red-600" : "border-gray-300"} p-3 my-2`}
                 >
                   {!show && (
-                    <Text className="text-gray-400">{date.toDateString()}</Text>
+                    <Text
+                      className="text-gray-400"
+                      style={{ color: appTheme.fontMainColor }}
+                    >
+                      {date.toDateString()}
+                    </Text>
                   )}
                   <View>
                     {show && (
                       <DateTimePicker
                         testID="dateTimePicker"
                         value={date}
+                        style={{
+                          borderColor: appTheme.borderLineColor,
+                          backgroundColor: appTheme.themeBackground,
+                        }}
                         mode={mode as IOSMode | AndroidMode | undefined}
                         onChange={onDateChange}
                       />
@@ -315,7 +333,9 @@ export default function DrivingLicenseForm({
                 )}
               </View>
               <View className="flex flex-col w-full my-2">
-                <Text>{t("Add License Document")}</Text>
+                <Text style={{ color: appTheme.fontMainColor }}>
+                  {t("Add License Document")}
+                </Text>
                 {!cloudinaryResponse?.secure_url || !formData.image ? (
                   <TouchableOpacity
                     className={`w-full rounded-md border border-dashed ${error.field === "image" && error.message ? "border-red-600" : "border-gray-300"} p-3 h-28 items-center justify-center`}

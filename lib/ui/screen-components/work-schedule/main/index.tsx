@@ -3,21 +3,22 @@ import { useUserContext } from "@/lib/context/global/user.context";
 import { FlashMessageComponent } from "@/lib/ui/useable-components";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 
-import { ApolloError, useMutation } from "@apollo/client";
 import { TimeSlot, WorkSchedule } from "@/lib/utils/interfaces";
+import { ApolloError, useMutation } from "@apollo/client";
 
-import { useState, useRef, useEffect } from "react";
+import { useApptheme } from "@/lib/context/global/theme.context";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-  TouchableWithoutFeedback,
   Animated,
   Dimensions,
+  FlatList,
+  ScrollView,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { Switch } from "react-native-switch";
 
@@ -48,6 +49,7 @@ const timeOptions = generateTimeSlots();
 
 export default function ScheduleScreen() {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
   // States
   const [schedule, setSchedule] = useState<WorkSchedule[]>();
@@ -125,62 +127,6 @@ export default function ScheduleScreen() {
     updatedSchedule[index].enabled = !updatedSchedule[index].enabled;
     setSchedule(updatedSchedule);
   };
-
-  // const updateTime = (
-  //   dayIndex: number,
-  //   slotIndex: number,
-  //   type: "startTime" | "endTime",
-  //   value: string
-  // ) => {
-  //   const updatedSchedule = [...schedule];
-  //   updatedSchedule[dayIndex].slots[slotIndex][type] = value;
-  //   setSchedule(updatedSchedule);
-  //   closeDropdown(); // Close dropdown after selection
-  // };
-
-  // const updateTime = (
-  //   dayIndex: number,
-  //   slotIndex: number,
-  //   type: "startTime" | "endTime",
-  //   value: string,
-  // ) => {
-  //   const updatedSchedule = JSON.parse(JSON.stringify(schedule));
-
-  //   // Get the current slot
-  //   const slot = updatedSchedule[dayIndex].slots[slotIndex];
-
-  //   // Helper function to convert time string (HH:mm) to minutes
-  //   const timeToMinutes = (time: string) => {
-  //     const [hours, minutes] = time.split(":").map(Number);
-  //     return hours * 60 + minutes;
-  //   };
-
-  //   if (type === "startTime") {
-  //     // If updating startTime, ensure it doesn't exceed endTime
-  //     if (slot.endTime && timeToMinutes(value) >= timeToMinutes(slot.endTime)) {
-  //       FlashMessageComponent({
-  //         message: "Start time must be earlier than end time.",
-  //       });
-  //       return;
-  //     }
-  //   } else if (type === "endTime") {
-  //     // If updating endTime, ensure it's greater than startTime
-  //     if (
-  //       slot.startTime &&
-  //       timeToMinutes(value) <= timeToMinutes(slot.startTime)
-  //     ) {
-  //       FlashMessageComponent({
-  //         message: "End time must be greater than start time.",
-  //       });
-  //       return;
-  //     }
-  //   }
-
-  //   // Update the slot value
-  //   updatedSchedule[dayIndex].slots[slotIndex][type] = value;
-  //   setSchedule(updatedSchedule);
-  //   closeDropdown(); // Close dropdown after selection
-  // };
 
   const hasOverlappingSlots = (schedule: WorkSchedule[]): string => {
     // Helper function to convert time string (HH:mm) to minutes
@@ -351,15 +297,26 @@ export default function ScheduleScreen() {
   return (
     <TouchableWithoutFeedback onPress={closeDropdown}>
       <View className="flex-1 items-center">
-        <View className="p-2 bg-white h-[80%] w-full">
+        <View
+          className="p-2 h-[80%] w-full"
+          style={{ backgroundColor: appTheme.screenBackground }}
+        >
           <FlatList
             data={schedule}
             keyExtractor={(item) => item.day}
             renderItem={({ item, index }) => (
-              <View className="bg-gray-200 border border-gray-300 p-4 mb-3 rounded-lg">
+              <View
+                className=" border border-gray-300 p-4 mb-3 rounded-lg"
+                style={{ backgroundColor: appTheme.themeBackground }}
+              >
                 {/* Day Header with Toggle */}
                 <View className="flex-row justify-between items-center">
-                  <Text className="text-lg font-bold">{t(item.day)}</Text>
+                  <Text
+                    className="text-lg font-bold"
+                    style={{ color: appTheme.fontMainColor }}
+                  >
+                    {t(item.day)}
+                  </Text>
                   <Switch
                     value={item.enabled}
                     onValueChange={() => toggleDay(index)}

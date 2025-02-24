@@ -36,10 +36,12 @@ export const Colors = {
     switchButtonColor: "#4F46E5",
     sidebarIconBackground: "#E5E7EB",
     borderLineColor: "rgb(181, 181, 181)",
+    gray: "#e5e5e5",
+    screenBackground: "#FFFF",
   },
   dark: {
     primary: "#A5C616", // Slightly darker green to avoid too much brightness
-    themeBackground: "#1E1E1E", // Dark gray for background
+    themeBackground: "#1F2937", // Dark gray for background
     iconColor: "black", // Light gray for icons
     tagColor: "#8CA30D", // Muted green for tags
     iconPink: "#8CA30D",
@@ -69,5 +71,7 @@ export const Colors = {
     sidebarIconBackground: "#E5E7EB",
     borderLineColor: "rgb(181, 181, 181)",
     tabNaviatorBackground: "#1F2937",
+    gray: "#e5e5e5",
+    screenBackground: "#001e40",
   },
 };

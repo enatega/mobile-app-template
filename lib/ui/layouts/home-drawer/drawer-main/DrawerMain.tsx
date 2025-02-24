@@ -48,7 +48,10 @@ const DrawerMain = ({
       screenOptions={({ navigation }) => ({
         swipeEnabled: false,
         lazy: true,
-
+        headerStyle: {
+          backgroundColor: appTheme.themeBackground,
+        },
+        headerTitleStyle: { color: appTheme.mainTextColor },
         headerLeft: () => {
           return (
             <TouchableOpacity

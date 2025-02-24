@@ -7,6 +7,7 @@ import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
 import { Dispatch, SetStateAction } from "react";
 
 // Core
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function DocumentsSection({
@@ -15,13 +16,19 @@ export default function DocumentsSection({
   setIsFormOpened: Dispatch<SetStateAction<TRiderProfileBottomBarBit>>;
 }) {
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
   const { dataProfile } = useUserContext();
   return (
-    <View className="flex flex-col h-[28%] w-full justify-between items-center">
+    <View
+      className="flex flex-col h-[24%] w-full justify-between items-center"
+      style={{ backgroundColor: appTheme.screenBackground }}
+    >
       <View className="flex flex-col gap-3 items-start justify-center px-5 w-full border-b-2  border-b-gray-200 py-3">
         <View className="flex flex-row w-full justify-between">
-          <Text className="font-bold">{t("Driving License")}</Text>
+          <Text className="font-bold" style={{ color: appTheme.mainTextColor }}>
+            {t("Driving License")}
+          </Text>
           <TouchableOpacity onPress={() => setIsFormOpened("LICENSE_FORM")}>
             <Text className="font-semibold text-[#0EA5E9]">
               {dataProfile?.licenseDetails ? t("Update") : t("Add")}
@@ -42,7 +49,9 @@ export default function DocumentsSection({
       </View>
       <View className="flex flex-col gap-3 items-start justify-center px-5 w-full border-b-2  border-b-gray-200 py-3">
         <View className="flex flex-row w-full justify-between">
-          <Text className="font-bold">{t("Vehicle Plate")}</Text>
+          <Text className="font-bold" style={{ color: appTheme.mainTextColor }}>
+            {t("Vehicle Plate")}
+          </Text>
           <TouchableOpacity onPress={() => setIsFormOpened("VEHICLE_FORM")}>
             <Text className="font-semibold text-[#0EA5E9]">
               {dataProfile?.vehicleDetails ? t("Update") : t("Add")}

@@ -1,8 +1,9 @@
 // Hooks
-import { Stack, usePathname } from "expo-router";
 import { useUserContext } from "@/lib/context/global/user.context";
+import { Stack, usePathname } from "expo-router";
 
 // Components
+import { useApptheme } from "@/lib/context/global/theme.context";
 import EarningBottomBar from "@/lib/ui/screen-components/earnings/view/bottom-bar";
 import { useTranslation } from "react-i18next";
 
@@ -11,6 +12,7 @@ export default function StackLayout() {
   const { modalVisible, setModalVisible } = useUserContext();
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { appTheme } = useApptheme();
 
   return (
     <>
@@ -25,15 +27,17 @@ export default function StackLayout() {
 
           headerTitleAlign: "center",
           headerShadowVisible: false,
-
+          headerTintColor: appTheme.mainTextColor,
+          headerTitleStyle: { color: appTheme.mainTextColor },
+          headerStyle: { backgroundColor: appTheme.themeBackground },
           contentStyle: {
-            backgroundColor: "white",
+            backgroundColor: appTheme.themeBackground,
           },
         }}
       >
         <Stack.Screen
           name="index"
-          options={{ headerShown: true, headerTitle: t('Earnings') }}
+          options={{ headerShown: true, headerTitle: t("Earnings") }}
         />
         <Stack.Screen
           name="(routes)"

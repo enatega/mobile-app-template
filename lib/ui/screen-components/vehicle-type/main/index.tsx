@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { EDIT_RIDER } from "@/lib/apollo/mutations/rider.mutation";
 import { RIDER_PROFILE } from "@/lib/apollo/queries";
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { FlashMessageComponent } from "@/lib/ui/useable-components";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
@@ -16,26 +17,27 @@ import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  View,
+  FlatList,
   Text,
   TouchableOpacity,
   useWindowDimensions,
-  FlatList,
+  View,
 } from "react-native";
-
-const vehicleMap: Record<string, JSX.Element> = {
-  bicycle: <BikeRidingIcon />,
-  motorbike: <MotorBikeIcon />,
-  car: <CarIcon />,
-  pickup_truck: <TruckIcon />,
-};
 
 export default function VehicleTypeMainScreen() {
   // Context
   const { dataProfile } = useUserContext();
 
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
+
+  const vehicleMap: Record<string, JSX.Element> = {
+    bicycle: <BikeRidingIcon color={appTheme.fontMainColor} />,
+    motorbike: <MotorBikeIcon color={appTheme.fontMainColor} />,
+    car: <CarIcon color={appTheme.fontMainColor} />,
+    pickup_truck: <TruckIcon color={appTheme.fontMainColor} />,
+  };
 
   // State
   const [selectedCode, setSelectedCode] = useState<string>(
@@ -57,12 +59,23 @@ export default function VehicleTypeMainScreen() {
     const isSelected = item.code === selectedCode;
     return (
       <TouchableOpacity
-        className={`flex-row items-center p-4  border-b my-1  bg-white ${isSelected ? "border-green-500" : "border-gray-300"}`}
-        style={{ width: width * 0.95 }}
+        className={`flex-row items-center p-4  border-b my-1  ${isSelected ? "border-green-500" : "border-gray-300"}`}
+        style={{
+          width: width * 0.95,
+          backgroundColor: appTheme.themeBackground,
+        }}
         onPress={() => setSelectedCode(item.code)}
       >
-        <View className="mr-2">{vehicleMap[item.code as string]}</View>
-        <Text className="flex-1 font-inter font-semibold leading-5 tracking-normal">
+        <View
+          className="mr-2"
+          style={{ backgroundColor: appTheme.themeBackground }}
+        >
+          {vehicleMap[item.code as string]}
+        </View>
+        <Text
+          className="flex-1 font-inter font-semibold leading-5 tracking-normal"
+          style={{ color: appTheme.mainTextColor }}
+        >
           {item.label}
         </Text>
         <View
@@ -118,7 +131,7 @@ export default function VehicleTypeMainScreen() {
 
       <View className="h-[20%]">
         <TouchableOpacity
-          className="h-12 bg-green-500 rounded-3xl py-3 mt-10"
+          className="h-12 bg-green-500 rounded-3xl py-3 mt-2"
           style={{ width: width * 0.9 }}
           onPress={() => onHandlerSubmit()}
         >

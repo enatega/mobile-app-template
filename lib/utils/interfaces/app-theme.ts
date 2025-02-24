@@ -39,4 +39,6 @@ export interface AppTheme {
   switchButtonColor: string;
   sidebarIconBackground: string;
   borderLineColor: string;
+  gray: string;
+  screenBackground: string;
 }

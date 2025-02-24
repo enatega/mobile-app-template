@@ -8,14 +8,18 @@ export default function OrderDetailLayour() {
   return (
     <Stack
       screenOptions={{
+        headerTitleStyle: { color: appTheme.mainTextColor },
+        headerTintColor: appTheme.mainTextColor,
         headerStyle: Platform.select({
           ios: {
             position: "absolute",
+            backgroundColor: appTheme.themeBackground,
           },
 
           default: {
             position: "absolute",
             backgroundColor: appTheme.themeBackground,
+
             elevation: 0, // Shadow for Android
             shadowColor: "white", // Shadow for iOS
             shadowOpacity: 0,

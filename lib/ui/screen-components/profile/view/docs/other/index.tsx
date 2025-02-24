@@ -60,7 +60,7 @@ export default function OtherDetailsSection() {
         </Text>
         <View className="flex flex-row gap-2 items-center justify-center">
           <Switch
-            containerStyle={{ width: "20%", backgroundColor: "red" }}
+            containerStyle={{ width: "20%" }}
             switchWidthMultiplier={3}
             activeText={"dark"}
             inActiveText="light"
