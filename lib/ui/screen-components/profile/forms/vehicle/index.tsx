@@ -1,5 +1,5 @@
 // Core
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Keyboard,
   Text,
@@ -49,8 +49,8 @@ export default function VehiclePlateForm({
 }) {
   // Hooks
   const { t } = useTranslation();
-  const { userId } = useUserContext();
-  const { appTheme } = useApptheme();
+  const { userId, dataProfile } = useUserContext();
+  const { appTheme, currentTheme } = useApptheme();
 
   // States
   const [isLoading, setIsLoading] = useState({
@@ -174,6 +174,13 @@ export default function VehiclePlateForm({
       }));
     }
   };
+
+  useEffect(() => {
+    setFormData({
+      number: dataProfile?.vehicleDetails.number ?? "",
+      image: dataProfile?.vehicleDetails.image ?? "",
+    });
+  }, []);
   return (
     <View className="w-full">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -189,7 +196,11 @@ export default function VehiclePlateForm({
                 onChangeText={(licenseNo) =>
                   handleInputChange("number", licenseNo)
                 }
-                className="w-full rounded-md border border-gray-300 p-3 my-2"
+                style={{
+                  borderColor: appTheme.borderLineColor,
+                  color: appTheme.fontMainColor,
+                }}
+                className="w-full rounded-md border p-3 my-2"
               />
             </View>
             <View className="flex flex-col w-full my-2">
@@ -198,19 +209,24 @@ export default function VehiclePlateForm({
               </Text>
               {!cloudinaryResponse?.secure_url ? (
                 <TouchableOpacity
-                  className="w-full rounded-md border border-dashed border-gray-300 p-3 h-28 items-center justify-center"
+                  className="w-full rounded-md border border-dashed  p-3 h-28 items-center justify-center"
+                  style={{ borderColor: appTheme.borderLineColor }}
                   onPress={pickImage}
                 >
                   {isLoading.isUploading ? (
                     <MotiView>
-                      <Skeleton width={90} height={20} colorMode="light" />
+                      <Skeleton
+                        width={50}
+                        height={50}
+                        colorMode={currentTheme ?? "light"}
+                      />
                     </MotiView>
                   ) : (
                     <UploadIcon />
                   )}
                 </TouchableOpacity>
               ) : (
-                <View className="flex flex-row justify-between border border-gray-300 rounded-md p-4 my-2">
+                <View className="flex flex-row justify-between border  rounded-md p-4 my-2">
                   <View className="flex flex-row gap-2">
                     <Ionicons name="image" size={20} color="#3F51B5" />
                     <Text

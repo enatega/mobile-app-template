@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useApptheme } from "@/lib/context/global/theme.context";
 import type { PropsWithChildren } from "react";
+import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -11,6 +12,8 @@ export default function AccordionItem({
   children,
   title,
 }: AccordionItemPros): JSX.Element {
+  // Hooks
+  const { appTheme } = useApptheme();
   const [expanded, setExpanded] = useState(false);
 
   function toggleItem() {
@@ -20,16 +23,19 @@ export default function AccordionItem({
   return (
     <View>
       <TouchableOpacity
-        className="bg-transparent text-[#eee] flex-1 flex-row justify-between"
+        className="bg-transparent flex-1 flex-row justify-between"
         onPress={toggleItem}
       >
-        <Text className="font-[Inter] text-[14px] font-semibold text-left   text-gray-600">
+        <Text
+          className="font-[Inter] text-[14px] font-semibold text-left"
+          style={{ color: appTheme.fontMainColor }}
+        >
           {title}
         </Text>
         <Icon
           name={expanded ? "expand-less" : "expand-more"}
           size={30}
-          color="#bbb"
+          color={appTheme.primary}
         />
       </TouchableOpacity>
       {expanded && children}

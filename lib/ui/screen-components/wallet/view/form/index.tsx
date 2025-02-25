@@ -97,6 +97,7 @@ export default function WithdrawModal({
             placeholder="$0.00"
             keyboardType="number-pad"
             returnKeyType="done"
+            style={{ color: appTheme.fontMainColor }}
             className={`${amountErrMsg ? "border-red-600" : "border-gray-300"} border w-full h-12 rounded p-3  placeholder:text-gray-500`}
           />
           {amountErrMsg && (

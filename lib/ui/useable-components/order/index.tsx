@@ -245,7 +245,11 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 }}
               >
                 <View className="border border-[#E2E8F0] rounded-full p-3">
-                  <ChatIcon width={30} height={30} />
+                  <ChatIcon
+                    width={30}
+                    height={30}
+                    color={appTheme.fontMainColor}
+                  />
                 </View>
               </TouchableOpacity>
               {/* Order Comment */}

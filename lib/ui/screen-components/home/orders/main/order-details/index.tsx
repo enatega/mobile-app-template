@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Image,
-  TouchableOpacity,
-  Animated,
-} from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, {
   BottomSheetScrollView,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useContext, useEffect, useRef, useState } from "react";
-import MapViewDirections from "react-native-maps-directions";
+import {
+  Animated,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MapView, { LatLng, Marker } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
 
 // Methods
 import { linkToMapsApp } from "@/lib/utils/methods";
@@ -27,19 +27,20 @@ import { linkToMapsApp } from "@/lib/utils/methods";
 import ItemDetails from "@/lib/ui/screen-components/home/orders/main/item-details";
 
 // Hooks
-import useOrderDetail from "@/lib/hooks/useOrderDetails";
 import useDetails from "@/lib/hooks/useDetail";
+import useOrderDetail from "@/lib/hooks/useOrderDetails";
 
 // Context
 import { ConfigurationContext } from "@/lib/context/global/configuration.context";
 
 // UI Components
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
 import AccordionItem from "@/lib/ui/useable-components/accordian";
-import WelldoneComponent from "@/lib/ui/useable-components/well-done";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
-import { Easing } from "react-native-reanimated";
+import WelldoneComponent from "@/lib/ui/useable-components/well-done";
 import { useTranslation } from "react-i18next";
+import { Easing } from "react-native-reanimated";
 
 const { height } = Dimensions.get("window");
 
@@ -51,6 +52,7 @@ export default function OrderDetailScreen() {
   const configuration = useContext(ConfigurationContext);
 
   // Hooks
+  const { appTheme } = useApptheme();
   const { t } = useTranslation();
   const {
     restaurantAddressPin,
@@ -264,7 +266,10 @@ export default function OrderDetailScreen() {
           ) : (
             <View className="flex-1 justify-center items-center gap-y-3">
               <Text className="text-3xl">{t("Map not loaded.")}</Text>
-              <Text className="text-lg text-gray-600">
+              <Text
+                className="text-lg "
+                style={{ color: appTheme.fontSecondColor }}
+              >
                 {t("Please check for permissions.")}
               </Text>
             </View>
@@ -284,15 +289,29 @@ export default function OrderDetailScreen() {
           enableOverDrag={false}
           maxDynamicContentSize={height * 0.8} // Set a maximum dynamic content size (optional)
         >
-          <BottomSheetView className="flex-1  bg-white border border-gray-300 p-1.5 rounded-lg">
+          <BottomSheetView
+            className="flex-1  border p-1.5 rounded-lg"
+            style={{
+              backgroundColor: appTheme.themeBackground,
+              borderColor: appTheme.borderLineColor,
+            }}
+          >
             <BottomSheetScrollView
               className="p-2"
               showsVerticalScrollIndicator={false}
+              style={{ backgroundColor: appTheme.themeBackground }}
             >
               {/* Order ID */}
               <View className="flex-row justify-between mb-4">
-                <Text className="font-bold text-gray-600">{t("Order ID")}</Text>
-                <Text className="text-gray-900">#{order?.orderId ?? "-"}</Text>
+                <Text
+                  className="font-bold "
+                  style={{ color: appTheme.fontSecondColor }}
+                >
+                  {t("Order ID")}
+                </Text>
+                <Text style={{ color: appTheme.fontMainColor }}>
+                  #{order?.orderId ?? "-"}
+                </Text>
               </View>
 
               <View className="flex-1 flex-row justify-start items-center gap-x-4 mb-4">
@@ -301,7 +320,10 @@ export default function OrderDetailScreen() {
                   style={{ width: 32, height: 30, borderRadius: 8 }}
                 />
 
-                <Text className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink text-gray-900">
+                <Text
+                  className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink "
+                  style={{ color: appTheme.fontMainColor }}
+                >
                   {order?.restaurant?.name}
                 </Text>
               </View>
@@ -313,14 +335,20 @@ export default function OrderDetailScreen() {
                     name="apartment"
                     size={30}
                     weight="medium"
-                    color="#111827"
+                    color={appTheme.fontMainColor}
                   />
                 </View>
                 <View>
-                  <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
+                  <Text
+                    className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink "
+                    style={{ color: appTheme.fontSecondColor }}
+                  >
                     {t("Pickup Order")}
                   </Text>
-                  <Text className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-900">
+                  <Text
+                    className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink "
+                    style={{ color: appTheme.fontMainColor }}
+                  >
                     {order?.restaurant?.address ?? "-"}
                   </Text>
                 </View>
@@ -328,21 +356,33 @@ export default function OrderDetailScreen() {
 
               {/* Payment Method */}
               <View className="flex-1 flex-row justify-between items-center mb-4">
-                <Text className="font-[Inter] text-[16px] text-base font-[500] text-gray-600">
+                <Text
+                  className="font-[Inter] text-[16px] text-base font-[500]"
+                  style={{ color: appTheme.fontSecondColor }}
+                >
                   {t("Payment Method")}
                 </Text>
-                <Text className="font-[Inter] text-base font-semibold  text-left underline-offset-auto decoration-skip-ink text-gray-900  mr-2">
+                <Text
+                  className="font-[Inter] text-base font-semibold  text-left underline-offset-auto decoration-skip-ink   mr-2"
+                  style={{ color: appTheme.fontMainColor }}
+                >
                   {order?.paymentMethod}
                 </Text>
               </View>
 
               {/* Order Amount */}
               <View className="w-[99%] flex-row justify-between">
-                <Text className="flex-1 font-[Inter] text-[16px] text-base font-[500] text-gray-600">
+                <Text
+                  className="flex-1 font-[Inter] text-[16px] text-base font-[500] "
+                  style={{ color: appTheme.fontSecondColor }}
+                >
                   {t("Order Amount")}
                 </Text>
 
-                <Text className="flex-1 font-[Inter] font-semibold text-right text-gray-900">
+                <Text
+                  className="flex-1 font-[Inter] font-semibold text-right "
+                  style={{ color: appTheme.fontMainColor }}
+                >
                   {configuration?.currencySymbol}
                   {order?.orderAmount}{" "}
                   {order.paymentStatus === "PAID"
