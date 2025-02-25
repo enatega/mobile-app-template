@@ -1,10 +1,9 @@
 // React Native Async Storage
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Expo
-import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 import { Href, router } from "expo-router";
 
 // Contexts
@@ -81,7 +80,7 @@ const useLogin = () => {
       message:
         error?.graphQLErrors[0]?.message ??
         error?.networkError?.message ??
-        "Something went wrong",
+        t("Something went wrong"),
     });
   }
   const onLogin = async (username: string, password: string) => {
@@ -134,12 +133,13 @@ const useLogin = () => {
       });
     } catch (err) {
       const error = err as ApolloError;
-      FlashMessageComponent({
-        message:
-          error?.graphQLErrors[0]?.message ??
-          error?.networkError?.message ??
-          t("Something went wrong"),
-      });
+      // FlashMessageComponent({
+      //   message:
+      //     error?.graphQLErrors[0]?.message ??
+      //     error?.networkError?.message ??
+      //     t("Something went wrong"),
+      // });
+      console.error("login error", error);
     }
   };
 

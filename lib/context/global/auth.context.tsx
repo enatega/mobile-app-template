@@ -1,13 +1,12 @@
 // Core
-import React, { useState } from "react";
-import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Location from "expo-location";
+import React, { useState } from "react";
 
 // Interfaces§
-import { IAuthContext, IAuthProviderProps } from "@/lib/utils/interfaces";
 import { RIDER_TOKEN } from "@/lib/utils/constants";
+import { IAuthContext, IAuthProviderProps } from "@/lib/utils/interfaces";
 import { useRouter } from "expo-router";
-import { FlashMessageComponent } from "@/lib/ui/useable-components";
 
 export const AuthContext = React.createContext<IAuthContext>(
   {} as IAuthContext,
@@ -50,10 +49,10 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({
       setToken("");
       router.replace("/login");
     } catch (e) {
-      FlashMessageComponent({
-        message: `Logout failed - ${e?.message ?? "Unknown Error"}`,
-      });
-      console.log("Logout Error: ", e);
+      // FlashMessageComponent({
+      //   message: `Logout failed - ${e?.message ?? "Unknown Error"}`,
+      // });
+      console.error("Logout Error: ", e);
     }
   };
 

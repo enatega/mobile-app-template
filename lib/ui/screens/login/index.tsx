@@ -1,17 +1,17 @@
 // Core
-import { useEffect, useState } from "react";
 import { Formik } from "formik";
+import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // React Native
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 // Components
@@ -28,9 +28,8 @@ import { useTranslation } from "react-i18next";
 import useLogin from "@/lib/hooks/useLogin";
 
 // Interface
-import { ILoginInitialValues } from "@/lib/utils/interfaces";
 import setupApollo from "@/lib/apollo";
-import { FlashMessageComponent } from "../../useable-components";
+import { ILoginInitialValues } from "@/lib/utils/interfaces";
 
 const initial: ILoginInitialValues = {
   username: "",
@@ -66,9 +65,10 @@ const LoginScreen = () => {
       if (!creds?.username) return;
       setInitialValues(creds);
     } catch (err) {
-      FlashMessageComponent({
-        message: err?.message ?? "Something went wrong. Please refresh.",
-      });
+      // FlashMessageComponent({
+      //   message: err?.message ?? "Something went wrong. Please refresh.",
+      // });
+      console.error("error login", err);
     }
   };
 

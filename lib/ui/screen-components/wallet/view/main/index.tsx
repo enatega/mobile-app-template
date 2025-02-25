@@ -166,10 +166,12 @@ export default function WalletMain() {
     } catch (error) {
       const err = error as GraphQLError;
 
-      FlashMessageComponent({
-        message:
-          err.message || JSON.stringify(error) || t("Something went wrong"),
-      });
+      // FlashMessageComponent({
+      //   message:
+      //     err.message || JSON.stringify(error) || t("Something went wrong"),
+      // });
+
+      console.error("error wallet", err);
     }
   }
   // Loading state

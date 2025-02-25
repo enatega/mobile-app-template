@@ -384,7 +384,7 @@ export default function OrderDetailScreen() {
                   style={{ color: appTheme.fontMainColor }}
                 >
                   {configuration?.currencySymbol}
-                  {order?.orderAmount}{" "}
+                  {order?.orderAmount}
                   {order.paymentStatus === "PAID"
                     ? t("Paid")
                     : t("(Not paid yet)")}

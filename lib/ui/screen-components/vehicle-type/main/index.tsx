@@ -59,10 +59,10 @@ export default function VehicleTypeMainScreen() {
     const isSelected = item.code === selectedCode;
     return (
       <TouchableOpacity
-        className={`flex-row items-center p-4  border-b my-1  ${isSelected ? "border-green-500" : "border-gray-300"}`}
+        className={`flex-row items-center p-4  border-b my-1`}
         style={{
           width: width * 0.95,
-          backgroundColor: appTheme.themeBackground,
+          borderColor: isSelected ? appTheme.primary : appTheme.gray,
         }}
         onPress={() => setSelectedCode(item.code)}
       >
@@ -79,10 +79,14 @@ export default function VehicleTypeMainScreen() {
           {item.label}
         </Text>
         <View
-          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${isSelected ? "border-green-500" : "border-gray-400"}`}
+          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center `}
+          style={{ borderColor: isSelected ? appTheme.primary : appTheme.gray }}
         >
           {isSelected && (
-            <View className="w-2.5 h-2.5 rounded-full bg-green-500" />
+            <View
+              className="w-2.5 h-2.5 rounded-full"
+              style={{ backgroundColor: appTheme.primary }}
+            />
           )}
         </View>
       </TouchableOpacity>
@@ -131,8 +135,8 @@ export default function VehicleTypeMainScreen() {
 
       <View className="h-[20%]">
         <TouchableOpacity
-          className="h-12 bg-green-500 rounded-3xl py-3 mt-2"
-          style={{ width: width * 0.9 }}
+          className="h-12 rounded-3xl py-3 mt-2"
+          style={{ width: width * 0.9, backgroundColor: appTheme.primary }}
           onPress={() => onHandlerSubmit()}
         >
           {mutationLoading ? (

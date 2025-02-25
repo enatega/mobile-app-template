@@ -1,4 +1,4 @@
-import { Linking, Alert, Platform } from "react-native";
+import { Alert, Linking } from "react-native";
 
 const formatPhoneNumber = (phone: string): string => {
   // Remove all non-numeric characters except '+'

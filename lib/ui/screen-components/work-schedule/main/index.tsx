@@ -115,9 +115,10 @@ export default function ScheduleScreen() {
       // eslint-disable-next-line unused-imports/no-unused-vars
     } catch (err) {
       const error = err as ApolloError;
-      FlashMessageComponent({
-        message: error?.message || t("Something went wrong"),
-      });
+      // FlashMessageComponent({
+      //   message: error?.message || t("Something went wrong"),
+      // });
+      console.error("error work0schedule", error);
     }
   };
 
@@ -400,7 +401,10 @@ export default function ScheduleScreen() {
                               onPress={() => addSlot(index)}
                               className="w-8 h-8 justify-center items-center border border-green-500 rounded-full"
                             >
-                              <Text className="text-green-500 font-bold text-center">
+                              <Text
+                                className=" font-bold text-center"
+                                style={{ color: appTheme.primary }}
+                              >
                                 +
                               </Text>
                             </TouchableOpacity>
@@ -415,8 +419,8 @@ export default function ScheduleScreen() {
           />
         </View>
         <TouchableOpacity
-          className="h-12 w-full bg-green-500 rounded-3xl py-3"
-          style={{ width: width * 0.9 }}
+          className="h-12 w-full rounded-3xl py-3"
+          style={{ width: width * 0.9, backgroundColor: appTheme.primary }}
           onPress={() => onHandlerSubmit()}
         >
           {isUpatingSchedule ? (

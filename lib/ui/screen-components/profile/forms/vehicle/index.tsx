@@ -125,10 +125,10 @@ export default function VehiclePlateForm({
       }
     } catch (error) {
       console.error(error);
-      showMessage({
-        message: t("Failed to upload image"),
-        type: "danger",
-      });
+      // showMessage({
+      //   message: t("Failed to upload image"),
+      //   type: "danger",
+      // });
     } finally {
       setIsLoading((prev) => ({
         ...prev,
