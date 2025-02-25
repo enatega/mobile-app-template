@@ -379,6 +379,7 @@ export default function DrivingLicenseForm({
               </View>
               <View>
                 <CustomContinueButton
+                  style={{ marginTop: 20 }}
                   title={isLoading.isSubmitting ? t("Please wait") : t("Add")}
                   onPress={handleSubmit}
                 />

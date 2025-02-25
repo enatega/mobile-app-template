@@ -41,7 +41,8 @@ export const Colors = {
   },
   dark: {
     primary: "#A5C616", // Slightly darker green to avoid too much brightness
-    themeBackground: "#1F2937", // Dark gray for background
+    themeBackground: "black", // Dark gray for background
+    screenBackground: "black",
     iconColor: "black", // Light gray for icons
     tagColor: "#8CA30D", // Muted green for tags
     iconPink: "#8CA30D",
@@ -72,6 +73,5 @@ export const Colors = {
     borderLineColor: "rgb(181, 181, 181)",
     tabNaviatorBackground: "#1F2937",
     gray: "#e5e5e5",
-    screenBackground: "#001e40",
   },
 };

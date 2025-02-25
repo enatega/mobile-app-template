@@ -11,7 +11,7 @@ export default function CustomContinueButton({
   return (
     <TouchableOpacity
       {...props}
-      className="py-5 min-w-96 lg:px-52 rounded-[80] items-center justify-center"
+      className="py-5 min-w-96 lg:px-52 rounded-[80] items-center justify-center my-auto mt-8"
       style={{ backgroundColor: appTheme.primary }}
     >
       <Text className="text-[16px]">{title}</Text>
