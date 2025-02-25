@@ -1,91 +1,101 @@
 import { gql } from "@apollo/client";
 
-export const subscriptionRiderLocation = gql`subscription SubscriptionRiderLocation($riderId:String!){
-    subscriptionRiderLocation(riderId:$riderId) {
+export const subscriptionRiderLocation = gql`
+  subscription SubscriptionRiderLocation($riderId: String!) {
+    subscriptionRiderLocation(riderId: $riderId) {
       _id
-      location {coordinates}
+      location {
+        coordinates
+      }
     }
-  }`;
+  }
+`;
 
-export const orderStatusChanged = gql`subscription OrderStatusChanged($userId:String!){
-    orderStatusChanged(userId:$userId){
+export const orderStatusChanged = gql`
+  subscription OrderStatusChanged($userId: String!) {
+    orderStatusChanged(userId: $userId) {
       userId
       origin
-      order{
+      order {
         _id
-      orderId
-      restaurant{
-        _id
-        name
-        image
-        address
-        location{coordinates}
-      }
-      deliveryAddress{
-        location{coordinates}
-        deliveryAddress
-        id
-      }
-      items{
-        _id
-        title
-        food
-        description
-        quantity
-        variation{
+        orderId
+        restaurant {
+          _id
+          name
+          image
+          address
+          location {
+            coordinates
+          }
+        }
+        deliveryAddress {
+          location {
+            coordinates
+          }
+          deliveryAddress
+          id
+        }
+        items {
           _id
           title
-          price
-          discounted
-        }
-        addons{
-          _id
-          options{
+          food
+          description
+          quantity
+          variation {
             _id
             title
-            description
             price
+            discounted
           }
-          title
-          description
-          quantityMinimum
-          quantityMaximum
+          addons {
+            _id
+            options {
+              _id
+              title
+              description
+              price
+            }
+            title
+            description
+            quantityMinimum
+            quantityMaximum
+          }
         }
-      }
-      user{
-        _id
-        name
-        phone
-      }
-      rider{
-        _id
-        name
-      }
-      review{
-        _id
-      }
-      paymentMethod
-      paidAmount
-      orderAmount
-      orderStatus
-      tipping
-      taxationAmount
-      createdAt
-      completionTime
-      preparationTime
-      orderDate
-      expectedTime
-      isPickedUp
-      deliveryCharges
-      acceptedAt
-      pickedAt
-      deliveredAt
-      cancelledAt
-      assignedAt
-      instructions
+        user {
+          _id
+          name
+          phone
+        }
+        rider {
+          _id
+          name
+        }
+        review {
+          _id
+        }
+        paymentMethod
+        paidAmount
+        orderAmount
+        orderStatus
+        tipping
+        taxationAmount
+        createdAt
+        completionTime
+        preparationTime
+        orderDate
+        expectedTime
+        isPickedUp
+        deliveryCharges
+        acceptedAt
+        pickedAt
+        deliveredAt
+        cancelledAt
+        assignedAt
+        instructions
       }
     }
-  }`;
+  }
+`;
 
 export const SUBSCRIPTION_NEW_MESSAGE = gql`
   subscription SubscriptionNewMessage($order: ID!) {
@@ -216,6 +226,7 @@ export const SUBSCRIPTION_ASSIGNED_RIDER = gql`
         items {
           _id
           title
+          image
           food
           description
           quantity

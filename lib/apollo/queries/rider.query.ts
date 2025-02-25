@@ -163,6 +163,7 @@ export const RIDER_ORDERS = gql`
         title
         food
         description
+        image
         quantity
         variation {
           _id

@@ -421,7 +421,8 @@ export default function OrderDetailScreen() {
 
               {tab == "processing" && order.orderStatus === "PICKED" && (
                 <TouchableOpacity
-                  className="h-14 bg-green-500 rounded-3xl py-3 w-full mt-4 mb-10"
+                  className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
+                  style={{ backgroundColor: appTheme.primary }}
                   onPress={() =>
                     mutateOrderStatus({
                       variables: { id: order?._id, status: "DELIVERED" },

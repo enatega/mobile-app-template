@@ -2,7 +2,7 @@ import { ConfigurationContext } from "@/lib/context/global/configuration.context
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useContext, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 
 const ItemDetails = ({ orderData: order }) => {
   // Hooks
@@ -43,12 +43,17 @@ const ItemDetails = ({ orderData: order }) => {
               className="flex-1 flex-row  justify-between items-start gap-x-2"
             >
               <View
-                className="h-[3.8rem] w-12  justify-center items-center"
+                className="h-[3.8rem] w-[3.8rem] overflow-hidden rounded-md  justify-center items-center"
                 style={{
                   backgroundColor: appTheme.themeBackground,
                 }}
               >
-                <Text>I</Text>
+                <Image
+                  // src={item?.image}
+                  source={{ uri: item?.image }}
+                  width={100}
+                  height={100}
+                />
               </View>
               <View className="flex-1">
                 <View>

@@ -20,7 +20,7 @@ export default function RootStackLayout() {
         name="order-detail"
         options={{
           headerShown: false,
-          headerTintColor: appTheme.mainTextColor,
+          headerTintColor: appTheme.fontMainColor,
         }}
       />
       <Stack.Screen name="chat" options={{ headerShown: false }} />

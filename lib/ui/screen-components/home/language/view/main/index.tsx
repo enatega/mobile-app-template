@@ -30,10 +30,11 @@ export default function LanguageMain() {
   const handleSetCurrentLanguage = async () => {
     try {
       const lng = await AsyncStorage.getItem("lang");
-      if (lng) {
-        changeLanguage(lng);
-        changeLanguage(isSelected);
-      }
+      console.log("🚀 ~ handleSetCurrentLanguage ~ lng:", lng);
+      // if (lng) {
+      //   changeLanguage(lng);
+      //   changeLanguage(isSelected);
+      // }
       if (lng) {
         setIsSelected(lng);
       }

@@ -9,7 +9,7 @@ export default function OrderDetailLayour() {
     <Stack
       screenOptions={{
         headerTitleStyle: { color: appTheme.mainTextColor },
-        headerTintColor: appTheme.mainTextColor,
+        headerTintColor: appTheme.fontMainColor,
         headerStyle: Platform.select({
           ios: {
             position: "absolute",
@@ -32,6 +32,7 @@ export default function OrderDetailLayour() {
         name="index"
         options={{
           title: "Order Detail",
+          headerTintColor: appTheme.fontMainColor,
           headerTitleAlign: "center",
           headerShadowVisible: false,
         }}

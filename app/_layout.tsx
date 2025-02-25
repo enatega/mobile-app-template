@@ -18,8 +18,10 @@ import { ConfigurationProvider } from "@/lib/context/global/configuration.contex
 import { LocationProvider } from "@/lib/context/global/location.context";
 import { SoundProvider } from "@/lib/context/global/sound.context";
 import { UserProvider } from "@/lib/context/global/user.context";
+
 // Service
 import { initSentry } from "@/lib/utils/service";
+
 // Locale
 import "@/i18next";
 
@@ -32,7 +34,6 @@ import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSpl
 import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
 import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import "../global.css";
 
 initSentry();
@@ -42,7 +43,6 @@ SplashScreen?.preventAutoHideAsync();
 
 function RootLayout() {
   // Hooks
-  const { i18n } = useTranslation();
   const [loaded] = useFonts({
     SpaceMono: require("../lib/assets/fonts/SpaceMono-Regular.ttf"),
     Inter: require("../lib/assets/fonts/Inter.ttf"),

@@ -1,15 +1,18 @@
-import React, { useLayoutEffect, useState, useContext, useEffect } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 
 import { Ionicons } from "@expo/vector-icons";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import { useLocationContext } from "../context/global/location.context";
 import getEnvVars from "@/environment";
 import { useRouter } from "expo-router";
+import { useLocationContext } from "../context/global/location.context";
+import { useApptheme } from "../context/global/theme.context";
 import UserContext from "../context/global/user.context";
 
 const useOrderDetail = () => {
+  // Hooks
+  const { appTheme } = useApptheme();
   const navigation = useNavigation();
   const route = useRoute();
   const router = useRouter();
@@ -32,7 +35,7 @@ const useOrderDetail = () => {
           onPress={() => router.replace("/(tabs)/home/orders")}
           name="chevron-back"
           size={24}
-          color="black"
+          color={appTheme.fontMainColor}
         />
       ),
     });
