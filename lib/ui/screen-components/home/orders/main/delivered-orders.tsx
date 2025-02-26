@@ -82,7 +82,7 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
         </View>
       ) : loadingAssigned ? (
         <View className="flex-1">
-          <Spinner />
+          <Spinner color="white" />
         </View>
       ) : orders?.length > 0 ? (
         <FlatList

@@ -8,6 +8,8 @@ import {
   Animated,
   Dimensions,
   Image,
+  Linking,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -16,9 +18,14 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MapView, { LatLng, Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
+import { useTranslation } from "react-i18next";
+import { Easing } from "react-native-reanimated";
 
 // Methods
 import { linkToMapsApp } from "@/lib/utils/methods";
+
+// Icons
+import Icons from "@expo/vector-icons/MaterialIcons";
 
 // Constants
 // import { MapStyles } from "@/lib/utils/constants";
@@ -39,8 +46,6 @@ import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
 import AccordionItem from "@/lib/ui/useable-components/accordian";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 import WelldoneComponent from "@/lib/ui/useable-components/well-done";
-import { useTranslation } from "react-i18next";
-import { Easing } from "react-native-reanimated";
 
 const { height } = Dimensions.get("window");
 
@@ -74,7 +79,7 @@ export default function OrderDetailScreen() {
 
   // State
   const [orderId, setOrderId] = useState("");
-  const [lineDashPhase, setLineDashPhase] = useState(0);
+  const [, setLineDashPhase] = useState(0);
   // Ref
   const latitude = useRef(
     new Animated.Value(locationPin.location.latitude),
@@ -97,6 +102,22 @@ export default function OrderDetailScreen() {
       duration: 2000,
       useNativeDriver: false,
     }).start();
+  };
+
+  const openMaps = () => {
+    const rider = `${locationPin.location.latitude},${locationPin.location.longitude}`;
+    const store = `${restaurantAddressPin.location.latitude},${restaurantAddressPin.location.longitude}`;
+    const customer = `${deliveryAddressPin.location.latitude},${deliveryAddressPin.location.longitude}`;
+
+    if (Platform.OS === "ios") {
+      // Apple Maps (Only Rider -> Store -> Customer)
+      const appleMapsUrl = `maps://app?saddr=${rider}&daddr=${order?.orderStatus === "PICKED" ? customer : store}`;
+      Linking.openURL(appleMapsUrl);
+    } else {
+      // Google Maps (Supports waypoints: Rider -> Store -> Customer)
+      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${rider}&destination=${customer}&waypoints=${store}`;
+      Linking.openURL(googleMapsUrl);
+    }
   };
 
   // Use Effect
@@ -142,6 +163,30 @@ export default function OrderDetailScreen() {
             backgroundColor: "transparent",
           }}
         >
+          {/* <Button title="Open in Maps" onPress={openMaps} /> */}
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+
+              width: 38,
+              backgroundColor: "white",
+              opacity: 0.75,
+              position: "absolute",
+              top: 60,
+              right: 12,
+              zIndex: 1,
+            }}
+          >
+            <TouchableOpacity onPress={openMaps}>
+              <Icons
+                name="navigation"
+                size={30}
+                color="#1f2937"
+                className="text-gray-800"
+              />
+            </TouchableOpacity>
+          </View>
           {locationPin ? (
             <MapView
               style={styles.map}
@@ -220,8 +265,8 @@ export default function OrderDetailScreen() {
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
                     strokeColor="black"
-                    lineDashPattern={[5, 5]} // Dashed pattern
-                    lineDashPhase={lineDashPhase} // Animated wave
+                    // lineDashPattern={[5, 5]} // Dashed pattern
+                    // lineDashPhase={lineDashPhase} // Animated wave
                     onReady={(result) => {
                       setDistance(result?.distance);
                       setDuration(result?.duration);
@@ -236,8 +281,8 @@ export default function OrderDetailScreen() {
                   apikey={GOOGLE_MAPS_KEY ?? ""}
                   strokeWidth={2}
                   strokeColor="black"
-                  lineDashPattern={[5, 5]} // Dashed pattern
-                  lineDashPhase={lineDashPhase} // Animated wave
+                  // lineDashPattern={[5, 5]} // Dashed pattern
+                  // lineDashPhase={lineDashPhase} // Animated wave
                   onReady={(result) => {
                     setDistance(result.distance);
                     setDuration(result.duration);
@@ -254,14 +299,16 @@ export default function OrderDetailScreen() {
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
                     strokeColor="black"
-                    lineDashPattern={[5, 5]} // Dashed pattern
-                    lineDashPhase={lineDashPhase} // Animated wave
+                    // lineDashPattern={[5, 5]} // Dashed pattern
+                    // lineDashPhase={lineDashPhase} // Animated wave
                     onReady={(result) => {
                       setDistance(result?.distance);
                       setDuration(result?.duration);
                     }}
                   />
                 )}
+
+              {/* <Button title="Open in Maps" onPress={openMaps} /> */}
             </MapView>
           ) : (
             <View className="flex-1 justify-center items-center gap-y-3">
