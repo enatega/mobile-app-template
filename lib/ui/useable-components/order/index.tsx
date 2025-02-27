@@ -273,6 +273,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           {tab === "new_orders" && (
             <TouchableOpacity
               className="h-12 bg-green-500 rounded-3xl py-3 mt-10 w-full"
+              disabled={loadingAssignOrder}
               onPress={() =>
                 mutateAssignOrder({
                   variables: { id: order?._id },

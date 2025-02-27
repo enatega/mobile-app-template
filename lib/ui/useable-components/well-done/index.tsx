@@ -9,7 +9,7 @@ import { IWellDoneComponentProps } from "@/lib/utils/interfaces";
 import { useTranslation } from "react-i18next";
 
 export default function WelldoneComponent({
-  orderId,
+  orderId = "",
   status = "Delivered",
   setOrderId,
 }: IWellDoneComponentProps) {

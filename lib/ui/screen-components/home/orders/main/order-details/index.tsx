@@ -449,10 +449,10 @@ export default function OrderDetailScreen() {
               {tab === "processing" && order.orderStatus === "ASSIGNED" && (
                 <TouchableOpacity
                   className="h-14 bg-green-500 rounded-3xl py-3 w-full mt-4 mb-10"
+                  disabled={loadingOrderStatus}
                   onPress={() =>
                     mutateOrderStatus({
                       variables: { id: order?._id, status: "PICKED" },
-                      onCompleted: () => {},
                     })
                   }
                 >
@@ -466,25 +466,29 @@ export default function OrderDetailScreen() {
                 </TouchableOpacity>
               )}
 
-              {tab == "processing" && order.orderStatus === "PICKED" && (
-                <TouchableOpacity
-                  className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
-                  style={{ backgroundColor: appTheme.primary }}
-                  onPress={() =>
-                    mutateOrderStatus({
-                      variables: { id: order?._id, status: "DELIVERED" },
-                    })
-                  }
-                >
-                  {loadingOrderStatus ? (
-                    <SpinnerComponent />
-                  ) : (
-                    <Text className="text-center text-white text-lg font-medium">
-                      {t("Mark as Delivered")}
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              )}
+              {/* {tab == "processing" && order.orderStatus === "PICKED" && ( */}
+              <TouchableOpacity
+                className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
+                style={{ backgroundColor: appTheme.primary }}
+                disabled={loadingOrderStatus}
+                onPress={() =>
+                  mutateOrderStatus({
+                    variables: { id: order?._id, status: "DELIVERED" },
+                    onCompleted: () => {
+                      setOrderId(order?._id);
+                    },
+                  })
+                }
+              >
+                {loadingOrderStatus ? (
+                  <SpinnerComponent color="white" />
+                ) : (
+                  <Text className="text-center text-white text-lg font-medium">
+                    {t("Mark as Delivered")}
+                  </Text>
+                )}
+              </TouchableOpacity>
+              {/* )} */}
 
               {tab === "new_orders" && order.orderStatus === "ACCEPTED" && (
                 <TouchableOpacity
