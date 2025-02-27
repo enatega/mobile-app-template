@@ -5,10 +5,8 @@
     "version": "1.1.30",
     "slug": "food-delivery-rider-multivendor",
     "orientation": "portrait",
-    "icon": "./lib/assets/images/icon.png",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    // "icon": "./lib/assets/images/adaptive-icon.png",
+    "assetBundlePatterns": ["**/*"],
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -20,7 +18,7 @@
           "image": "./lib/assets/images/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#000"
         }
       ],
       [
@@ -39,39 +37,31 @@
       ],
       "expo-font"
     ],
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.enatega.multirider",
       "config": {
         "googleMapsApiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
       },
+      "icon": "./lib/assets/images/icon.png",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "$(PRODUCT_NAME) uses your location for features like finding orders nearby and tracking customer orders!",
-        "UIBackgroundModes": [
-          "location",
-          "fetch",
-          "remote-notification"
-        ],
+        "UIBackgroundModes": ["location", "fetch", "remote-notification"],
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "versionCode": 38,
       "googleServicesFile": "./google-services.json",
-      "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
-      ],
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
         }
       },
       "package": "com.enatega.multirider",
+      "icon": "./lib/assets/images/icon.png",
       "adaptiveIcon": {
         "foregroundImage": "./lib/assets/images/icon.png",
         "backgroundColor": "#ffffff"
