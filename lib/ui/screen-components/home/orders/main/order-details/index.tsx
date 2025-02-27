@@ -4,6 +4,7 @@ import BottomSheet, {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Animated,
   Dimensions,
@@ -18,7 +19,6 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MapView, { LatLng, Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
-import { useTranslation } from "react-i18next";
 import { Easing } from "react-native-reanimated";
 
 // Methods
@@ -448,7 +448,8 @@ export default function OrderDetailScreen() {
               {/* Pick up Button */}
               {tab === "processing" && order.orderStatus === "ASSIGNED" && (
                 <TouchableOpacity
-                  className="h-14 bg-green-500 rounded-3xl py-3 w-full mt-4 mb-10"
+                  className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
+                  style={{ backgroundColor: appTheme.primary }}
                   disabled={loadingOrderStatus}
                   onPress={() =>
                     mutateOrderStatus({
@@ -459,7 +460,10 @@ export default function OrderDetailScreen() {
                   {loadingOrderStatus ? (
                     <SpinnerComponent />
                   ) : (
-                    <Text className="text-center text-white text-lg font-medium">
+                    <Text
+                      className="text-center  text-lg font-medium"
+                      style={{ color: appTheme.black }}
+                    >
                       {t("Pick up")}
                     </Text>
                   )}
@@ -483,7 +487,10 @@ export default function OrderDetailScreen() {
                   {loadingOrderStatus ? (
                     <SpinnerComponent color="white" />
                   ) : (
-                    <Text className="text-center text-white text-lg font-medium">
+                    <Text
+                      className="text-center text-lg font-medium"
+                      style={{ color: appTheme.black }}
+                    >
                       {t("Mark as Delivered")}
                     </Text>
                   )}
@@ -492,7 +499,8 @@ export default function OrderDetailScreen() {
 
               {tab === "new_orders" && order.orderStatus === "ACCEPTED" && (
                 <TouchableOpacity
-                  className="h-14 bg-green-500 rounded-3xl py-3 w-full mt-4 mb-10"
+                  className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
+                  style={{ backgroundColor: appTheme.primary }}
                   onPress={() =>
                     mutateAssignOrder({
                       variables: { id: order?._id },
@@ -502,7 +510,10 @@ export default function OrderDetailScreen() {
                   {loadingAssignOrder ? (
                     <SpinnerComponent />
                   ) : (
-                    <Text className="text-center text-white text-lg font-medium">
+                    <Text
+                      className="text-center text-lg font-medium"
+                      style={{ color: appTheme.black }}
+                    >
                       {t("Assign me")}
                     </Text>
                   )}

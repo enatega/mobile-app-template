@@ -68,7 +68,7 @@ export default function ComponentName() {
                   : isKeyboardVisible && isFormOpened === "VEHICLE_FORM"
                     ? "100%"
                     : !isKeyboardVisible && isFormOpened === "VEHICLE_FORM"
-                      ? "45%"
+                      ? "55%"
                       : "65%",
             width: "100%",
             backgroundColor: appTheme.themeBackground,
@@ -94,7 +94,7 @@ export default function ComponentName() {
                     ? "100%"
                     : isFormOpened === "VEHICLE_FORM" && isKeyboardVisible
                       ? "10%"
-                      : "auto",
+                      : "0%",
             shadowOpacity: 0.25,
             shadowRadius: 4,
           }}

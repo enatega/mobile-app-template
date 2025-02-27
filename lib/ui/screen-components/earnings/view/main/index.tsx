@@ -28,11 +28,16 @@ import { EarningScreenMainLoading } from "@/lib/ui/skeletons";
 // Components
 import { useApptheme } from "@/lib/context/global/theme.context";
 import formatNumber from "@/lib/utils/methods/num-formatter";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import EarningsBarChart from "../../bar-chart";
 import EarningStack from "../earnings-stack";
 
 export default function EarningsMain() {
+  // States
+  const [recentTransaction, setRecentTransaction] =
+    useState<IRiderEarnings[]>();
+
   // Hooks
   const { appTheme } = useApptheme();
   const { t } = useTranslation();
@@ -76,6 +81,20 @@ export default function EarningsMain() {
           );
         },
       })) ?? ([] as barDataItem[]);
+
+  // UseEffects
+  useEffect(() => {
+    if (riderEarningsData?.riderEarningsGraph?.earnings?.length) {
+      const sortedTransactions = [
+        ...riderEarningsData.riderEarningsGraph.earnings,
+      ].sort(
+        (a, b) =>
+          new Date(String(b?.date)).setHours(0, 0, 0, 0) -
+          new Date(String(a?.date)).setHours(23, 59, 59, 999),
+      );
+      setRecentTransaction(sortedTransactions);
+    }
+  }, [riderEarningsData?.riderEarningsGraph?.earnings?.length]);
 
   // If loading
   if (isRiderEarningsLoading) return <EarningScreenMainLoading />;
@@ -125,7 +144,7 @@ export default function EarningsMain() {
       </View>
       <View>
         <FlatList
-          data={riderEarningsData?.riderEarningsGraph?.earnings}
+          data={recentTransaction}
           contentContainerClassName="scroll-smooth"
           keyExtractor={(_, index) => index.toString()}
           style={{ height: "55%" }}

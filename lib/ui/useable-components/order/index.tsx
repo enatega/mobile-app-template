@@ -272,8 +272,9 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
 
           {tab === "new_orders" && (
             <TouchableOpacity
-              className="h-12 bg-green-500 rounded-3xl py-3 mt-10 w-full"
+              className="h-12 rounded-3xl py-3 mt-10 w-full"
               disabled={loadingAssignOrder}
+              style={{ backgroundColor: appTheme.primary }}
               onPress={() =>
                 mutateAssignOrder({
                   variables: { id: order?._id },
@@ -283,7 +284,10 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               {loadingAssignOrder ? (
                 <SpinnerComponent />
               ) : (
-                <Text className="text-center text-white text-lg font-medium">
+                <Text
+                  className="text-center text-lg font-medium"
+                  style={{ color: appTheme.black }}
+                >
                   {t("Assign me")}
                 </Text>
               )}

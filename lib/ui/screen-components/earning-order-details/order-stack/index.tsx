@@ -9,6 +9,7 @@ import { Text, View } from "react-native";
 export default function OrderStack({
   orderId,
   amount,
+  isLast,
 }: IRiderEarningsOrderProps) {
   // Hooks
   const { appTheme } = useApptheme();
@@ -19,6 +20,7 @@ export default function OrderStack({
       style={{
         borderBottomColor: appTheme.borderLineColor,
         backgroundColor: appTheme.screenBackground,
+        marginBottom: isLast ? 100 : 0,
       }}
     >
       <View className="flex flex-col gap-3 p-1 justify-center  float-start">
