@@ -184,7 +184,7 @@ export default function VehiclePlateForm({
   return (
     <View className="w-full">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex flex-col justify-between w-full p-3 h-full mt-0 -z-10">
+        <View className="flex flex-col justify-between w-full p-2 h-full mt-0 ">
           <FormHeader title={t("Vehicle Plate")} />
           <View>
             <View className="flex flex-col w-full my-2">

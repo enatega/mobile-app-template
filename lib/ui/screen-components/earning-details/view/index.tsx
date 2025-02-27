@@ -1,5 +1,4 @@
 // Core
-import { View } from "react-native";
 
 // Interfaces
 import {
@@ -24,6 +23,7 @@ import { EarningsSummaryMainLoading } from "@/lib/ui/skeletons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { showMessage } from "react-native-flash-message";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import EarningDetailsDateFilter from "../date-filter";
 
 export default function EarningDetailsMain({
@@ -131,7 +131,9 @@ export default function EarningDetailsMain({
   if (isRiderEarningsLoading || isFiltering)
     return <EarningsSummaryMainLoading />;
   return (
-    <View style={{ backgroundColor: appTheme.screenBackground }}>
+    <GestureHandlerRootView
+      style={{ backgroundColor: appTheme.screenBackground, height: "100%" }}
+    >
       <EarningDetailsDateFilter
         dateFilter={dateFilter}
         setDateFilter={setDateFilter}
@@ -147,6 +149,6 @@ export default function EarningDetailsMain({
         riderEarningsData={riderEarningsData}
         setModalVisible={setModalVisible}
       />
-    </View>
+    </GestureHandlerRootView>
   );
 }
