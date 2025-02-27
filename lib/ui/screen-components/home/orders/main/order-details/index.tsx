@@ -512,7 +512,9 @@ export default function OrderDetailScreen() {
           </BottomSheetView>
         </BottomSheet>
       </GestureHandlerRootView>
-      <WelldoneComponent orderId={orderId} setOrderId={setOrderId} />
+      {orderId && (
+        <WelldoneComponent orderId={orderId} setOrderId={setOrderId} />
+      )}
     </>
   );
 }
