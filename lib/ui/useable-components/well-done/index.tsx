@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 // Core
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import Modal from "react-native-modal";
 
 // Interface
@@ -7,12 +8,20 @@ import { IWellDoneComponentProps } from "@/lib/utils/interfaces";
 
 // Hooks
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 export default function WelldoneComponent({
-  orderId,
+  orderId = "",
   status = "Delivered",
   setOrderId,
 }: IWellDoneComponentProps) {
+  // Use Effect
+  useEffect(() => {
+    setTimeout(() => {
+      setOrderId("");
+    }, 3000);
+  }, []);
+
   // Hooks
   const { t } = useTranslation();
   return (
@@ -20,13 +29,19 @@ export default function WelldoneComponent({
       isVisible={!!orderId}
       onBackdropPress={() => setOrderId("")}
       onBackButtonPress={() => setOrderId("")}
+      collapsable={true}
       coverScreen={false}
     >
-      <View className="h-fit w-full bg-transparent justify-around items-center">
+      <View className="h-fit w-full bg-transparent items-center">
         <View className="h-[120px] w-[95%] items-center justify-around bg-white border-white rounded-[16px]">
-          <View>
-            <Text>{t("Icon Here")}</Text>
-          </View>
+          {/* <View> */}
+          {/* <WellDoneIcon /> */}
+          <Image
+            source={require("../../../assets/images/welldone.png")}
+            className="h-[40px] w-[40px]"
+          />
+
+          {/* </View> */}
           <View className="items-center">
             <Text className="font-inter text-lg font-bold text-centertext-gray-900">
               {t("Well Done Rider")}

@@ -76,7 +76,7 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
     >
       {loadingAssigned ? (
         <View className="flex-1">
-          <Spinner />
+          <Spinner color="white" />
         </View>
       ) : errorAssigned ? (
         <View className="flex-1 justify-center items-center">

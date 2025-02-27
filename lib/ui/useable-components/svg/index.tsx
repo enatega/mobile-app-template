@@ -23,3 +23,4 @@ export { default as RightChevron } from "./right-chevron";
 export { default as MotorBikeIcon } from "./motor-bike";
 export { default as CarIcon } from "./car";
 export { default as TruckIcon } from "./truck";
+export { default as WellDoneIcon } from "./welldone";
