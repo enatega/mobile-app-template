@@ -17,7 +17,13 @@ import {
   View,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import MapView, { LatLng, Marker } from "react-native-maps";
+import MapView, {
+  LatLng,
+  MapStyleElement,
+  Marker,
+  PROVIDER_DEFAULT,
+  PROVIDER_GOOGLE,
+} from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { Easing } from "react-native-reanimated";
 
@@ -26,9 +32,6 @@ import { linkToMapsApp } from "@/lib/utils/methods";
 
 // Icons
 import Icons from "@expo/vector-icons/MaterialIcons";
-
-// Constants
-// import { MapStyles } from "@/lib/utils/constants";
 
 // Screen Components
 import ItemDetails from "@/lib/ui/screen-components/home/orders/main/item-details";
@@ -46,6 +49,7 @@ import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
 import AccordionItem from "@/lib/ui/useable-components/accordian";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 import WelldoneComponent from "@/lib/ui/useable-components/well-done";
+import { CustomMapStyles } from "@/lib/utils/constants/map";
 
 const { height } = Dimensions.get("window");
 
@@ -57,7 +61,7 @@ export default function OrderDetailScreen() {
   const configuration = useContext(ConfigurationContext);
 
   // Hooks
-  const { appTheme } = useApptheme();
+  const { appTheme, currentTheme } = useApptheme();
   const { t } = useTranslation();
   const {
     restaurantAddressPin,
@@ -77,7 +81,8 @@ export default function OrderDetailScreen() {
     loadingOrderStatus,
   } = useDetails(order);
 
-  // State
+  // States
+  const [customMapStyles, setCustomMapStyles] = useState<MapStyleElement[]>();
   const [orderId, setOrderId] = useState("");
   const [, setLineDashPhase] = useState(0);
   // Ref
@@ -121,6 +126,12 @@ export default function OrderDetailScreen() {
   };
 
   // Use Effect
+  useEffect(() => {
+    const styles_for_map = CustomMapStyles(appTheme);
+    if (currentTheme && appTheme) {
+      setCustomMapStyles(styles_for_map);
+    }
+  }, [appTheme, currentTheme]);
   useEffect(() => {
     const interval = setInterval(() => {
       const newLatitude = locationPin.location.latitude;
@@ -189,7 +200,12 @@ export default function OrderDetailScreen() {
           </View>
           {locationPin ? (
             <MapView
-              style={styles.map}
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: appTheme.themeBackground,
+              }}
+              customMapStyle={customMapStyles}
               showsUserLocation
               zoomEnabled={true}
               zoomControlEnabled={true}
@@ -202,8 +218,9 @@ export default function OrderDetailScreen() {
                 // latitudeDelta: 0.05,
                 // longitudeDelta: 0.05,
               }}
-
-              // provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
+              provider={
+                Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
+              }
               // customMapStyle={MapStyles}
             >
               {deliveryAddressPin?.location && (
@@ -264,7 +281,7 @@ export default function OrderDetailScreen() {
                     destination={restaurantAddressPin.location}
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
-                    strokeColor="black"
+                    strokeColor={"#f95509"}
                     // lineDashPattern={[5, 5]} // Dashed pattern
                     // lineDashPhase={lineDashPhase} // Animated wave
                     onReady={(result) => {
@@ -280,7 +297,7 @@ export default function OrderDetailScreen() {
                   destination={deliveryAddressPin.location}
                   apikey={GOOGLE_MAPS_KEY ?? ""}
                   strokeWidth={2}
-                  strokeColor="black"
+                  strokeColor={"#f95509"}
                   // lineDashPattern={[5, 5]} // Dashed pattern
                   // lineDashPhase={lineDashPhase} // Animated wave
                   onReady={(result) => {
@@ -298,7 +315,7 @@ export default function OrderDetailScreen() {
                     destination={deliveryAddressPin.location}
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
-                    strokeColor="black"
+                    strokeColor={"#f95509"}
                     // lineDashPattern={[5, 5]} // Dashed pattern
                     // lineDashPhase={lineDashPhase} // Animated wave
                     onReady={(result) => {

@@ -41,4 +41,5 @@ export interface AppTheme {
   borderLineColor: string;
   gray: string;
   screenBackground: string;
+  mapBackground: string;
 }
