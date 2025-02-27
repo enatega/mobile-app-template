@@ -73,7 +73,7 @@
       },
       "package": "com.enatega.multirider",
       "adaptiveIcon": {
-        "foregroundImage": "./lib/assets/images/adaptive-icon.png",
+        "foregroundImage": "./lib/assets/images/icon.png",
         "backgroundColor": "#ffffff"
       }
     },
