@@ -20,6 +20,7 @@ export const useChatScreen = () => {
   const { id: orderId } = route.params as { id: string };
 
   const { dataProfile } = useContext(UserContext);
+
   // States
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -88,11 +89,11 @@ export const useChatScreen = () => {
     if (chatData) {
       setMessages(
         chatData?.chat?.map((message: IMessage) => ({
-          _id: message.id,
-          text: message.message,
+          _id: message?.id ?? "",
+          text: message?.message ?? "",
           createdAt: message.createdAt,
           user: {
-            _id: message.user.id,
+            _id: message.user.id ?? "",
             name: message.user.name,
           },
         })),

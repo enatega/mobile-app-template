@@ -112,7 +112,8 @@ export default function ChatMain() {
         <GiftedChat
           messages={messages}
           user={{
-            _id: profile?.rider?._id ?? "",
+            _id: profile?._id ?? "",
+            name: profile?.name,
           }}
           renderBubble={renderBubble}
           renderSend={renderSend}
