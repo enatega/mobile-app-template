@@ -177,8 +177,8 @@ export default function VehiclePlateForm({
 
   useEffect(() => {
     setFormData({
-      number: dataProfile?.vehicleDetails.number ?? "",
-      image: dataProfile?.vehicleDetails.image ?? "",
+      number: dataProfile?.vehicleDetails?.number ?? "",
+      image: dataProfile?.vehicleDetails?.image ?? "",
     });
   }, []);
   return (
