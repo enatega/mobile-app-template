@@ -38,7 +38,7 @@ export const Colors = {
     borderLineColor: "rgb(181, 181, 181)",
     gray: "#e5e5e5",
     screenBackground: "#FFFF",
-    mapBackground: "#90E36D",
+    mapBackground: "#ffffff",
   },
   dark: {
     primary: "#A5C616", // Slightly darker green to avoid too much brightness
@@ -60,7 +60,7 @@ export const Colors = {
     textErrorColor: "#FF8A50", // Softer orange for errors
     headerBackground: "#2A2A2A", // Darker gray for headers
     headerText: "#E0E0E0", // Light gray for text
-    fontMainColor: "#E0E0E0", // Light gray for main text
+    fontMainColor: "#ffffff", // Light gray for main text
     fontSecondColor: "#B0B0B0", // Medium gray for secondary text
     cartContainer: "#1E1E1E", // Matches the dark background
     startColor: "#8CA30D",

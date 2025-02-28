@@ -124,11 +124,14 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 name="apartment"
                 size={30}
                 weight="medium"
-                color="#111827"
+                color={appTheme.fontMainColor}
               />
             </View>
             <View>
-              <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
+              <Text
+                className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink "
+                style={{ color: appTheme.fontMainColor }}
+              >
                 {t("Pickup Order")}
               </Text>
               <Text
@@ -147,11 +150,14 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 name="home"
                 size={30}
                 weight="medium"
-                color="#111827"
+                color={appTheme.fontMainColor}
               />
             </View>
             <View>
-              <Text className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
+              <Text
+                className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink "
+                style={{ color: appTheme.fontMainColor }}
+              >
                 {t("Delivery Order")}
               </Text>
               <Text
@@ -167,21 +173,29 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           <View className="w-[99%] flex-row justify-between items-center">
             {/* <View className="flex-row gap-x-1">
               <IconSymbol size={20} name="currency-exchange" color="#6b7280" />
-              <Text className="font-[Inter] text-base font-medium leading-6 text-left underline-offset-auto decoration-skip-ink text-gray-500">
+              <Text className="font-[Inter] text-base font-medium leading-6 text-left underline-offset-auto decoration-skip-ink "
+              style={{color: appTheme.fontMainColor}}
+              >
                 0.71
               </Text>
             </View> */}
 
             <View className="flex-1 flex-row justify-start  items-center gap-x-1">
               <ClockIcon color="#6b7280" />
-              <Text className="font-[Inter] text-base font-medium  text-left underline-offset-auto decoration-skip-ink text-gray-500">
+              <Text
+                className="font-[Inter] text-base font-medium  text-left underline-offset-auto decoration-skip-ink "
+                style={{ color: appTheme.fontMainColor }}
+              >
                 {time}
               </Text>
             </View>
 
             <View className="flex-1 flex-row justify-end items-center gap-x-1">
               <BikeRidingIcon color="#6b7280" />
-              <Text className="font-[Inter] text-base font-medium text-gray-500">
+              <Text
+                className="font-[Inter] text-base font-medium "
+                style={{ color: appTheme.fontMainColor }}
+              >
                 {calculateDistance(
                   Number(order?.restaurant?.location?.coordinates[0]),
                   Number(order?.restaurant?.location?.coordinates[1]),

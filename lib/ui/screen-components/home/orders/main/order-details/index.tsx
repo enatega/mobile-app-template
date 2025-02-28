@@ -194,7 +194,7 @@ export default function OrderDetailScreen() {
                 name="navigation"
                 size={30}
                 color="#1f2937"
-                className="text-gray-800"
+                className={appTheme.fontMainColor}
               />
             </TouchableOpacity>
           </View>
