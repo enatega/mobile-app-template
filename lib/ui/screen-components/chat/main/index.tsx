@@ -26,7 +26,7 @@ export default function ChatMain() {
   //   setImage(image.filter((item) => item !== src));
   // };
 
-  const renderSend = (props) => {
+  const renderSend = () => {
     return (
       // <Send
       //   {...props}
