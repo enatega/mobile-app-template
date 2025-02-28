@@ -12,7 +12,6 @@ import {
 
 // Hooks
 import { useApptheme } from "@/lib/context/global/theme.context";
-import { StatusBar, StatusBarStyle } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -23,7 +22,7 @@ const RootLayout = () => {
   // Hooks
   const pathName = usePathname();
   const { t } = useTranslation();
-  const { appTheme, currentTheme } = useApptheme();
+  const { appTheme } = useApptheme();
 
   useEffect(() => {
     if (pathName.startsWith("/wallet/success")) {
@@ -67,10 +66,6 @@ const RootLayout = () => {
         }),
       }}
     >
-      <StatusBar
-        backgroundColor={appTheme.themeBackground}
-        style={currentTheme as StatusBarStyle}
-      />
       <Tabs.Screen
         name="home"
         options={{

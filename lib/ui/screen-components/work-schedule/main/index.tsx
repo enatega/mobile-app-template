@@ -281,13 +281,13 @@ export default function ScheduleScreen() {
 
   useEffect(() => {
     setSchedule(
-      (dataProfile?.workSchedule?.length ?? 0) > 0
-        ? JSON.parse(JSON.stringify(dataProfile?.workSchedule))
-        : daysOfWeek.map((day) => ({
-            day,
-            enabled: false,
-            slots: [{ startTime: "09:00", endTime: "17:00" }],
-          })),
+      (dataProfile?.workSchedule?.length ?? 0) > 0 ?
+        JSON.parse(JSON.stringify(dataProfile?.workSchedule))
+      : daysOfWeek.map((day) => ({
+          day,
+          enabled: false,
+          slots: [{ startTime: "09:00", endTime: "17:00" }],
+        })),
     );
 
     // Auto-detect user's time zone on first render
@@ -307,8 +307,11 @@ export default function ScheduleScreen() {
             keyExtractor={(item) => item.day}
             renderItem={({ item, index }) => (
               <View
-                className=" border border-gray-300 p-4 mb-3 rounded-lg"
-                style={{ backgroundColor: appTheme.themeBackground }}
+                className=" border p-4 mb-3 rounded-lg"
+                style={{
+                  backgroundColor: appTheme.themeBackground,
+                  borderColor: appTheme.borderLineColor,
+                }}
               >
                 {/* Day Header with Toggle */}
                 <View className="flex-row justify-between items-center">
@@ -325,8 +328,8 @@ export default function ScheduleScreen() {
                     inActiveText={""}
                     circleSize={20}
                     barHeight={25}
-                    backgroundActive={"#4CAF50"}
-                    backgroundInactive={"#ccc"}
+                    backgroundActive={appTheme.primary}
+                    backgroundInactive={appTheme.gray}
                     circleBorderWidth={0}
                   />
                 </View>
@@ -399,7 +402,8 @@ export default function ScheduleScreen() {
                           {slotIndex === 0 && (
                             <TouchableOpacity
                               onPress={() => addSlot(index)}
-                              className="w-8 h-8 justify-center items-center border border-green-500 rounded-full"
+                              className="w-8 h-8 justify-center items-center border rounded-full"
+                              style={{ borderColor: appTheme.primary }}
                             >
                               <Text
                                 className=" font-bold text-center"
@@ -423,13 +427,12 @@ export default function ScheduleScreen() {
           style={{ width: width * 0.9, backgroundColor: appTheme.primary }}
           onPress={() => onHandlerSubmit()}
         >
-          {isUpatingSchedule ? (
+          {isUpatingSchedule ?
             <SpinnerComponent />
-          ) : (
-            <Text className="text-center text-white text-lg font-medium">
+          : <Text className="text-center text-white text-lg font-medium">
               {t("Update Schedule")}
             </Text>
-          )}
+          }
         </TouchableOpacity>
 
         {/* Animated Dropdown */}

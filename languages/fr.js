@@ -205,7 +205,7 @@ export const fr = {
   "Open settings": "Ouvrir les paramètres",
   Continue: "Continuer",
   "Date Filter": "Filtre de date",
-  "New Orders": "Nouvelles commandes",
+  "New Orders": "Nouvel Ordre",
   Processing: "En traitement",
   Delivered: "Livré",
   "No new orders yet": "Aucune nouvelle commande pour le moment !",
