@@ -1,6 +1,7 @@
 import { useApptheme } from "@/lib/context/global/theme.context";
 import type { PropsWithChildren } from "react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -13,6 +14,7 @@ export default function AccordionItem({
   title,
 }: AccordionItemPros): JSX.Element {
   // Hooks
+  const { t } = useTranslation();
   const { appTheme } = useApptheme();
   const [expanded, setExpanded] = useState(false);
 
@@ -30,7 +32,7 @@ export default function AccordionItem({
           className="font-[Inter] text-[14px] font-semibold text-left"
           style={{ color: appTheme.fontMainColor }}
         >
-          {title}
+          {t(title)}
         </Text>
         <Icon
           name={expanded ? "expand-less" : "expand-more"}

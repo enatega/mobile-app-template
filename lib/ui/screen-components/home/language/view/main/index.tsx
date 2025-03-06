@@ -39,7 +39,7 @@ export default function LanguageMain() {
         setIsSelected(lng);
       }
     } catch (error) {
-      console.error({ error });
+      console.log({ error });
     }
   };
   const handleSubmission = async () => {
@@ -49,7 +49,7 @@ export default function LanguageMain() {
       changeLanguage(isSelected);
       setIsChangingLang(false);
     } catch (e) {
-      console.error(e);
+      console.log(e);
     }
   };
 

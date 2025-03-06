@@ -48,7 +48,7 @@ export default function BankManagementMain() {
           message: t("Failed to update bank details"),
           type: "danger",
         });
-        console.error("Failed to update bank details", error);
+        console.log("Failed to update bank details", error);
       },
       onCompleted: () => {
         setFormData({

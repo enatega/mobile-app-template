@@ -1,29 +1,37 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import {
-  useQuery,
-  useMutation,
-  useSubscription,
-  ServerParseError,
+  ApolloCache,
+  FetchResult,
   ServerError,
+  ServerParseError,
+  useMutation,
+  useQuery,
+  useSubscription,
 } from "@apollo/client";
-import { FlashMessageComponent } from "../ui/useable-components";
-import { IOrder } from "../utils/interfaces/order.interface";
-import { SUBSCRIPTION_ORDERS } from "../apollo/subscriptions";
+import { GraphQLFormattedError } from "graphql";
+import { useTranslation } from "react-i18next";
 import { GET_CONFIGURATION } from "../api/graphql/query/configuration";
-import { RIDER_ORDERS } from "../apollo/queries/rider.query";
 import {
   ASSIGN_ORDER,
   UPDATE_ORDER_STATUS_RIDER,
 } from "../apollo/mutations/order.mutation";
+import { RIDER_EARNINGS_GRAPH } from "../apollo/queries/earnings.query";
+import {
+  RIDER_CURRENT_WITHDRAW_REQUEST,
+  RIDER_ORDERS,
+  RIDER_PROFILE,
+  RIDER_TRANSACTIONS_HISTORY,
+} from "../apollo/queries/rider.query";
+import { SUBSCRIPTION_ORDERS } from "../apollo/subscriptions";
 import UserContext from "../context/global/user.context";
-import { useTranslation } from "react-i18next";
-import { GraphQLFormattedError } from "graphql";
+import { FlashMessageComponent } from "../ui/useable-components";
+import { IOrder } from "../utils/interfaces/order.interface";
 
 const useDetails = (orderData: IOrder) => {
   // Hooks
   const { t } = useTranslation();
-  const { assignedOrders, loadingAssigned } = useContext(UserContext);
+  const { assignedOrders, loadingAssigned, userId } = useContext(UserContext);
   const [order, setOrder] = useState<IOrder>(orderData);
 
   useEffect(() => {
@@ -75,7 +83,27 @@ const useDetails = (orderData: IOrder) => {
 
   const [mutateOrderStatus, { loading: loadingOrderStatus }] = useMutation(
     UPDATE_ORDER_STATUS_RIDER,
-    { onCompleted, onError, update },
+    {
+      onCompleted,
+      onError,
+      update,
+      refetchQueries: [
+        { query: RIDER_PROFILE, variables: { id: userId } },
+        {
+          query: RIDER_TRANSACTIONS_HISTORY,
+          variables: { userId: userId, userType: "RIDER" },
+        },
+        {
+          query: RIDER_CURRENT_WITHDRAW_REQUEST,
+          variables: { riderId: userId },
+        },
+        {
+          query: RIDER_EARNINGS_GRAPH,
+          variables: { riderId: userId },
+        },
+        { query: RIDER_ORDERS },
+      ],
+    },
   );
 
   async function onCompleted(result) {
@@ -93,6 +121,7 @@ const useDetails = (orderData: IOrder) => {
   }
 
   function onError({
+    cause,
     graphQLErrors,
     networkError,
   }: {
@@ -102,40 +131,41 @@ const useDetails = (orderData: IOrder) => {
     let message = t("Something went wrong");
     if (networkError) message = "Internal Server Error";
     if (graphQLErrors) message = graphQLErrors.map((o) => o.message).join(", ");
-
+    if (cause) message = cause.message;
     // FlashMessageComponent({ message: message });
-    console.error({ message });
+    console.log({ message });
   }
 
-  async function update(cache, { data: result }) {
-    if (result.assignOrder) {
-      const data = cache.readQuery({ query: RIDER_ORDERS });
-      if (data) {
-        const index = data.riderOrders.findIndex(
-          (o: IOrder) => o._id === result.assignOrder._id,
+  async function update(cache: ApolloCache<any>, { data }: FetchResult<any>) {
+    if (data?.assignOrder) {
+      const existingData = cache.readQuery({ query: RIDER_ORDERS });
+      if (existingData) {
+        const index = existingData.riderOrders.findIndex(
+          (o: IOrder) => o._id === data.assignOrder._id,
         );
         if (index > -1) {
-          data.riderOrders[index].rider = result.assignOrder.rider;
-          data.riderOrders[index].orderStatus = result.assignOrder.orderStatus;
+          existingData.riderOrders[index].rider = data.assignOrder.rider;
+          existingData.riderOrders[index].orderStatus =
+            data.assignOrder.orderStatus;
           cache.writeQuery({
             query: RIDER_ORDERS,
-            data: { riderOrders: [...data.riderOrders] },
+            data: { riderOrders: [...existingData.riderOrders] },
           });
         }
       }
     }
-    if (result.updateOrderStatusRider) {
-      const data = cache.readQuery({ query: RIDER_ORDERS });
-      if (data) {
-        const index = data.riderOrders.findIndex(
-          (o) => o._id === result.updateOrderStatusRider._id,
+    if (data?.updateOrderStatusRider) {
+      const existingData = cache.readQuery({ query: RIDER_ORDERS });
+      if (existingData) {
+        const index = existingData.riderOrders.findIndex(
+          (o: IOrder) => o._id === data.updateOrderStatusRider._id,
         );
         if (index > -1) {
-          data.riderOrders[index].orderStatus =
-            result.updateOrderStatusRider.orderStatus;
+          existingData.riderOrders[index].orderStatus =
+            data.updateOrderStatusRider.orderStatus;
           cache.writeQuery({
             query: RIDER_ORDERS,
-            data: { riderOrders: [...data.riderOrders] },
+            data: { riderOrders: [...existingData.riderOrders] },
           });
         }
       }

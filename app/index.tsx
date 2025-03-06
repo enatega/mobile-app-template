@@ -1,6 +1,6 @@
+import * as Notifications from "expo-notifications";
 import { Href, useRouter } from "expo-router";
 import { useCallback, useEffect } from "react";
-import * as Notifications from "expo-notifications";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // Context
@@ -21,10 +21,10 @@ function App() {
   const init = async () => {
     const token = await AsyncStorage.getItem(RIDER_TOKEN);
     if (token) {
-      router.navigate(ROUTES.home as Href);
+      router.replace(ROUTES.home as Href);
       return;
     }
-    router.navigate(ROUTES.login as Href);
+    router.replace(ROUTES.login as Href);
   };
 
   // Notification Handler
@@ -67,7 +67,7 @@ function App() {
         });
         const order = data.riderOrders.find((o: IOrder) => o._id === _id);
         const lastNotificationHandledId = await AsyncStorage.getItem(
-          "@lastNotificationHandledId"
+          "@lastNotificationHandledId",
         );
         if (lastNotificationHandledId === _id) return;
         await AsyncStorage.setItem("@lastNotificationHandledId", _id);
@@ -76,7 +76,7 @@ function App() {
         router.setParams({ itemId: _id, order });
       }
     },
-    []
+    [],
   );
 
   // Use Effect
@@ -104,7 +104,7 @@ function App() {
 
   useEffect(() => {
     init();
-  }, [locationPermission]);
+  }, [locationPermission, router]);
 
   // return <Redirect href="/(tabs)/home/orders" />;
   // return <Redirect href="/login" />;

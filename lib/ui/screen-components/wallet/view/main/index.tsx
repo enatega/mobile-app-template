@@ -171,7 +171,7 @@ export default function WalletMain() {
       //     err.message || JSON.stringify(error) || t("Something went wrong"),
       // });
 
-      console.error("error wallet", err);
+      console.log("error wallet", err);
     }
   }
   // Loading state

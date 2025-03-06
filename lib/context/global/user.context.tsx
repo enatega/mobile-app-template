@@ -1,11 +1,11 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { QueryResult, useQuery } from "@apollo/client";
 import {
-  requestForegroundPermissionsAsync,
-  watchPositionAsync,
   LocationAccuracy,
   LocationSubscription,
+  requestForegroundPermissionsAsync,
+  watchPositionAsync,
 } from "expo-location";
-import { QueryResult, useQuery } from "@apollo/client";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 // Interface
 import {
   IRiderProfileResponse,
@@ -15,20 +15,20 @@ import {
 // Context
 // import { useLocationContext } from "./location.context";
 // API
-import { RIDER_ORDERS, RIDER_PROFILE } from "@/lib/apollo/queries";
 import { UPDATE_LOCATION } from "@/lib/apollo/mutations/rider.mutation";
+import { RIDER_ORDERS, RIDER_PROFILE } from "@/lib/apollo/queries";
 import {
   SUBSCRIPTION_ASSIGNED_RIDER,
   SUBSCRIPTION_ZONE_ORDERS,
 } from "@/lib/apollo/subscriptions";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { asyncStorageEmitter } from "@/lib/services/async-storage";
+import { RIDER_TOKEN } from "@/lib/utils/constants";
+import { IOrder } from "@/lib/utils/interfaces/order.interface";
 import {
   IRiderEarnings,
   IRiderEarningsArray,
 } from "@/lib/utils/interfaces/rider-earnings.interface";
-import { asyncStorageEmitter } from "@/lib/services/async-storage";
-import { RIDER_TOKEN } from "@/lib/utils/constants";
-import { IOrder } from "@/lib/utils/interfaces/order.interface";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UserContext = createContext<IUserContextProps>({} as IUserContextProps);
 
@@ -83,7 +83,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     // onError: error2,
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
-    // pollInterval: 15000,
+    pollInterval: 15000,
 
     skip: !userId,
   });
@@ -163,7 +163,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
             },
           });
         } catch (error) {
-          console.error(error);
+          console.log(error);
         }
       },
     );
@@ -179,7 +179,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
         try {
           unsubZoneOrder();
         } catch (err) {
-          console.error("err in unsubZoneOrder", err);
+          console.log("err in unsubZoneOrder", err);
         }
       }
 
@@ -187,7 +187,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
         try {
           unsubAssignOrder();
         } catch (err) {
-          console.error("err in unsubAssignOrder", err);
+          console.log("err in unsubAssignOrder", err);
         }
       }
     };
