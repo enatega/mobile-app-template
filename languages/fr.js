@@ -337,5 +337,6 @@ export const fr = {
   "Dark": "Sombre",
   "Light": "Clair",
   "Time slot overlaps with another existing slot": "Le créneau horaire chevauche un autre créneau existant",
-  "Account holder name": "Nom du titulaire du compte"
+  "Account holder name": "Nom du titulaire du compte",
+  "Tips": "Pourboires"
 };
