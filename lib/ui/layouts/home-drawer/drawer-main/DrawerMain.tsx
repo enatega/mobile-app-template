@@ -60,7 +60,11 @@ const DrawerMain = ({
               }}
               style={{ marginLeft: 16 }}
             >
-              <Ionicons name="menu" size={24} color={appTheme.primary} />
+              <Ionicons
+                name="menu"
+                size={24}
+                color={appTheme.primary}
+              />
             </TouchableOpacity>
           );
         },
@@ -127,7 +131,7 @@ const DrawerMain = ({
         name="work-schedule"
         options={{
           drawerLabel: t("Work Schedule"),
-          title: "Work Schedule",
+          title: t("Work Schedule"),
           drawerIcon: ({ color, size }) => (
             <ClockIcon
               color={appTheme.iconColor ?? color}

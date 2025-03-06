@@ -40,8 +40,7 @@ export default function ProfileHeader() {
               ?.concat(
                 "",
                 dataProfile?.name
-                  ?.split(" ")[1]
-                  ?.substring(0, 1)
+                  ?.slice(dataProfile?.name?.length - 1, 1)
                   ?.toUpperCase(),
               ) ?? "JS"}
           </Text>

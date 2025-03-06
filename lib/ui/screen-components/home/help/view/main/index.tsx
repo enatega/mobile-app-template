@@ -32,10 +32,10 @@ export default function HelpMain() {
         if (supported) {
           Linking.openURL(storeUrl);
         } else {
-          console.error("Cannot open URL:", storeUrl);
+          console.log("Cannot open URL:", storeUrl);
         }
       })
-      .catch((err) => console.error("Error opening URL:", err));
+      .catch((err) => console.log("Error opening URL:", err));
   };
 
   const openWhatsAppChat = async () => {
@@ -60,7 +60,7 @@ export default function HelpMain() {
         }
       }
     } catch (error) {
-      console.error("Error opening URL", error);
+      console.log("Error opening URL", error);
       openWhatsAppStore();
     }
   };
@@ -101,7 +101,11 @@ export default function HelpMain() {
           className="w-[90%] h-12 rounded-full bg-green-500 flex flex-row items-center justify-center gap-2 shadow-lg"
           onPress={openWhatsAppChat}
         >
-          <FontAwesome name="whatsapp" size={24} color="white" />
+          <FontAwesome
+            name="whatsapp"
+            size={24}
+            color="white"
+          />
           <Text className="text-white font-semibold text-lg">
             {t("whatsAppText")}
           </Text>

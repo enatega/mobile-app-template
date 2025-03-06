@@ -231,4 +231,56 @@ export const km = {
   "Select Time Slot": "ជ្រើសរើសម៉ោង",
   "Work Schedule": "កាលវិភាគការងារ",
   Orders: "ការបញ្ជាទិញ",
+  "Update Language": "ធ្វើបច្ចុប្បន្នភាពភាសា",
+  MON: "ថ្ងៃច័ន្ទ",
+  TUE: "ថ្ងៃអង្គារ",
+  WED: "ថ្ងៃពុធ",
+  THU: "ថ្ងៃព្រហស្បតិ៍",
+  FRI: "ថ្ងៃសុក្រ",
+  SAT: "ថ្ងៃសៅរ៍",
+  SUN: "ថ្ងៃអាទិត្យ",
+  "Delivery Orders": "ការបញ្ជាទិញដឹកជញ្ជូន",
+  "Pick up Orders": "ការបញ្ជាទិញយកមកខ្លួនឯង",
+  "No new orders yet!": "មិនមានការបញ្ជាទិញថ្មីនៅឡើយ!",
+  "You don't have any orders yet!": "អ្នកមិនមានការបញ្ជាទិញនៅឡើយទេ!",
+  "No delivered orders yet!": "មិនមានការបញ្ជាទិញដែលបានដឹកជញ្ជូននៅឡើយទេ!",
+
+  // Chat Screen
+  "Contact Customer": "ទាក់ទងអតិថិជន",
+  "Type a message": "វាយសារមួយ",
+  "Send": "ផ្ញើ",
+  "Message sent": "បានផ្ញើសារ",
+  "Message failed": "បរាជ័យក្នុងការផ្ញើសារ",
+
+  // Earnings Screen
+  "Please select a date range": "សូមជ្រើសរើសចន្លោះកាលបរិច្ឆេទ",
+  "Please select a start date": "សូមជ្រើសរើសកាលបរិច្ឆេទចាប់ផ្តើម",
+  "Please select an end date": "សូមជ្រើសរើសកាលបរិច្ឆេទបញ្ចប់",
+  "Start date cannot be after end date": "កាលបរិច្ឆេទចាប់ផ្តើមមិនអាចក្រោយកាលបរិច្ឆេទបញ្ចប់",
+  "Please log in to view your earnings": "សូមចូលដើម្បីមើលចំណូលរបស់អ្នក",
+  "Tips": "រង្វាន់",
+
+  // Help Screen
+  "whatsAppText": "ទាក់ទងយើងតាម WhatsApp",
+  "Pull down to refresh": "ទាញចុះដើម្បីធ្វើបច្ចុប្បន្នភាព",
+
+  // Order Details
+  "ITEMS AND QUANTITY": "ទំនិញនិងបរិមាណ",
+  "PRICE": "តម្លៃ",
+  "Total": "សរុប",
+
+  // Profile Forms
+  "Unable to update availability": "មិនអាចធ្វើបច្ចុប្បន្នភាពភាពអាចរកបាន",
+  "rider name": "ឈ្មោះអ្នកជិះ",
+  "rider id": "អត្តលេខអ្នកជិះ",
+  "Bicycle": "កង់",
+  "Motorbike": "ម៉ូតូ",
+  "Car": "រថយន្ត",
+  "Pickup Truck": "រថយន្តដឹកទំនិញ",
+  "License Expiry Date": "កាលបរិច្ឆេទផុតកំណត់អាជ្ញាប័ណ្ណ",
+  "Theme": "រចនាបទ",
+  "Dark": "ងងឹត",
+  "Light": "ភ្លឺ",
+  "Time slot overlaps with another existing slot": "ពេលវេលាស្របគ្នាជាមួយពេលវេលាផ្សេងទៀតដែលមានស្រាប់",
+  "Account holder name": "ឈ្មោះម្ចាស់គណនី"
 };

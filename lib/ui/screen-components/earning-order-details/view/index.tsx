@@ -15,14 +15,14 @@ import OrderStack from "../order-stack";
 
 export default function EarningsOrderDetailsMain() {
   // States
-  const [recentOrderEarnings, setRecentOrderEarnings] =
-    useState<IRiderEarningsArray[]>();
+  const [recentOrderEarnings, setRecentOrderEarnings] = useState<
+    IRiderEarningsArray[]
+  >([] as IRiderEarningsArray[]);
 
   // Hooks
   const { appTheme } = useApptheme();
   const { riderOrderEarnings } = useUserContext();
 
-  // UseEffects
   // UseEffects
   useEffect(() => {
     if (riderOrderEarnings?.length) {
@@ -34,21 +34,10 @@ export default function EarningsOrderDetailsMain() {
       setRecentOrderEarnings(sortedOrderEarnings);
     }
   }, [riderOrderEarnings?.length]);
+
+  if (!recentOrderEarnings.length) return <NoRecordFound />;
   return (
     <View style={{ backgroundColor: appTheme.themeBackground, height: "100%" }}>
-      {/* {riderOrderEarnings.length === 0 && <NoRecordFound />}
-      {riderOrderEarnings?.map(
-        (earning: IRiderEarningsArray, index: number) => {
-          return (
-            <OrderStack
-              key={index}
-              amount={earning.totalEarnings}
-              orderId={earning.orderDetails.orderId}
-            />
-          );
-        },
-      )} */}
-
       <FlatList
         data={recentOrderEarnings}
         contentContainerClassName="scroll-smooth"
@@ -58,7 +47,7 @@ export default function EarningsOrderDetailsMain() {
         renderItem={(info) => {
           return (
             <OrderStack
-              isLast={info.index === recentOrderEarnings.length - 1}
+              isLast={info.index === recentOrderEarnings?.length - 1}
               key={info.index}
               amount={info.item.totalEarnings}
               orderId={info.item.orderDetails.orderId}

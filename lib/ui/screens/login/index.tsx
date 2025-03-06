@@ -70,7 +70,7 @@ const LoginScreen = () => {
       // FlashMessageComponent({
       //   message: err?.message ?? "Something went wrong. Please refresh.",
       // });
-      console.error("error login", err);
+      console.log("error login", err);
     }
   };
 

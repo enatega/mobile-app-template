@@ -48,7 +48,7 @@ export default function EarningDetailsMain({
     refetch: fetchRiderEarnings,
   } = useQuery(RIDER_EARNINGS_GRAPH, {
     onError: (err) => {
-      console.error(err);
+      console.log(err);
       showMessage({
         message:
           err.graphQLErrors[0].message ||
@@ -121,7 +121,7 @@ export default function EarningDetailsMain({
       setIsFiltering(false);
       setIsDateFilterVisible(false);
     } catch (error) {
-      console.error("an error occurred while filtering eanrings", { error });
+      console.log("an error occurred while filtering eanrings", { error });
       return setIsFiltering(false);
     } finally {
       setIsFiltering(false);

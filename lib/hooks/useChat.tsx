@@ -1,14 +1,14 @@
-import { useRoute } from "@react-navigation/native";
-import { Alert } from "react-native";
-import { useState, useEffect, useContext } from "react";
 import { useMutation, useQuery } from "@apollo/client";
+import { useRoute } from "@react-navigation/native";
+import { useContext, useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 // Context
 import UserContext from "../context/global/user.context";
 
 // API
-import { CHAT } from "@/lib/apollo/queries";
 import { SEND_CHAT_MESSAGE } from "@/lib/apollo/mutations/chat.mutation";
+import { CHAT } from "@/lib/apollo/queries";
 import { SUBSCRIPTION_NEW_MESSAGE } from "@/lib/apollo/subscriptions";
 import { IMessage } from "react-native-gifted-chat";
 
@@ -58,7 +58,7 @@ export const useChatScreen = () => {
       variables: {
         orderId: orderId,
         messageInput: {
-          message: String(inputMessage),
+          message: String(String(inputMessage)),
           user: {
             id: dataProfile?._id,
             name: dataProfile?.name,
