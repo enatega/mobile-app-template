@@ -273,13 +273,13 @@ export default function ScheduleScreen() {
 
   useEffect(() => {
     setSchedule(
-      (dataProfile?.workSchedule?.length ?? 0) > 0 ?
-        JSON.parse(JSON.stringify(dataProfile?.workSchedule))
-      : daysOfWeek.map((day) => ({
-          day,
-          enabled: false,
-          slots: [{ startTime: "09:00", endTime: "17:00" }],
-        })),
+      (dataProfile?.workSchedule?.length ?? 0) > 0
+        ? JSON.parse(JSON.stringify(dataProfile?.workSchedule))
+        : daysOfWeek.map((day) => ({
+            day,
+            enabled: false,
+            slots: [{ startTime: "09:00", endTime: "17:00" }],
+          })),
     );
 
     // Auto-detect user's time zone on first render
@@ -303,6 +303,7 @@ export default function ScheduleScreen() {
                 "🚀 ~ ScheduleScreen ~ translatedDay:",
 
                 item.day,
+                translatedDay,
               );
               return (
                 <View
@@ -433,12 +434,16 @@ export default function ScheduleScreen() {
           style={{ width: width * 0.9, backgroundColor: appTheme.primary }}
           onPress={() => onHandlerSubmit()}
         >
-          {isUpatingSchedule ?
+          {isUpatingSchedule ? (
             <SpinnerComponent />
-          : <Text className="text-center text-white text-lg font-medium">
+          ) : (
+            <Text
+              className="text-center  text-lg font-medium"
+              style={{ color: appTheme.fontMainColor }}
+            >
               {t("Update Schedule")}
             </Text>
-          }
+          )}
         </TouchableOpacity>
 
         {/* Animated Dropdown */}
@@ -470,7 +475,10 @@ export default function ScheduleScreen() {
               ],
             }}
           >
-            <Text className="font-[Inter] text-lg font-bold mb-2">
+            <Text
+              className="font-[Inter] text-lg font-bold mb-2"
+              style={{ color: appTheme.fontMainColor }}
+            >
               {t("Select Time Slot")}
             </Text>
             <ScrollView
