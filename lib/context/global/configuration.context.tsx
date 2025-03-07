@@ -57,7 +57,7 @@ export const ConfigurationProvider: React.FC<IConfigurationProviderProps> = ({
 
       setConfiguration(configuration);
     } catch (error) {
-      console.error("Configuration error: ", error);
+      console.log("Configuration error: ", error);
       setConfiguration(undefined);
     }
   };

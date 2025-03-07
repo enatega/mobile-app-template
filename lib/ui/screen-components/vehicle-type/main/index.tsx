@@ -76,7 +76,7 @@ export default function VehicleTypeMainScreen() {
           className="flex-1 font-inter font-semibold leading-5 tracking-normal"
           style={{ color: appTheme.mainTextColor }}
         >
-          {item.label}
+          {t(item.label)}
         </Text>
         <View
           className={`w-5 h-5 rounded-full border-2 flex items-center justify-center `}

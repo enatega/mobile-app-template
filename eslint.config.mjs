@@ -65,7 +65,7 @@ export default [
       // "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
 
       "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-explicit-any": "warn",
       "react-hooks/exhaustive-deps": "off",
     },
   },

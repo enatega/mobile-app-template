@@ -24,15 +24,7 @@ import { Switch } from "react-native-switch";
 
 const { width } = Dimensions.get("window");
 
-const daysOfWeek = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
+const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 // Generate 24-hour time slots (every 15 minutes)
 const generateTimeSlots = () => {
@@ -79,7 +71,7 @@ export default function ScheduleScreen() {
 
       if (overlapping_day) {
         FlashMessageComponent({
-          message: `${overlapping_day} has overlapping slots.`,
+          message: `${t(overlapping_day)} ${t("has overlapping slots")}`,
         });
         return;
       }
@@ -118,7 +110,7 @@ export default function ScheduleScreen() {
       // FlashMessageComponent({
       //   message: error?.message || t("Something went wrong"),
       // });
-      console.error("error work0schedule", error);
+      console.log("error work0schedule", error);
     }
   };
 
@@ -183,7 +175,7 @@ export default function ScheduleScreen() {
       // Ensure new startTime is before endTime
       if (slot.endTime && newTime >= timeToMinutes(slot.endTime)) {
         FlashMessageComponent({
-          message: "Start time must be earlier than end time",
+          message: t("Start time must be earlier than end time"),
         });
         return;
       }
@@ -191,7 +183,7 @@ export default function ScheduleScreen() {
       // Ensure new endTime is after startTime
       if (slot.startTime && newTime <= timeToMinutes(slot.startTime)) {
         FlashMessageComponent({
-          message: "End time must be greater than start time",
+          message: t("End time must be greater than start time"),
         });
         return;
       }
@@ -215,7 +207,7 @@ export default function ScheduleScreen() {
 
     if (isOverlapping) {
       FlashMessageComponent({
-        message: "Time slot overlaps with another existing slot.",
+        message: t("Time slot overlaps with another existing slot"),
       });
       return;
     }
@@ -305,117 +297,136 @@ export default function ScheduleScreen() {
           <FlatList
             data={schedule}
             keyExtractor={(item) => item.day}
-            renderItem={({ item, index }) => (
-              <View
-                className=" border border-gray-300 p-4 mb-3 rounded-lg"
-                style={{ backgroundColor: appTheme.themeBackground }}
-              >
-                {/* Day Header with Toggle */}
-                <View className="flex-row justify-between items-center">
-                  <Text
-                    className="text-lg font-bold"
-                    style={{ color: appTheme.fontMainColor }}
-                  >
-                    {t(item.day)}
-                  </Text>
-                  <Switch
-                    value={item.enabled}
-                    onValueChange={() => toggleDay(index)}
-                    activeText={""}
-                    inActiveText={""}
-                    circleSize={20}
-                    barHeight={25}
-                    backgroundActive={"#4CAF50"}
-                    backgroundInactive={"#ccc"}
-                    circleBorderWidth={0}
-                  />
-                </View>
+            renderItem={({ item, index }) => {
+              const translatedDay = t(item.day);
+              console.log(
+                "🚀 ~ ScheduleScreen ~ translatedDay:",
 
-                {/* Time Slots */}
-                {item.enabled && (
-                  <View className="mt-2">
-                    {item.slots.map((slot, slotIndex) => {
-                      const isStartTapped =
-                        dropdown?.dayIndex === index &&
-                        dropdown?.slotIndex === slotIndex &&
-                        dropdown?.type === "start";
-                      const isEndTapped =
-                        dropdown?.dayIndex === index &&
-                        dropdown?.slotIndex === slotIndex &&
-                        dropdown?.type === "end";
+                item.day,
+                translatedDay,
+              );
+              return (
+                <View
+                  className=" border p-4 mb-3 rounded-lg"
+                  style={{
+                    backgroundColor: appTheme.themeBackground,
+                    borderColor: appTheme.borderLineColor,
+                  }}
+                >
+                  {/* Day Header with Toggle */}
+                  <View className="flex-row justify-between items-center">
+                    <Text
+                      className="text-lg font-bold"
+                      style={{ color: appTheme.fontMainColor }}
+                    >
+                      {t(item.day)}
+                    </Text>
+                    <Switch
+                      value={item.enabled}
+                      onValueChange={() => toggleDay(index)}
+                      activeText={""}
+                      inActiveText={""}
+                      circleSize={20}
+                      barHeight={25}
+                      backgroundActive={appTheme.primary}
+                      backgroundInactive={appTheme.gray}
+                      circleBorderWidth={0}
+                    />
+                  </View>
 
-                      return (
-                        <View
-                          key={slotIndex}
-                          className="flex-row items-center justify-between mt-2 gap-x-2"
-                        >
-                          {/* Start Time Button */}
-                          <TouchableOpacity
-                            onPress={() =>
-                              setDropdown({
-                                dayIndex: index,
-                                slotIndex,
-                                type: "start",
-                              })
-                            }
-                            className={`w-[40%] bg-white p-2 rounded-md`}
-                            style={
-                              isStartTapped ? style.tappedSlot : style.slot
-                            }
+                  {/* Time Slots */}
+                  {item.enabled && (
+                    <View className="mt-2">
+                      {item.slots.map((slot, slotIndex) => {
+                        const isStartTapped =
+                          dropdown?.dayIndex === index &&
+                          dropdown?.slotIndex === slotIndex &&
+                          dropdown?.type === "start";
+                        const isEndTapped =
+                          dropdown?.dayIndex === index &&
+                          dropdown?.slotIndex === slotIndex &&
+                          dropdown?.type === "end";
+
+                        return (
+                          <View
+                            key={slotIndex}
+                            className="flex-row items-center justify-between mt-2 gap-x-2"
                           >
-                            <Text className="text-center">
-                              {slot.startTime}
-                            </Text>
-                          </TouchableOpacity>
-
-                          <Text className="mx-">-</Text>
-
-                          {/* End Time Button */}
-                          <TouchableOpacity
-                            onPress={() =>
-                              setDropdown({
-                                dayIndex: index,
-                                slotIndex,
-                                type: "end",
-                              })
-                            }
-                            className="w-[40%] bg-white p-2 rounded-md"
-                            style={isEndTapped ? style.tappedSlot : style.slot}
-                          >
-                            <Text className="text-center">{slot.endTime}</Text>
-                          </TouchableOpacity>
-
-                          {/* Remove Slot Button */}
-                          {item.slots.length > 1 && slotIndex !== 0 && (
+                            {/* Start Time Button */}
                             <TouchableOpacity
-                              onPress={() => removeSlot(index, slotIndex)}
-                              className="w-8 h-8 justify-center items-center border border-red-600 rounded-full"
+                              onPress={() =>
+                                setDropdown({
+                                  dayIndex: index,
+                                  slotIndex,
+                                  type: "start",
+                                })
+                              }
+                              className={`w-[40%] bg-white p-2 rounded-md`}
+                              style={
+                                isStartTapped ? style.tappedSlot : style.slot
+                              }
                             >
-                              <Text className="text-red-600 font-bold">−</Text>
-                            </TouchableOpacity>
-                          )}
-
-                          {/* Add Slot Button */}
-                          {slotIndex === 0 && (
-                            <TouchableOpacity
-                              onPress={() => addSlot(index)}
-                              className="w-8 h-8 justify-center items-center border border-green-500 rounded-full"
-                            >
-                              <Text
-                                className=" font-bold text-center"
-                                style={{ color: appTheme.primary }}
-                              >
-                                +
+                              <Text className="text-center">
+                                {slot.startTime}
                               </Text>
                             </TouchableOpacity>
-                          )}
-                        </View>
-                      );
-                    })}
-                  </View>
-                )}
-              </View>
-            )}
+
+                            <Text className="mx-">-</Text>
+
+                            {/* End Time Button */}
+                            <TouchableOpacity
+                              onPress={() =>
+                                setDropdown({
+                                  dayIndex: index,
+                                  slotIndex,
+                                  type: "end",
+                                })
+                              }
+                              className="w-[40%] bg-white p-2 rounded-md"
+                              style={
+                                isEndTapped ? style.tappedSlot : style.slot
+                              }
+                            >
+                              <Text className="text-center">
+                                {slot.endTime}
+                              </Text>
+                            </TouchableOpacity>
+
+                            {/* Remove Slot Button */}
+                            {item.slots.length > 1 && slotIndex !== 0 && (
+                              <TouchableOpacity
+                                onPress={() => removeSlot(index, slotIndex)}
+                                className="w-8 h-8 justify-center items-center border border-red-600 rounded-full"
+                              >
+                                <Text className="text-red-600 font-bold">
+                                  −
+                                </Text>
+                              </TouchableOpacity>
+                            )}
+
+                            {/* Add Slot Button */}
+                            {slotIndex === 0 && (
+                              <TouchableOpacity
+                                onPress={() => addSlot(index)}
+                                className="w-8 h-8 justify-center items-center border rounded-full"
+                                style={{ borderColor: appTheme.primary }}
+                              >
+                                <Text
+                                  className=" font-bold text-center"
+                                  style={{ color: appTheme.primary }}
+                                >
+                                  +
+                                </Text>
+                              </TouchableOpacity>
+                            )}
+                          </View>
+                        );
+                      })}
+                    </View>
+                  )}
+                </View>
+              );
+            }}
           />
         </View>
         <TouchableOpacity
@@ -426,7 +437,10 @@ export default function ScheduleScreen() {
           {isUpatingSchedule ? (
             <SpinnerComponent />
           ) : (
-            <Text className="text-center text-white text-lg font-medium">
+            <Text
+              className="text-center  text-lg font-medium"
+              style={{ color: appTheme.fontMainColor }}
+            >
               {t("Update Schedule")}
             </Text>
           )}
@@ -461,11 +475,14 @@ export default function ScheduleScreen() {
               ],
             }}
           >
-            <Text className="font-[Inter] text-lg font-bold mb-2">
+            <Text
+              className="font-[Inter] text-lg font-bold mb-2"
+              style={{ color: appTheme.fontMainColor }}
+            >
               {t("Select Time Slot")}
             </Text>
             <ScrollView
-              style={{ maxHeight: 300 }}
+              style={{ maxHeight: 300, backgroundColor: "purple" }}
               onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { y: parallaxAnim } } }],
                 { useNativeDriver: false },

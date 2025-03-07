@@ -95,6 +95,7 @@ export default function LocationPermissionComponent({
             style={{
               backgroundColor: appTheme.themeBackground,
               borderColor: appTheme.borderLineColor,
+              borderWidth: 1,
             }}
           >
             <View className="gap-y-2">
@@ -116,7 +117,7 @@ export default function LocationPermissionComponent({
 
             <TouchableOpacity
               className="h-10 rounded-3xl py-2 mt-4 w-[90%]"
-              style={{ backgroundColor: appTheme.themeBackground }}
+              style={{ backgroundColor: appTheme.primary }}
               onPress={() => {
                 askLocationPermission();
               }}

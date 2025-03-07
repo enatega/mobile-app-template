@@ -4,10 +4,9 @@ import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 // Gifted Chat
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useChatScreen } from "@/lib/hooks/useChat";
-import { SendIcon } from "@/lib/ui/useable-components/svg";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
+import { Bubble, GiftedChat } from "react-native-gifted-chat";
 
 export default function ChatMain() {
   // Hooks
@@ -27,13 +26,23 @@ export default function ChatMain() {
   //   setImage(image.filter((item) => item !== src));
   // };
 
-  const renderSend = (props) => {
+  const renderSend = () => {
     return (
-      <Send {...props} sendButtonProps={{ ...props, onPress: onSend }}>
-        <View className="m-2">
-          <SendIcon width={30} height={30} color={appTheme.fontMainColor} />
-        </View>
-      </Send>
+      // <Send
+      //   {...props}
+      //   sendButtonProps={{ ...props, onPress: onSend }}
+      // >
+      //   <View className="m-2">
+
+      <Ionicons
+        width={30}
+        height={30}
+        name="send"
+        color={appTheme.primary}
+        onPress={onSend}
+      />
+      //   </View>
+      // </Send>
     );
   };
 
@@ -163,7 +172,6 @@ const styles = StyleSheet.create({
     position: "relative",
     elevation: 999,
   },
-  sendIcon: { marginBottom: 7, marginRight: 10 },
   emptyChat: {
     marginTop: 300,
     transform: [{ scaleY: -1 }],

@@ -139,7 +139,7 @@ const useLogin = () => {
       //     error?.networkError?.message ??
       //     t("Something went wrong"),
       // });
-      console.error("login error", error);
+      console.log("login error", error);
     }
   };
 

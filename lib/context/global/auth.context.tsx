@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({
       // FlashMessageComponent({
       //   message: `Logout failed - ${e?.message ?? "Unknown Error"}`,
       // });
-      console.error("Logout Error: ", e);
+      console.log("Logout Error: ", e);
     }
   };
 

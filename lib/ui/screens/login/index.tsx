@@ -29,6 +29,7 @@ import useLogin from "@/lib/hooks/useLogin";
 
 // Interface
 import setupApollo from "@/lib/apollo";
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { ILoginInitialValues } from "@/lib/utils/interfaces";
 
 const initial: ILoginInitialValues = {
@@ -42,6 +43,7 @@ const LoginScreen = () => {
   const [initialValues, setInitialValues] = useState(initial);
 
   // Hooks
+  const { appTheme } = useApptheme();
   const client = setupApollo();
   const { t } = useTranslation();
   const { onLogin, creds, isLogging } = useLogin();
@@ -68,7 +70,7 @@ const LoginScreen = () => {
       // FlashMessageComponent({
       //   message: err?.message ?? "Something went wrong. Please refresh.",
       // });
-      console.error("error login", err);
+      console.log("error login", err);
     }
   };
 
@@ -79,8 +81,9 @@ const LoginScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      className="flex-1 bg-white justify-center"
+      className="flex-1 justify-center"
       behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={{ backgroundColor: appTheme.themeBackground }}
     >
       <SafeAreaView>
         <ScrollView
@@ -97,21 +100,38 @@ const LoginScreen = () => {
               return (
                 <View className="mt-24 p-5 items-start gap-y-2">
                   {/* Icon */}
-                  <Icon name="envelope" size={30} color="#000" />
+                  <Icon
+                    name="envelope"
+                    size={30}
+                    color={appTheme.fontMainColor}
+                  />
 
                   {/* Title */}
-                  <Text className="text-center text-xl font-semibold  text-black">
+                  <Text
+                    className="text-center text-xl font-semibold "
+                    style={{ color: appTheme.fontMainColor }}
+                  >
                     {t("Enter Your Credentials to login")}
                   </Text>
-                  <Text className="text-center text-sm text-gray-500 mb-5">
+                  <Text
+                    className="text-center text-sm mb-5"
+                    style={{ color: appTheme.fontSecondColor }}
+                  >
                     {t("We'll check if you have an account")}
                   </Text>
 
                   {/* Email Input */}
 
-                  <View className="flex-row items-center border border-gray-300 rounded-lg px-3 bg-white mb-[-4]">
+                  <View
+                    className="flex-row items-center border rounded-lg px-3  mb-[-4]"
+                    style={{
+                      borderColor: appTheme.borderLineColor,
+                      backgroundColor: appTheme.themeBackground,
+                    }}
+                  >
                     <TextInput
-                      className="flex-1 h-12 text-base text-black"
+                      className="flex-1 h-12 text-base"
+                      style={{ color: appTheme.fontMainColor }}
                       placeholder={t("Email")}
                       keyboardType="email-address"
                       inputMode="email"
@@ -127,9 +147,16 @@ const LoginScreen = () => {
                   )}
 
                   {/* Password Input */}
-                  <View className="flex-row items-center border border-gray-300 rounded-lg px-3 bg-white mb-[-4]">
+                  <View
+                    className="flex-row items-center border  rounded-lg px-3  mb-[-4]"
+                    style={{
+                      backgroundColor: appTheme.themeBackground,
+                      borderColor: appTheme.borderLineColor,
+                    }}
+                  >
                     <TextInput
-                      className="flex-1 h-12 text-base text-black"
+                      className="flex-1 h-12 text-base"
+                      style={{ color: appTheme.fontMainColor }}
                       placeholder={t("Password")}
                       secureTextEntry={!passwordVisible}
                       value={values.password}
@@ -143,7 +170,7 @@ const LoginScreen = () => {
                       <Icon
                         name={passwordVisible ? "eye-slash" : "eye"}
                         size={14}
-                        color="#000"
+                        color={appTheme.fontMainColor}
                       />
                     </TouchableOpacity>
                   </View>
@@ -155,13 +182,17 @@ const LoginScreen = () => {
 
                   {/* Login Button */}
                   <TouchableOpacity
-                    className="h-12 bg-green-500 rounded-3xl py-3 mt-10 w-full"
+                    className="h-12 rounded-3xl py-3 mt-10 w-full"
+                    style={{ backgroundColor: appTheme.primary }}
                     onPress={() => handleSubmit()}
                   >
                     {isLogging ? (
                       <SpinnerComponent />
                     ) : (
-                      <Text className="text-center text-white text-lg font-medium">
+                      <Text
+                        className="text-center text-lg font-medium"
+                        style={{ color: appTheme.black }}
+                      >
                         {t("Login")}
                       </Text>
                     )}

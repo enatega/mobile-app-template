@@ -93,7 +93,7 @@ export default function DrivingLicenseForm({
         message: t("Failed to update license"),
         type: "danger",
       });
-      console.error("Failed to update license", error);
+      console.log("Failed to update license", error);
       setError({
         field: "image",
         message: t("Failed to upload image"),
@@ -158,7 +158,7 @@ export default function DrivingLicenseForm({
         setFormData((prev) => ({ ...prev, image: data.secure_url }));
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       // showMessage({
       //   message: t("Failed to upload image"),
       //   type: "danger",
@@ -240,7 +240,7 @@ export default function DrivingLicenseForm({
         setIsFormOpened(null);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     } finally {
       setIsLoading((prev) => ({
         ...prev,

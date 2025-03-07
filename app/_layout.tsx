@@ -61,7 +61,7 @@ function RootLayout() {
     }
   }, [loaded]);
   ErrorUtils.setGlobalHandler((error, isFatal) => {
-    console.error("Global Error Caught:", { error, isFatal });
+    console.log("Global Error Caught:", { error, isFatal });
   });
   useEffect(() => {
     grantCameraAndGalleryPermissions();

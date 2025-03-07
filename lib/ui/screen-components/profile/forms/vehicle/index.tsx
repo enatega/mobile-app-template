@@ -70,7 +70,7 @@ export default function VehiclePlateForm({
         message: t("Failed to update license"),
         type: "danger",
       });
-      console.error("Failed to update license", error);
+      console.log("Failed to update license", error);
     },
     onCompleted: () => {
       setIsLoading({
@@ -124,7 +124,7 @@ export default function VehiclePlateForm({
         setFormData((prev) => ({ ...prev, image: data.secure_url }));
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       // showMessage({
       //   message: t("Failed to upload image"),
       //   type: "danger",
@@ -166,7 +166,7 @@ export default function VehiclePlateForm({
       });
       setIsFormOpened(null);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     } finally {
       setIsLoading((prev) => ({
         ...prev,
@@ -177,8 +177,8 @@ export default function VehiclePlateForm({
 
   useEffect(() => {
     setFormData({
-      number: dataProfile?.vehicleDetails.number ?? "",
-      image: dataProfile?.vehicleDetails.image ?? "",
+      number: dataProfile?.vehicleDetails?.number ?? "",
+      image: dataProfile?.vehicleDetails?.image ?? "",
     });
   }, []);
   return (
