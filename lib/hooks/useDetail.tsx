@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from "react";
 
 import {
@@ -106,7 +107,7 @@ const useDetails = (orderData: IOrder) => {
     },
   );
 
-  async function onCompleted(result) {
+  async function onCompleted(result: any) {
     if (result.updateOrderStatusRider) {
       FlashMessageComponent({
         message: `${t("Order marked as")} ${result.updateOrderStatusRider.orderStatus}`,

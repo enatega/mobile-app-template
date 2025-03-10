@@ -207,13 +207,13 @@ export default function VehiclePlateForm({
               <Text style={{ color: appTheme.fontMainColor }}>
                 {t("Add Registration Document")}
               </Text>
-              {!cloudinaryResponse?.secure_url ?
+              {!cloudinaryResponse?.secure_url ? (
                 <TouchableOpacity
                   className="w-full rounded-md border border-dashed  p-3 h-28 items-center justify-center"
                   style={{ borderColor: appTheme.borderLineColor }}
                   onPress={pickImage}
                 >
-                  {isLoading.isUploading ?
+                  {isLoading.isUploading ? (
                     <MotiView>
                       <Skeleton
                         width={50}
@@ -221,15 +221,14 @@ export default function VehiclePlateForm({
                         colorMode={currentTheme ?? "light"}
                       />
                     </MotiView>
-                  : <UploadIcon />}
+                  ) : (
+                    <UploadIcon />
+                  )}
                 </TouchableOpacity>
-              : <View className="flex flex-row justify-between border  rounded-md p-4 my-2">
+              ) : (
+                <View className="flex flex-row justify-between border  rounded-md p-4 my-2">
                   <View className="flex flex-row gap-2">
-                    <Ionicons
-                      name="image"
-                      size={20}
-                      color="#3F51B5"
-                    />
+                    <Ionicons name="image" size={20} color="#3F51B5" />
                     <Text
                       className="text-[#3F51B5] border-b-2 border-b-[#3F51B5]"
                       style={{ color: appTheme.fontSecondColor }}
@@ -247,15 +246,11 @@ export default function VehiclePlateForm({
                       href={cloudinaryResponse.secure_url}
                       className="text-[#9CA3AF] text-xs"
                     >
-                      <Ionicons
-                        size={18}
-                        name="download"
-                        color="#6B7280"
-                      />
+                      <Ionicons size={18} name="download" color="#6B7280" />
                     </Link>
                   </View>
                 </View>
-              }
+              )}
             </View>
             <View>
               <CustomContinueButton

@@ -60,11 +60,7 @@ const DrawerMain = ({
               }}
               style={{ marginLeft: 16 }}
             >
-              <Ionicons
-                name="menu"
-                size={24}
-                color={appTheme.primary}
-              />
+              <Ionicons name="menu" size={24} color={appTheme.primary} />
             </TouchableOpacity>
           );
         },

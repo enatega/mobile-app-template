@@ -186,15 +186,16 @@ const LoginScreen = () => {
                     style={{ backgroundColor: appTheme.primary }}
                     onPress={() => handleSubmit()}
                   >
-                    {isLogging ?
+                    {isLogging ? (
                       <SpinnerComponent />
-                    : <Text
+                    ) : (
+                      <Text
                         className="text-center text-lg font-medium"
                         style={{ color: appTheme.black }}
                       >
                         {t("Login")}
                       </Text>
-                    }
+                    )}
                   </TouchableOpacity>
                 </View>
               );

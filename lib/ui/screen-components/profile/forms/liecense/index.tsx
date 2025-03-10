@@ -336,31 +336,26 @@ export default function DrivingLicenseForm({
                 <Text style={{ color: appTheme.fontMainColor }}>
                   {t("Add License Document")}
                 </Text>
-                {!cloudinaryResponse?.secure_url || !formData.image ?
+                {!cloudinaryResponse?.secure_url || !formData.image ? (
                   <TouchableOpacity
                     className={`w-full rounded-md border border-dashed ${error.field === "image" && error.message ? "border-red-600" : "border-gray-300"} p-3 h-28 items-center justify-center`}
                     onPress={pickImage}
                   >
-                    {isLoading.isUploading ?
+                    {isLoading.isUploading ? (
                       <MotiView>
-                        <Skeleton
-                          width={90}
-                          height={20}
-                          colorMode="light"
-                        />
+                        <Skeleton width={90} height={20} colorMode="light" />
                       </MotiView>
-                    : <UploadIcon />}
+                    ) : (
+                      <UploadIcon />
+                    )}
                     {error.field === "image" && error.message && (
                       <Text className="text-red-600">{error.message}</Text>
                     )}
                   </TouchableOpacity>
-                : <View className="flex flex-row justify-between border border-gray-300 rounded-md p-4 my-2">
+                ) : (
+                  <View className="flex flex-row justify-between border border-gray-300 rounded-md p-4 my-2">
                     <View className="flex flex-row gap-2">
-                      <Ionicons
-                        name="image"
-                        size={20}
-                        color="#3F51B5"
-                      />
+                      <Ionicons name="image" size={20} color="#3F51B5" />
                       <Text className="text-[#3F51B5] border-b-2 border-b-[#3F51B5]">
                         {cloudinaryResponse?.original_filename ??
                           !formData.image}
@@ -376,15 +371,11 @@ export default function DrivingLicenseForm({
                         href={cloudinaryResponse.secure_url ?? !formData.image}
                         className="text-[#9CA3AF] text-xs"
                       >
-                        <Ionicons
-                          size={18}
-                          name="download"
-                          color="#6B7280"
-                        />
+                        <Ionicons size={18} name="download" color="#6B7280" />
                       </Link>
                     </View>
                   </View>
-                }
+                )}
               </View>
               <View>
                 <CustomContinueButton

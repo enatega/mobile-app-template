@@ -35,9 +35,9 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
 
   return (
     <View className="h-fit">
-      {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ?
+      {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ? (
         <View />
-      : null}
+      ) : null}
 
       <TouchableOpacity
         activeOpacity={0.8}
@@ -62,16 +62,20 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             </Text>
             <View
               className={`ps-3 pe-3 bg-green-100 border border-1 rounded-[12px] ${
-                tab === "delivered" ? "border-blue-500 bg-blue-100"
-                : tab === "processing" ? "border-yellow-500 bg-yellow-100"
-                : "border-green-500 bg-green-100"
+                tab === "delivered"
+                  ? "border-blue-500 bg-blue-100"
+                  : tab === "processing"
+                    ? "border-yellow-500 bg-yellow-100"
+                    : "border-green-500 bg-green-100"
               }`}
             >
               <Text
                 className={`font-[Inter] text-[12px] font-semibold text-center decoration-skip-ink-0 ${
-                  tab === "delivered" ? "text-blue-800"
-                  : tab === "processing" ? "text-yellow-800"
-                  : "text-green-800"
+                  tab === "delivered"
+                    ? "text-blue-800"
+                    : tab === "processing"
+                      ? "text-yellow-800"
+                      : "text-green-800"
                 }`}
               >
                 {order?.orderStatus}
@@ -291,15 +295,16 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 })
               }
             >
-              {loadingAssignOrder ?
+              {loadingAssignOrder ? (
                 <SpinnerComponent />
-              : <Text
+              ) : (
+                <Text
                   className="text-center text-lg font-medium"
                   style={{ color: appTheme.black }}
                 >
                   {t("Assign me")}
                 </Text>
-              }
+              )}
             </TouchableOpacity>
           )}
         </View>

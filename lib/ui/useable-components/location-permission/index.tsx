@@ -122,15 +122,16 @@ export default function LocationPermissionComponent({
                 askLocationPermission();
               }}
             >
-              {isLoading ?
+              {isLoading ? (
                 <SpinnerComponent />
-              : <Text
+              ) : (
+                <Text
                   className="text-center text-[14px] font-medium"
                   style={{ color: appTheme.black }}
                 >
                   Allow
                 </Text>
-              }
+              )}
             </TouchableOpacity>
           </View>
         </View>

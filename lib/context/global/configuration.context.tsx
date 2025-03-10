@@ -45,15 +45,15 @@ export const ConfigurationProvider: React.FC<IConfigurationProviderProps> = ({
   const onFetchConfiguration = () => {
     try {
       const configuration: IConfiguration | undefined =
-        loading || error || !data ?
-          {
-            _id: "",
-            googleApiKey: "",
-            riderAppSentryUrl: "",
-            currency: "",
-            currencySymbol: "",
-          }
-        : data?.configuration;
+        loading || error || !data
+          ? {
+              _id: "",
+              googleApiKey: "",
+              riderAppSentryUrl: "",
+              currency: "",
+              currencySymbol: "",
+            }
+          : data?.configuration;
 
       setConfiguration(configuration);
     } catch (error) {

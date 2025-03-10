@@ -8,6 +8,7 @@ export default function OrderDetailLayour() {
   return (
     <Stack
       screenOptions={{
+        headerBackButtonDisplayMode: "generic",
         headerTitleStyle: { color: appTheme.mainTextColor },
         headerTintColor: appTheme.fontMainColor,
         headerStyle: Platform.select({

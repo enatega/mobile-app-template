@@ -139,12 +139,13 @@ export default function VehicleTypeMainScreen() {
           style={{ width: width * 0.9, backgroundColor: appTheme.primary }}
           onPress={() => onHandlerSubmit()}
         >
-          {mutationLoading ?
+          {mutationLoading ? (
             <SpinnerComponent />
-          : <Text className="text-center text-white text-lg font-medium">
+          ) : (
+            <Text className="text-center text-white text-lg font-medium">
               {t("Update")}
             </Text>
-          }
+          )}
         </TouchableOpacity>
       </View>
     </View>

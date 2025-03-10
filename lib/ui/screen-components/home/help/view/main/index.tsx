@@ -101,11 +101,7 @@ export default function HelpMain() {
           className="w-[90%] h-12 rounded-full bg-green-500 flex flex-row items-center justify-center gap-2 shadow-lg"
           onPress={openWhatsAppChat}
         >
-          <FontAwesome
-            name="whatsapp"
-            size={24}
-            color="white"
-          />
+          <FontAwesome name="whatsapp" size={24} color="white" />
           <Text className="text-white font-semibold text-lg">
             {t("whatsAppText")}
           </Text>
