@@ -139,7 +139,7 @@ export default function xCustomDrawerContent(
 
                 {/* Right Arrow Icon */}
                 <RightArrowIcon
-                  color={isFocused ? appTheme.primary : appTheme.iconColor}
+                  color={isFocused ? appTheme.primary : appTheme.fontMainColor}
                   height={20}
                   width={20}
                 />
