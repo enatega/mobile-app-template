@@ -5,6 +5,11 @@
     "version": "1.1.30",
     "slug": "food-delivery-rider-multivendor",
     "orientation": "portrait",
+    "splash": {
+      "image": "./assets/images/transparent.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
     "icon": "./lib/assets/images/icon.png",
     "assetBundlePatterns": [
       "**/*"
@@ -14,15 +19,6 @@
     "newArchEnabled": true,
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./lib/assets/images/icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#000"
-        }
-      ],
       [
         "@sentry/react-native/expo",
         {

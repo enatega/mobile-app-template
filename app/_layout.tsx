@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import { ApolloProvider } from "@apollo/client";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
@@ -11,16 +10,15 @@ import FlashMessage from "react-native-flash-message";
 
 // Service
 import setupApollo from "@/lib/apollo";
+import { initSentry } from "@/lib/utils/service";
 
-// Context
+// Providers
 import { AuthProvider } from "@/lib/context/global/auth.context";
 import { ConfigurationProvider } from "@/lib/context/global/configuration.context";
 import { LocationProvider } from "@/lib/context/global/location.context";
 import { SoundProvider } from "@/lib/context/global/sound.context";
 import { UserProvider } from "@/lib/context/global/user.context";
-
-// Service
-import { initSentry } from "@/lib/utils/service";
+import { ApolloProvider } from "@apollo/client";
 
 // Locale
 import "@/i18next";
@@ -31,7 +29,6 @@ import AppThemeProvidor from "@/lib/context/global/theme.context";
 import RootStackLayout from "@/lib/ui/layouts/root-layout";
 import { LocationPermissionComp } from "@/lib/ui/useable-components";
 import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSplashScreen";
-import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
 import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 import { useEffect } from "react";
 import "../global.css";
@@ -74,26 +71,26 @@ function RootLayout() {
   return (
     <AppThemeProvidor>
       <AnimatedSplashScreen>
-        <InternetProvider>
-          <ApolloProvider client={client}>
-            <ConfigurationProvider>
-              <AuthProvider client={client}>
-                <LocationProvider>
-                  <UserProvider>
+        <ApolloProvider client={client}>
+          <AuthProvider client={client}>
+            <UserProvider>
+              <InternetProvider>
+                <ConfigurationProvider>
+                  <LocationProvider>
                     <SoundProvider>
                       <LocationPermissionComp>
-                        <UnavailableStatus />
                         <RootStackLayout />
+                        {/* <UnavailableStatus /> */}
                       </LocationPermissionComp>
                       <StatusBar style="inverted" />
                       <FlashMessage position="bottom" />
                     </SoundProvider>
-                  </UserProvider>
-                </LocationProvider>
-              </AuthProvider>
-            </ConfigurationProvider>
-          </ApolloProvider>
-        </InternetProvider>
+                  </LocationProvider>
+                </ConfigurationProvider>
+              </InternetProvider>
+            </UserProvider>
+          </AuthProvider>
+        </ApolloProvider>
       </AnimatedSplashScreen>
     </AppThemeProvidor>
   );

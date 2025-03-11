@@ -1,6 +1,13 @@
 import { useRouter } from "expo-router";
-import { useContext } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { useContext, useEffect } from "react";
+import {
+  Animated,
+  Easing,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 // Components
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
@@ -24,8 +31,9 @@ import { useTranslation } from "react-i18next";
 const Order = ({ order, tab }: IOrderComponentProps) => {
   // Hook
   const { time, mutateAssignOrder, loadingAssignOrder } = useOrder(order);
+  const animatedValue = new Animated.Value(0);
 
-  // // Context
+  // Context
   const configuration = useContext(ConfigurationContext);
 
   // Hooks
@@ -33,8 +41,30 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
+  // UseEffects
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      useNativeDriver: true,
+      duration: 1000,
+      easing: Easing.inOut(Easing.ease),
+      toValue: 100,
+    });
+  }, []);
   return (
-    <View className="h-fit">
+    <Animated.View
+      className="h-fit"
+      style={{
+        transform: [
+          {
+            translateY: animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 100],
+              easing: Easing.inOut(Easing.ease),
+            }),
+          },
+        ],
+      }}
+    >
       {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ? (
         <View />
       ) : null}
@@ -309,7 +339,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           )}
         </View>
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 };
 

@@ -1,16 +1,25 @@
+// Expo
 import * as Notifications from "expo-notifications";
 import { Href, useRouter } from "expo-router";
+
+// Core
 import { useCallback, useEffect } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 // Context
 import { useLocationContext } from "@/lib/context/global/location.context";
+
 // API
 import { RIDER_ORDERS } from "@/lib/apollo/queries";
+
 // Constant
 import { RIDER_TOKEN, ROUTES } from "@/lib/utils/constants";
+
 // Service
 import setupApollo from "@/lib/apollo";
+
+// Interfaces
 import { IOrder } from "@/lib/utils/interfaces/order.interface";
 
 function App() {
