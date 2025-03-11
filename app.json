@@ -6,7 +6,7 @@
     "slug": "food-delivery-rider-multivendor",
     "orientation": "portrait",
     "splash": {
-      "image": "./assets/images/transparent.png",
+      "image": "./lib/assets/images/transparent.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -71,7 +71,7 @@
       "package": "com.enatega.multirider",
       "icon": "./lib/assets/images/appIcon.png",
       "adaptiveIcon": {
-        "foregroundImage": "./lib/assets/images/icon.png",
+        "foregroundImage": "./lib/assets/images/appIcon.png",
         "backgroundColor": "#ffffff"
       }
     },

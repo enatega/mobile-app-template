@@ -26,6 +26,8 @@ const SuccessModal = ({ message }: IWalletSuccessModalProps) => {
         shadowRadius: 480,
         shadowOpacity: 1,
         shadowColor: "black",
+        borderWidth: 1,
+        borderColor: appTheme.borderLineColor,
         backgroundColor: appTheme.themeBackground,
         justifyContent: "center",
         alignItems: "center",
@@ -34,13 +36,14 @@ const SuccessModal = ({ message }: IWalletSuccessModalProps) => {
         borderRadius: 10,
         width: 350,
         padding: 12,
-        boxShadow: "25px 25px 35px gray",
+        boxShadow: `5px 5px 5px ${appTheme.secondaryTextColor}`,
       }}
     >
       <View className="absolute right-3 top-3">
         <Ionicons
           name="close-circle-outline"
           size={20}
+          color={appTheme.fontMainColor}
           onPress={() => {
             router.back();
           }}

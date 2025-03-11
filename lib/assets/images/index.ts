@@ -2,5 +2,5 @@ export const IMAGES = {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   icon: require("./icon.png"),
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  successWithdrawRequest: require("./success-request.jpg"),
+  successWithdrawRequest: require("./graphic.png"),
 };

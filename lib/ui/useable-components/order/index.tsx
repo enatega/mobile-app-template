@@ -11,7 +11,6 @@ import {
 
 // Components
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
-import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 // Interface
 import { IOrderComponentProps } from "@/lib/utils/interfaces/order.interface";
 
@@ -27,6 +26,7 @@ import { BikeRidingIcon, ChatIcon, ClockIcon } from "../svg";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { calculateDistance } from "@/lib/utils/methods/custom-functions";
 import { useTranslation } from "react-i18next";
+import CustomContinueButton from "../custom-continue-button";
 
 const Order = ({ order, tab }: IOrderComponentProps) => {
   // Hook
@@ -65,9 +65,9 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
         ],
       }}
     >
-      {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ? (
+      {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ?
         <View />
-      ) : null}
+      : null}
 
       <TouchableOpacity
         activeOpacity={0.8}
@@ -92,20 +92,16 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             </Text>
             <View
               className={`ps-3 pe-3 bg-green-100 border border-1 rounded-[12px] ${
-                tab === "delivered"
-                  ? "border-blue-500 bg-blue-100"
-                  : tab === "processing"
-                    ? "border-yellow-500 bg-yellow-100"
-                    : "border-green-500 bg-green-100"
+                tab === "delivered" ? "border-blue-500 bg-blue-100"
+                : tab === "processing" ? "border-yellow-500 bg-yellow-100"
+                : "border-green-500 bg-green-100"
               }`}
             >
               <Text
                 className={`font-[Inter] text-[12px] font-semibold text-center decoration-skip-ink-0 ${
-                  tab === "delivered"
-                    ? "text-blue-800"
-                    : tab === "processing"
-                      ? "text-yellow-800"
-                      : "text-green-800"
+                  tab === "delivered" ? "text-blue-800"
+                  : tab === "processing" ? "text-yellow-800"
+                  : "text-green-800"
                 }`}
               >
                 {order?.orderStatus}
@@ -315,27 +311,35 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           )}
 
           {tab === "new_orders" && (
-            <TouchableOpacity
-              className="h-12 rounded-3xl py-3 mt-10 w-full"
-              disabled={loadingAssignOrder}
-              style={{ backgroundColor: appTheme.primary }}
+            <CustomContinueButton
+              title={t("Assign me")}
               onPress={() =>
                 mutateAssignOrder({
                   variables: { id: order?._id },
                 })
               }
-            >
-              {loadingAssignOrder ? (
-                <SpinnerComponent />
-              ) : (
-                <Text
-                  className="text-center text-lg font-medium"
-                  style={{ color: appTheme.black }}
-                >
-                  {t("Assign me")}
-                </Text>
-              )}
-            </TouchableOpacity>
+            />
+            // <TouchableOpacity
+            //   className="h-12 rounded-3xl py-3 mt-10 w-full"
+            //   disabled={loadingAssignOrder}
+            //   style={{ backgroundColor: appTheme.primary }}
+            //   onPress={() =>
+            //     mutateAssignOrder({
+            //       variables: { id: order?._id },
+            //     })
+            //   }
+            // >
+            //   {loadingAssignOrder ? (
+            //     <SpinnerComponent />
+            //   ) : (
+            //     <Text
+            //       className="text-center text-lg font-medium"
+            //       style={{ color: appTheme.black }}
+            //     >
+            //       {t("Assign me")}
+            //     </Text>
+            //   )}
+            // </TouchableOpacity>
           )}
         </View>
       </TouchableOpacity>

@@ -38,11 +38,9 @@ export default function AppThemeProvidor({
   // States
   const [currentTheme, setCurrentTheme] = useState<app_theme>("light");
   const [appTheme, setAppTheme] = useState(
-    colorScheme === "dark"
-      ? Colors.dark
-      : colorScheme === "light"
-        ? Colors.light
-        : Colors.light,
+    colorScheme === "dark" ? Colors.dark
+    : colorScheme === "light" ? Colors.light
+    : Colors.light,
   );
 
   // Methods
@@ -52,18 +50,15 @@ export default function AppThemeProvidor({
       Appearance.setColorScheme(theme as app_theme);
       setCurrentTheme(theme as app_theme);
       setAppTheme(
-        theme === "light"
-          ? Colors.light
-          : theme === "dark"
-            ? Colors.dark
-            : Colors.light,
+        theme === "light" ? Colors.light
+        : theme === "dark" ? Colors.dark
+        : Colors.light,
       );
     }
   }
 
   // Handlers
   const toggleTheme = (val: app_theme) => {
-    console.warn({ val });
     const updatedVal = val === "light" ? "dark" : "light";
     setAppTheme(Colors[updatedVal]);
     setCurrentTheme(updatedVal);

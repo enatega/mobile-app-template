@@ -15,7 +15,6 @@ import {
 } from "react-native";
 
 // Components
-import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 
 // Icon
 import Icon from "react-native-vector-icons/FontAwesome6";
@@ -31,6 +30,7 @@ import useLogin from "@/lib/hooks/useLogin";
 import setupApollo from "@/lib/apollo";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { ILoginInitialValues } from "@/lib/utils/interfaces";
+import { CustomContinueButton } from "../../useable-components";
 
 const initial: ILoginInitialValues = {
   username: "",
@@ -98,7 +98,7 @@ const LoginScreen = () => {
           >
             {({ handleChange, handleBlur, handleSubmit, values, errors }) => {
               return (
-                <View className="mt-24 p-5 items-start gap-y-2">
+                <View className="mt-24 p-5 items-center justify-between gap-y-2">
                   {/* Icon */}
                   <Icon
                     name="envelope"
@@ -181,22 +181,26 @@ const LoginScreen = () => {
                   )}
 
                   {/* Login Button */}
-                  <TouchableOpacity
-                    className="h-12 rounded-3xl py-3 mt-10 w-full"
+                  <CustomContinueButton
+                    title={t("Login")}
+                    onPress={() => handleSubmit()}
+                    className="self-center"
+                  />
+                  {/* <TouchableOpacity
+                    className="h-12 rounded-3xl py-2 mt-10 w-full"
                     style={{ backgroundColor: appTheme.primary }}
                     onPress={() => handleSubmit()}
                   >
-                    {isLogging ? (
+                    {isLogging ?
                       <SpinnerComponent />
-                    ) : (
-                      <Text
+                    : <Text
                         className="text-center text-lg font-medium"
                         style={{ color: appTheme.black }}
                       >
                         {t("Login")}
                       </Text>
-                    )}
-                  </TouchableOpacity>
+                    }
+                  </TouchableOpacity> */}
                 </View>
               );
             }}
