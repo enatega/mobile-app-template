@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 // Core
-import { View, Text, Image } from "react-native";
+import { Image, Text, View } from "react-native";
 import Modal from "react-native-modal";
 
 // Interface
 import { IWellDoneComponentProps } from "@/lib/utils/interfaces";
 
 // Hooks
-import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function WelldoneComponent({
   orderId = "",
@@ -47,7 +47,7 @@ export default function WelldoneComponent({
               {t("Well Done Rider")}
             </Text>
             <Text className="font-inter text-sm font-normal leading-[22px] text-center">
-              {t("Order Number")} #{orderId} {status}
+              {t("Order Number")} #{orderId.substring(0, 5)} {status}
             </Text>
           </View>
         </View>

@@ -30,7 +30,7 @@ import CustomContinueButton from "../custom-continue-button";
 
 const Order = ({ order, tab }: IOrderComponentProps) => {
   // Hook
-  const { time, mutateAssignOrder, loadingAssignOrder } = useOrder(order);
+  const { time, mutateAssignOrder } = useOrder(order);
   const animatedValue = new Animated.Value(0);
 
   // Context
@@ -65,9 +65,9 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
         ],
       }}
     >
-      {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ?
+      {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ? (
         <View />
-      : null}
+      ) : null}
 
       <TouchableOpacity
         activeOpacity={0.8}
@@ -92,16 +92,20 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             </Text>
             <View
               className={`ps-3 pe-3 bg-green-100 border border-1 rounded-[12px] ${
-                tab === "delivered" ? "border-blue-500 bg-blue-100"
-                : tab === "processing" ? "border-yellow-500 bg-yellow-100"
-                : "border-green-500 bg-green-100"
+                tab === "delivered"
+                  ? "border-blue-500 bg-blue-100"
+                  : tab === "processing"
+                    ? "border-yellow-500 bg-yellow-100"
+                    : "border-green-500 bg-green-100"
               }`}
             >
               <Text
                 className={`font-[Inter] text-[12px] font-semibold text-center decoration-skip-ink-0 ${
-                  tab === "delivered" ? "text-blue-800"
-                  : tab === "processing" ? "text-yellow-800"
-                  : "text-green-800"
+                  tab === "delivered"
+                    ? "text-blue-800"
+                    : tab === "processing"
+                      ? "text-yellow-800"
+                      : "text-green-800"
                 }`}
               >
                 {order?.orderStatus}
