@@ -75,12 +75,8 @@ export default function OrderDetailScreen() {
     locationPin,
   } = useOrderDetail();
 
-  const {
-    mutateAssignOrder,
-    mutateOrderStatus,
-    loadingAssignOrder,
-    loadingOrderStatus,
-  } = useDetails(order);
+  const { mutateAssignOrder, mutateOrderStatus, loadingOrderStatus } =
+    useDetails(order);
 
   // States
   const [customMapStyles, setCustomMapStyles] = useState<MapStyleElement[]>();
@@ -182,7 +178,7 @@ export default function OrderDetailScreen() {
               justifyContent: "center",
 
               width: 38,
-              backgroundColor: "white",
+              backgroundColor: appTheme.themeBackground,
               opacity: 0.75,
               position: "absolute",
               top: 60,
@@ -199,7 +195,7 @@ export default function OrderDetailScreen() {
               />
             </TouchableOpacity>
           </View>
-          {locationPin ?
+          {locationPin ? (
             <MapView
               style={{
                 width: "100%",
@@ -328,7 +324,8 @@ export default function OrderDetailScreen() {
 
               {/* <Button title="Open in Maps" onPress={openMaps} /> */}
             </MapView>
-          : <View className="flex-1 justify-center items-center gap-y-3">
+          ) : (
+            <View className="flex-1 justify-center items-center gap-y-3">
               <Text className="text-3xl">{t("Map not loaded.")}</Text>
               <Text
                 className="text-lg "
@@ -337,7 +334,7 @@ export default function OrderDetailScreen() {
                 {t("Please check for permissions.")}
               </Text>
             </View>
-          }
+          )}
         </View>
 
         <BottomSheet
@@ -449,9 +446,9 @@ export default function OrderDetailScreen() {
                 >
                   {configuration?.currencySymbol}
                   {order?.orderAmount}
-                  {order.paymentStatus === "PAID" ?
-                    t("Paid")
-                  : t("(Not paid yet)")}
+                  {order.paymentStatus === "PAID"
+                    ? t("Paid")
+                    : t("(Not paid yet)")}
                 </Text>
               </View>
 
@@ -459,10 +456,7 @@ export default function OrderDetailScreen() {
               <View className="flex-1 h-[1px] bg-gray-300 mb-4" />
 
               <AccordionItem title={t("Order Details")}>
-                <ItemDetails
-                  orderData={order}
-                  tab={tab}
-                />
+                <ItemDetails orderData={order} tab={tab} />
               </AccordionItem>
 
               {/* Pick up Button */}
@@ -477,20 +471,21 @@ export default function OrderDetailScreen() {
                     })
                   }
                 >
-                  {loadingOrderStatus ?
+                  {loadingOrderStatus ? (
                     <SpinnerComponent />
-                  : <Text
+                  ) : (
+                    <Text
                       className="text-center  text-lg font-medium"
                       style={{ color: appTheme.black }}
                     >
                       {t("Pick up")}
                     </Text>
-                  }
+                  )}
                 </TouchableOpacity>
               )}
 
-              {
-                /* tab == "processing" && order.orderStatus === "PICKED" &&  */ <TouchableOpacity
+              {tab == "processing" && order.orderStatus === "PICKED" && (
+                <TouchableOpacity
                   className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
                   style={{ backgroundColor: appTheme.primary }}
                   disabled={loadingOrderStatus}
@@ -503,17 +498,18 @@ export default function OrderDetailScreen() {
                     })
                   }
                 >
-                  {loadingOrderStatus ?
+                  {loadingOrderStatus ? (
                     <SpinnerComponent color="white" />
-                  : <Text
+                  ) : (
+                    <Text
                       className="text-center text-lg font-medium"
                       style={{ color: appTheme.black }}
                     >
                       {t("Mark as Delivered")}
                     </Text>
-                  }
+                  )}
                 </TouchableOpacity>
-              }
+              )}
 
               {tab === "new_orders" && order.orderStatus === "ACCEPTED" && (
                 <CustomContinueButton
@@ -550,10 +546,7 @@ export default function OrderDetailScreen() {
         </BottomSheet>
       </GestureHandlerRootView>
       {orderId && (
-        <WelldoneComponent
-          orderId={orderId}
-          setOrderId={setOrderId}
-        />
+        <WelldoneComponent orderId={orderId} setOrderId={setOrderId} />
       )}
     </>
   );
