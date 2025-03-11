@@ -6,8 +6,8 @@
     "slug": "food-delivery-rider-multivendor",
     "orientation": "portrait",
     "splash": {
-      "image": "./lib/assets/images/transparent.png",
-      "resizeMode": "contain",
+      "image": "./lib/assets/images/black_bg.jpg",
+      "resizeMode": "cover",
       "backgroundColor": "#000000"
     },
     "icon": "./lib/assets/images/icon.png",

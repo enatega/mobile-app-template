@@ -29,6 +29,7 @@ import AppThemeProvidor from "@/lib/context/global/theme.context";
 import RootStackLayout from "@/lib/ui/layouts/root-layout";
 import { LocationPermissionComp } from "@/lib/ui/useable-components";
 import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSplashScreen";
+import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
 import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 import { useEffect } from "react";
 import "../global.css";
@@ -80,7 +81,7 @@ function RootLayout() {
                     <SoundProvider>
                       <LocationPermissionComp>
                         <RootStackLayout />
-                        {/* <UnavailableStatus /> */}
+                        <UnavailableStatus />
                       </LocationPermissionComp>
                       <StatusBar style="inverted" />
                       <FlashMessage position="bottom" />

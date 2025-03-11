@@ -37,9 +37,9 @@ export default function AnimatedSplashScreen({
   // Handlers
   const onImageLoaded = useCallback(async () => {
     try {
-      await SplashScreen.hideAsync();
       // Load stuff
-      await Promise.all([]);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await SplashScreen.hideAsync();
     } catch (e) {
       const err = e as Error;
       console.log(err);
