@@ -59,10 +59,12 @@ const CustomDrawerHeader = () => {
               ?.toUpperCase()
               ?.concat(
                 "",
-                dataProfile?.name
-                  ?.split(" ")[1]
-                  ?.substring(0, 1)
-                  ?.toUpperCase() ?? "",
+                dataProfile?.name?.split(" ")[1]?.length
+                  ? (dataProfile?.name
+                      ?.split(" ")[1]
+                      ?.substring(0, 1)
+                      ?.toUpperCase() ?? "")
+                  : "",
               ) ?? "JS"}
           </Text>
         </View>
@@ -94,7 +96,7 @@ const CustomDrawerHeader = () => {
           {t("Availability")}
         </Text>
         <CustomSwitch
-          value={dataProfile?.available ?? false}
+          value={dataProfile?.available ?? isEnabled}
           isDisabled={loading}
           onToggle={async () =>
             await toggleAvailablity({ variables: { id: userId ?? "" } })
@@ -104,7 +106,7 @@ const CustomDrawerHeader = () => {
           className="text-xs font-medium"
           style={{ color: appTheme.secondaryTextColor }}
         >
-          {isEnabled ? t("Available") : t("Not Available")}
+          {dataProfile?.available ? t("Available") : t("Not Available")}
         </Text>
       </View>
     </View>

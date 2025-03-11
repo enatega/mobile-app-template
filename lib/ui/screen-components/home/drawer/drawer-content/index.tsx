@@ -23,7 +23,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
 
-export default function xCustomDrawerContent(
+export default function CustomDrawerContent(
   props: DrawerContentComponentProps,
 ) {
   // Hooks
