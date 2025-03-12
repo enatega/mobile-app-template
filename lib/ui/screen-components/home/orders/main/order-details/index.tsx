@@ -164,7 +164,10 @@ export default function OrderDetailScreen() {
 
   return (
     <>
-      <GestureHandlerRootView className="flex-1">
+      <GestureHandlerRootView
+        className="flex-1"
+        style={{ backgroundColor: appTheme.themeBackground }}
+      >
         <View
           style={{
             height: height * 0.5,
