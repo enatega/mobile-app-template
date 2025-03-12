@@ -87,11 +87,7 @@ export default function EarningsMain() {
     if (riderEarningsData?.riderEarningsGraph?.earnings?.length) {
       const sortedTransactions = [
         ...riderEarningsData.riderEarningsGraph.earnings,
-      ].sort(
-        (a, b) =>
-          new Date(String(b?.date)).setHours(0, 0, 0, 0) -
-          new Date(String(a?.date)).setHours(23, 59, 59, 999),
-      );
+      ];
       setRecentTransaction(sortedTransactions);
     }
   }, [riderEarningsData?.riderEarningsGraph?.earnings?.length]);
@@ -144,7 +140,7 @@ export default function EarningsMain() {
       </View>
       <View>
         <FlatList
-          data={recentTransaction}
+          data={recentTransaction?.splice(0, 5)}
           contentContainerClassName="scroll-smooth"
           keyExtractor={(_, index) => index.toString()}
           style={{ height: "55%" }}

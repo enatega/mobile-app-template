@@ -514,6 +514,7 @@ export default function OrderDetailScreen() {
               {tab === "new_orders" && order.orderStatus === "ACCEPTED" && (
                 <CustomContinueButton
                   title={t("Assign me")}
+                  className="w-[15%] mx-auto"
                   onPress={() =>
                     mutateAssignOrder({
                       variables: { id: order?._id },

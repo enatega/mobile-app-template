@@ -313,10 +313,10 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               </View>
             </View>
           )}
-
           {tab === "new_orders" && (
             <CustomContinueButton
               title={t("Assign me")}
+              className="w-[95%] mx-auto"
               onPress={() =>
                 mutateAssignOrder({
                   variables: { id: order?._id },

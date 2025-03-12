@@ -1,5 +1,3 @@
-// Core
-
 // Interfaces
 import {
   IEarningDetailsMainProps,
@@ -7,24 +5,26 @@ import {
 } from "@/lib/utils/interfaces/rider-earnings.interface";
 
 // Hooks
+import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { QueryResult, useQuery } from "@apollo/client";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // GraphQL
 import { RIDER_EARNINGS_GRAPH } from "@/lib/apollo/queries/earnings.query";
 
 // Components
+import EarningDetailsDateFilter from "../date-filter";
 import EarningDetailsHeader from "../header";
 import EarningsDetailStacks from "./earnings";
 
 // Skeletons
-import { useApptheme } from "@/lib/context/global/theme.context";
 import { EarningsSummaryMainLoading } from "@/lib/ui/skeletons";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { showMessage } from "react-native-flash-message";
+
+// React Native Gesture
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import EarningDetailsDateFilter from "../date-filter";
 
 export default function EarningDetailsMain({
   dateFilter,

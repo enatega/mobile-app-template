@@ -70,8 +70,8 @@ function RootLayout() {
   }
 
   return (
-    <AppThemeProvidor>
-      <AnimatedSplashScreen>
+    <AnimatedSplashScreen>
+      <AppThemeProvidor>
         <ApolloProvider client={client}>
           <AuthProvider client={client}>
             <UserProvider>
@@ -92,8 +92,8 @@ function RootLayout() {
             </UserProvider>
           </AuthProvider>
         </ApolloProvider>
-      </AnimatedSplashScreen>
-    </AppThemeProvidor>
+      </AppThemeProvidor>
+    </AnimatedSplashScreen>
   );
 }
 

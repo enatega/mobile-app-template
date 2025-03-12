@@ -100,7 +100,7 @@ const useDetails = (orderData: IOrder) => {
         },
         {
           query: RIDER_EARNINGS_GRAPH,
-          variables: { riderId: userId },
+          variables: { rideId: userId },
         },
         { query: RIDER_ORDERS },
       ],
