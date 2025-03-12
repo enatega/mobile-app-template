@@ -20,7 +20,7 @@ export default function WelldoneComponent({
     setTimeout(() => {
       setOrderId("");
     }, 3000);
-  }, []);
+  }, [orderId]);
 
   // Hooks
   const { t } = useTranslation();

@@ -81,7 +81,7 @@ export default function OrderDetailScreen() {
   // States
   const [customMapStyles, setCustomMapStyles] = useState<MapStyleElement[]>();
   const [orderId, setOrderId] = useState("");
-  const [, setLineDashPhase] = useState(0);
+  // const [lineDashPhase, setLineDashPhase] = useState(0);
   // Ref
   const latitude = useRef(
     new Animated.Value(locationPin.location.latitude),
@@ -149,12 +149,12 @@ export default function OrderDetailScreen() {
     animation.start();
 
     // Listen to the animated value change
-    const id = waveAnimation.addListener(({ value }) => {
-      setLineDashPhase(-Math.floor(value)); // Adjust this multiplier to control the dash speed
-    });
+    // const id = waveAnimation.addListener(({ value }) => {
+    //   setLineDashPhase(-Math.floor(value)); // Adjust this multiplier to control the dash speed
+    // });
 
     return () => {
-      waveAnimation.removeListener(id); // Clean up listener
+      // waveAnimation.removeListener(id); // Clean up listener
       animation.stop();
       clearInterval(interval);
     };
@@ -166,7 +166,7 @@ export default function OrderDetailScreen() {
     <>
       <GestureHandlerRootView
         className="flex-1"
-        style={{ backgroundColor: appTheme.themeBackground }}
+        style={{ backgroundColor: appTheme.themeBackground, height: "100%" }}
       >
         <View
           style={{
@@ -492,14 +492,15 @@ export default function OrderDetailScreen() {
                   className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
                   style={{ backgroundColor: appTheme.primary }}
                   disabled={loadingOrderStatus}
-                  onPress={() =>
-                    mutateOrderStatus({
+                  onPress={async () => {
+                    await mutateOrderStatus({
                       variables: { id: order?._id, status: "DELIVERED" },
                       onCompleted: () => {
                         setOrderId(order?.orderId);
                       },
-                    })
-                  }
+                    });
+                    setOrderId(order?.orderId);
+                  }}
                 >
                   {loadingOrderStatus ? (
                     <SpinnerComponent color="white" />
@@ -524,34 +525,18 @@ export default function OrderDetailScreen() {
                     })
                   }
                 />
-                // <TouchableOpacity
-                //   className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
-                //   style={{ backgroundColor: appTheme.primary }}
-                //   onPress={() =>
-                //     mutateAssignOrder({
-                //       variables: { id: order?._id },
-                //     })
-                //   }
-                // >
-                //   {loadingAssignOrder ? (
-                //     <SpinnerComponent />
-                //   ) : (
-                //     <Text
-                //       className="text-center text-lg font-medium"
-                //       style={{ color: appTheme.black }}
-                //     >
-                //       {t("Assign me")}
-                //     </Text>
-                //   )}
-                // </TouchableOpacity>
               )}
             </BottomSheetScrollView>
           </BottomSheetView>
         </BottomSheet>
       </GestureHandlerRootView>
-      {orderId && (
-        <WelldoneComponent orderId={orderId} setOrderId={setOrderId} />
-      )}
+      {
+        <WelldoneComponent
+          orderId={orderId}
+          setOrderId={setOrderId}
+          status={order?.orderStatus === "DELIVERED" ? "Delivered" : ""}
+        />
+      }
     </>
   );
 }
