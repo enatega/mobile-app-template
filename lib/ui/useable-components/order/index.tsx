@@ -274,7 +274,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             </Text>
           </View>
 
-          {["ASSIGNED", "PICKED"].includes(order.orderStatus) && (
+          {["PICKED"].includes(order.orderStatus) && (
             <View className="flex-row items-center gap-x-2">
               <TouchableOpacity
                 onPress={() => {
