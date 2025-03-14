@@ -8,7 +8,7 @@ const getEnvVars = (env = Updates.channel) => {
     loadDevMessages();
     loadErrorMessages();
   }
-  if (env === "production" || env === "staging") {
+  if (!__DEV__) {
     return {
       // GRAPHQL_URL: "https://enatega-multivendor.up.railway.app/graphql",
       // WS_GRAPHQL_URL: "wss://enatega-multivendor.up.railway.app/graphql",
@@ -23,8 +23,8 @@ const getEnvVars = (env = Updates.channel) => {
   }
 
   return {
-    // GRAPHQL_URL: "http://192.168.100.15:8001/graphql",
-    // WS_GRAPHQL_URL: "ws://192.168.100.15:8001/graphql",
+    // GRAPHQL_URL: "http://10.97.1.151:8001/graphql",
+    // WS_GRAPHQL_URL: "ws://10.97.1.151:8001/graphql",
     GRAPHQL_URL: "https://enatega-multivendor-revamp.up.railway.app/graphql",
     WS_GRAPHQL_URL: "wss://enatega-multivendor-revamp.up.railway.app/graphql",
     SENTRY_DSN:

@@ -2,9 +2,14 @@
   "expo": {
     "name": "Enatega Multivendor Rider",
     "description": "Enatega is a starter kit food ordering app built in React Native using Expo for IOS and Android. It's made keeping good aesthetics in mind as well keeping the best coding practices in mind. Its fully customisable to easily help you in your next food delivery project. https://market.nativebase.io/view/react-native-food-delivery-backend-app",
-    "version": "1.1.30",
+    "version": "1.1.32",
     "slug": "food-delivery-rider-multivendor",
     "orientation": "portrait",
+    "splash": {
+      "image": "./lib/assets/images/black_bg.jpg",
+      "resizeMode": "cover",
+      "backgroundColor": "#000000"
+    },
     "icon": "./lib/assets/images/icon.png",
     "assetBundlePatterns": [
       "**/*"
@@ -14,15 +19,6 @@
     "newArchEnabled": true,
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./lib/assets/images/icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#000"
-        }
-      ],
       [
         "@sentry/react-native/expo",
         {
@@ -61,7 +57,7 @@
       }
     },
     "android": {
-      "versionCode": 38,
+      "versionCode": 49,
       "googleServicesFile": "./google-services.json",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
@@ -73,9 +69,9 @@
         }
       },
       "package": "com.enatega.multirider",
-      "icon": "./lib/assets/images/icon.png",
+      "icon": "./lib/assets/images/appIcon.png",
       "adaptiveIcon": {
-        "foregroundImage": "./lib/assets/images/icon.png",
+        "foregroundImage": "./lib/assets/images/appIcon.png",
         "backgroundColor": "#ffffff"
       }
     },

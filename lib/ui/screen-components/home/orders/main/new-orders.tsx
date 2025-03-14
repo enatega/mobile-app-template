@@ -8,7 +8,6 @@ import { FlatList } from "react-native-gesture-handler";
 import UserContext from "@/lib/context/global/user.context";
 // UI
 import Order from "@/lib/ui/useable-components/order";
-import Spinner from "@/lib/ui/useable-components/spinner";
 // Constants
 import { NO_ORDER_PROMPT } from "@/lib/utils/constants";
 // Interface
@@ -74,11 +73,7 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
       className="pt-14 flex-1 pb-16"
       style={[style.contaienr, { backgroundColor: appTheme.screenBackground }]}
     >
-      {loadingAssigned ? (
-        <View className="flex-1">
-          <Spinner color="white" />
-        </View>
-      ) : errorAssigned ? (
+      {errorAssigned ? (
         <View className="flex-1 justify-center items-center">
           <Text
             className="text-2xl"

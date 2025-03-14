@@ -68,7 +68,7 @@ export default function DrivingLicenseForm({
     isCalendarVisible: false,
     isSubmitting: false,
   });
-  const [date, setDate] = useState(new Date());
+  // const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const [cloudinaryResponse, setCloudinaryResponse] =
@@ -178,7 +178,11 @@ export default function DrivingLicenseForm({
     const currentDate = selectedDate;
     setShow(false);
     if (currentDate) {
-      setDate(currentDate);
+      // setDate(currentDate);
+      setFormData((prev) => ({
+        ...prev,
+        expiryDate: currentDate,
+      }));
     }
   };
 
@@ -231,6 +235,7 @@ export default function DrivingLicenseForm({
           type: "danger",
         });
       } else {
+        console.log({ ...formData });
         await mutateLicense({
           variables: {
             updateRiderLicenseDetailsId: userId,
@@ -251,20 +256,14 @@ export default function DrivingLicenseForm({
 
   // UseEffects
   useEffect(() => {
+    console.warn(dataProfile?.licenseDetails?.expiryDate);
     setFormData({
       expiryDate: new Date(dataProfile?.licenseDetails?.expiryDate ?? ""),
       image: dataProfile?.licenseDetails?.image ?? "",
       number: String(dataProfile?.licenseDetails?.number ?? ""),
     });
-  }, []);
-  useEffect(() => {
-    if (date) {
-      setFormData((prev) => ({
-        ...prev,
-        expiryDate: date,
-      }));
-    }
-  }, [date]);
+  }, [dataProfile]);
+
   return (
     <View className="w-full items-center justify-center">
       {!isLoading.isCalendarVisible && (
@@ -310,14 +309,14 @@ export default function DrivingLicenseForm({
                       className="text-gray-400"
                       style={{ color: appTheme.fontMainColor }}
                     >
-                      {date.toDateString()}
+                      {formData.expiryDate.toDateString()}
                     </Text>
                   )}
                   <View>
                     {show && (
                       <DateTimePicker
                         testID="dateTimePicker"
-                        value={date}
+                        value={formData.expiryDate}
                         style={{
                           borderColor: appTheme.borderLineColor,
                           backgroundColor: appTheme.themeBackground,

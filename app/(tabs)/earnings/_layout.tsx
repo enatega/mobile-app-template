@@ -27,8 +27,8 @@ export default function StackLayout() {
 
           headerTitleAlign: "center",
           headerShadowVisible: false,
-          headerTintColor: appTheme.mainTextColor,
-          headerTitleStyle: { color: appTheme.mainTextColor },
+          headerTintColor: appTheme.fontMainColor,
+          headerTitleStyle: { color: appTheme.fontMainColor },
           headerStyle: { backgroundColor: appTheme.themeBackground },
           contentStyle: {
             backgroundColor: appTheme.themeBackground,

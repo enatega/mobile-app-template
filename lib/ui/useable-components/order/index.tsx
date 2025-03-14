@@ -1,10 +1,16 @@
 import { useRouter } from "expo-router";
-import { useContext } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { useContext, useEffect } from "react";
+import {
+  Animated,
+  Easing,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 // Components
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
-import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 // Interface
 import { IOrderComponentProps } from "@/lib/utils/interfaces/order.interface";
 
@@ -20,12 +26,14 @@ import { BikeRidingIcon, ChatIcon, ClockIcon } from "../svg";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { calculateDistance } from "@/lib/utils/methods/custom-functions";
 import { useTranslation } from "react-i18next";
+import CustomContinueButton from "../custom-continue-button";
 
 const Order = ({ order, tab }: IOrderComponentProps) => {
   // Hook
-  const { time, mutateAssignOrder, loadingAssignOrder } = useOrder(order);
+  const { time, mutateAssignOrder } = useOrder(order);
+  const animatedValue = new Animated.Value(0);
 
-  // // Context
+  // Context
   const configuration = useContext(ConfigurationContext);
 
   // Hooks
@@ -33,8 +41,30 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
+  // UseEffects
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      useNativeDriver: true,
+      duration: 1000,
+      easing: Easing.inOut(Easing.ease),
+      toValue: 100,
+    });
+  }, []);
   return (
-    <View className="h-fit">
+    <Animated.View
+      className="h-fit"
+      style={{
+        transform: [
+          {
+            translateY: animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 100],
+              easing: Easing.inOut(Easing.ease),
+            }),
+          },
+        ],
+      }}
+    >
       {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ? (
         <View />
       ) : null}
@@ -244,7 +274,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             </Text>
           </View>
 
-          {["ASSIGNED", "PICKED"].includes(order.orderStatus) && (
+          {["PICKED"].includes(order.orderStatus) && (
             <View className="flex-row items-center gap-x-2">
               <TouchableOpacity
                 onPress={() => {
@@ -283,33 +313,41 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               </View>
             </View>
           )}
-
           {tab === "new_orders" && (
-            <TouchableOpacity
-              className="h-12 rounded-3xl py-3 mt-10 w-full"
-              disabled={loadingAssignOrder}
-              style={{ backgroundColor: appTheme.primary }}
+            <CustomContinueButton
+              title={t("Assign me")}
+              className="w-[95%] mx-auto"
               onPress={() =>
                 mutateAssignOrder({
                   variables: { id: order?._id },
                 })
               }
-            >
-              {loadingAssignOrder ? (
-                <SpinnerComponent />
-              ) : (
-                <Text
-                  className="text-center text-lg font-medium"
-                  style={{ color: appTheme.black }}
-                >
-                  {t("Assign me")}
-                </Text>
-              )}
-            </TouchableOpacity>
+            />
+            // <TouchableOpacity
+            //   className="h-12 rounded-3xl py-3 mt-10 w-full"
+            //   disabled={loadingAssignOrder}
+            //   style={{ backgroundColor: appTheme.primary }}
+            //   onPress={() =>
+            //     mutateAssignOrder({
+            //       variables: { id: order?._id },
+            //     })
+            //   }
+            // >
+            //   {loadingAssignOrder ? (
+            //     <SpinnerComponent />
+            //   ) : (
+            //     <Text
+            //       className="text-center text-lg font-medium"
+            //       style={{ color: appTheme.black }}
+            //     >
+            //       {t("Assign me")}
+            //     </Text>
+            //   )}
+            // </TouchableOpacity>
           )}
         </View>
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 };
 

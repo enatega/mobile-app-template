@@ -10,7 +10,7 @@ import { Bubble, GiftedChat } from "react-native-gifted-chat";
 
 export default function ChatMain() {
   // Hooks
-  const { appTheme } = useApptheme();
+  const { appTheme, currentTheme } = useApptheme();
   const { t } = useTranslation();
   const {
     messages,
@@ -63,6 +63,13 @@ export default function ChatMain() {
         textStyle={{
           right: {
             color: appTheme.fontMainColor,
+            borderWidth: currentTheme === "dark" ? 1 : 0,
+            borderColor: appTheme.borderLineColor,
+            borderRadius: 12,
+            paddingVertical: 4,
+            paddingHorizontal: 15,
+            alignItems: "center",
+            justifyContent: "center",
           },
           left: {
             color: appTheme.fontMainColor,

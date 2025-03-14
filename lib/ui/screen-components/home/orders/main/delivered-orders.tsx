@@ -3,7 +3,6 @@
 import { useApptheme } from "@/lib/context/global/theme.context";
 import UserContext from "@/lib/context/global/user.context";
 import Order from "@/lib/ui/useable-components/order";
-import Spinner from "@/lib/ui/useable-components/spinner";
 import { WalletIcon } from "@/lib/ui/useable-components/svg";
 import { NO_ORDER_PROMPT } from "@/lib/utils/constants";
 import { IOrderTabsComponentProps } from "@/lib/utils/interfaces";
@@ -79,10 +78,6 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
           >
             {t("Something went wrong")}
           </Text>
-        </View>
-      ) : loadingAssigned ? (
-        <View className="flex-1">
-          <Spinner color="white" />
         </View>
       ) : orders?.length > 0 ? (
         <FlatList

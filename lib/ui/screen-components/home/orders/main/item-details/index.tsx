@@ -1,10 +1,16 @@
 import { ConfigurationContext } from "@/lib/context/global/configuration.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
+import { IOrder } from "@/lib/utils/interfaces/order.interface";
 import { useContext, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Text, View } from "react-native";
 
-const ItemDetails = ({ orderData: order }) => {
+const ItemDetails = ({
+  orderData: order,
+}: {
+  orderData: IOrder;
+  tab: string;
+}) => {
   // Hooks
   const { appTheme } = useApptheme();
   const { t } = useTranslation();
@@ -39,7 +45,7 @@ const ItemDetails = ({ orderData: order }) => {
         {order?.items?.map((item) => {
           return (
             <View
-              key={item._id}
+              key={item.title ?? ""}
               className="flex-1 flex-row  justify-between items-start gap-x-2"
             >
               <View

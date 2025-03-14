@@ -192,7 +192,6 @@ export default function WalletMain() {
       });
     }
   }, [userId]);
-  console.warn(riderTransactionData?.transactionHistory);
   if (isLoading) return <WalletScreenMainLoading />;
   return (
     <View

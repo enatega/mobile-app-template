@@ -1,9 +1,6 @@
 // Core
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
-// Contexts
-import { useUserContext } from "@/lib/context/global/user.context";
-
 // Interfaces
 import {
   IRiderEarnings,
@@ -17,7 +14,10 @@ import { barDataItem } from "react-native-gifted-charts";
 import { RIDER_EARNINGS_GRAPH } from "@/lib/apollo/queries/earnings.query";
 
 // Hooks
+import { useApptheme } from "@/lib/context/global/theme.context";
+import { useUserContext } from "@/lib/context/global/user.context";
 import { QueryResult, useQuery } from "@apollo/client";
+import { useTranslation } from "react-i18next";
 
 // Expo
 import { router } from "expo-router";
@@ -26,18 +26,13 @@ import { router } from "expo-router";
 import { EarningScreenMainLoading } from "@/lib/ui/skeletons";
 
 // Components
-import { useApptheme } from "@/lib/context/global/theme.context";
-import formatNumber from "@/lib/utils/methods/num-formatter";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import EarningsBarChart from "../../bar-chart";
 import EarningStack from "../earnings-stack";
 
-export default function EarningsMain() {
-  // States
-  const [recentTransaction, setRecentTransaction] =
-    useState<IRiderEarnings[]>();
+// Helpers
+import formatNumber from "@/lib/utils/methods/num-formatter";
 
+export default function EarningsMain() {
   // Hooks
   const { appTheme } = useApptheme();
   const { t } = useTranslation();
@@ -81,20 +76,6 @@ export default function EarningsMain() {
           );
         },
       })) ?? ([] as barDataItem[]);
-
-  // UseEffects
-  useEffect(() => {
-    if (riderEarningsData?.riderEarningsGraph?.earnings?.length) {
-      const sortedTransactions = [
-        ...riderEarningsData.riderEarningsGraph.earnings,
-      ].sort(
-        (a, b) =>
-          new Date(String(b?.date)).setHours(0, 0, 0, 0) -
-          new Date(String(a?.date)).setHours(23, 59, 59, 999),
-      );
-      setRecentTransaction(sortedTransactions);
-    }
-  }, [riderEarningsData?.riderEarningsGraph?.earnings?.length]);
 
   // If loading
   if (isRiderEarningsLoading) return <EarningScreenMainLoading />;
@@ -144,7 +125,7 @@ export default function EarningsMain() {
       </View>
       <View>
         <FlatList
-          data={recentTransaction}
+          data={riderEarningsData?.riderEarningsGraph?.earnings?.slice(0, 5)}
           contentContainerClassName="scroll-smooth"
           keyExtractor={(_, index) => index.toString()}
           style={{ height: "55%" }}

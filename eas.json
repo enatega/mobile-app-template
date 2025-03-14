@@ -24,7 +24,7 @@
       },
       "ios": {
         "resourceClass": "large"
-      },
+      }
     }
   },
   "submit": {

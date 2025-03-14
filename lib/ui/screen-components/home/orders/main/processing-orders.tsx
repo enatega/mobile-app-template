@@ -8,7 +8,6 @@ import { FlatList } from "react-native-gesture-handler";
 
 // Components
 import Order from "@/lib/ui/useable-components/order";
-import Spinner from "@/lib/ui/useable-components/spinner";
 import { WalletIcon } from "@/lib/ui/useable-components/svg";
 // Context
 import UserContext from "@/lib/context/global/user.context";
@@ -84,10 +83,6 @@ function HomeProcessingOrdersMain(props: IOrderTabsComponentProps) {
           >
             {t("Something went wrong")}
           </Text>
-        </View>
-      ) : loadingAssigned ? (
-        <View className="flex-1">
-          <Spinner color="white" />
         </View>
       ) : orders?.length > 0 ? (
         <FlatList

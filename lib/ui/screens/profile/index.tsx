@@ -22,7 +22,6 @@ export default function ComponentName() {
 
   // Hooks
   const { appTheme } = useApptheme();
-  console.warn(appTheme.themeBackground);
   // UseEffects
   useEffect(() => {
     const isOpened = Keyboard.addListener("keyboardDidShow", () => {
@@ -61,15 +60,11 @@ export default function ComponentName() {
           }}
           style={{
             maxHeight:
-              isKeyboardVisible && isFormOpened === "LICENSE_FORM"
-                ? "100%"
-                : !isKeyboardVisible && isFormOpened === "LICENSE_FORM"
-                  ? "65%"
-                  : isKeyboardVisible && isFormOpened === "VEHICLE_FORM"
-                    ? "100%"
-                    : !isKeyboardVisible && isFormOpened === "VEHICLE_FORM"
-                      ? "55%"
-                      : "65%",
+              isKeyboardVisible && isFormOpened === "LICENSE_FORM" ? "100%"
+              : !isKeyboardVisible && isFormOpened === "LICENSE_FORM" ? "65%"
+              : isKeyboardVisible && isFormOpened === "VEHICLE_FORM" ? "100%"
+              : !isKeyboardVisible && isFormOpened === "VEHICLE_FORM" ? "55%"
+              : "65%",
             width: "100%",
             backgroundColor: appTheme.themeBackground,
             borderWidth: 1,
@@ -86,15 +81,11 @@ export default function ComponentName() {
             },
             marginLeft: 0,
             marginTop:
-              isFormOpened === "LICENSE_FORM" && !isKeyboardVisible
-                ? "60%"
-                : isFormOpened === "LICENSE_FORM" && isKeyboardVisible
-                  ? "0%"
-                  : isFormOpened === "VEHICLE_FORM" && !isKeyboardVisible
-                    ? "100%"
-                    : isFormOpened === "VEHICLE_FORM" && isKeyboardVisible
-                      ? "10%"
-                      : "0%",
+              isFormOpened === "LICENSE_FORM" && !isKeyboardVisible ? "60%"
+              : isFormOpened === "LICENSE_FORM" && isKeyboardVisible ? "0%"
+              : isFormOpened === "VEHICLE_FORM" && !isKeyboardVisible ? "100%"
+              : isFormOpened === "VEHICLE_FORM" && isKeyboardVisible ? "10%"
+              : "0%",
             shadowOpacity: 0.25,
             shadowRadius: 4,
           }}
