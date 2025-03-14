@@ -161,7 +161,7 @@ export default function OrderDetailScreen() {
     };
   }, []);
 
-  if (!order) return;
+  if (!order || !order?.orderId) return;
 
   return (
     <>
