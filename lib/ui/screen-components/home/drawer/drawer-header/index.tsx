@@ -5,16 +5,13 @@ import { UPDATE_AVAILABILITY } from "@/lib/apollo/mutations/rider.mutation";
 import { RIDER_PROFILE } from "@/lib/apollo/queries";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
+import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 import CustomSwitch from "@/lib/ui/useable-components/switch-button";
 import { IRiderProfile } from "@/lib/utils/interfaces";
 import { MutationTuple, useMutation } from "@apollo/client";
-import { useState } from "react";
 import { showMessage } from "react-native-flash-message";
 
 const CustomDrawerHeader = () => {
-  // States
-  const [isEnabled, setIsEnabled] = useState(true);
-
   // Hook
   const { appTheme } = useApptheme();
   const { t } = useTranslation();
@@ -23,11 +20,7 @@ const CustomDrawerHeader = () => {
   // Queries
   const [toggleAvailablity, { loading }] = useMutation(UPDATE_AVAILABILITY, {
     refetchQueries: [{ query: RIDER_PROFILE, variables: { id: userId } }],
-    onCompleted: () => {
-      if (dataProfile?.available) {
-        setIsEnabled(dataProfile?.available);
-      }
-    },
+
     onError: (error) => {
       showMessage({
         message:
@@ -95,13 +88,17 @@ const CustomDrawerHeader = () => {
         >
           {t("Availability")}
         </Text>
-        <CustomSwitch
-          value={dataProfile?.available ?? isEnabled}
-          isDisabled={loading}
-          onToggle={async () =>
-            await toggleAvailablity({ variables: { id: userId ?? "" } })
-          }
-        />
+        {loading ? (
+          <SpinnerComponent color={appTheme.secondaryTextColor} />
+        ) : (
+          <CustomSwitch
+            value={!!dataProfile?.available}
+            isDisabled={loading}
+            onToggle={async () =>
+              await toggleAvailablity({ variables: { id: userId ?? "" } })
+            }
+          />
+        )}
         <Text
           className="text-xs font-medium"
           style={{ color: appTheme.secondaryTextColor }}

@@ -216,13 +216,10 @@ export default function OrderDetailScreen() {
                 longitude: locationPin?.location?.longitude ?? 0.0,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
-                // latitudeDelta: 0.05,
-                // longitudeDelta: 0.05,
               }}
               provider={
-                Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
+                Platform.OS === "ios" ? PROVIDER_DEFAULT : PROVIDER_GOOGLE
               }
-              // customMapStyle={MapStyles}
             >
               {deliveryAddressPin?.location && (
                 <Marker
@@ -258,8 +255,8 @@ export default function OrderDetailScreen() {
                   />
                 </Marker>
               )}
-              {/* {locationPin?.location && ( */}
-              {
+
+              {locationPin?.location && (
                 <Marker.Animated
                   coordinate={{ latitude, longitude }}
                   title="Rider"
@@ -273,7 +270,7 @@ export default function OrderDetailScreen() {
                     style={{ height: 35, width: 32 }}
                   />
                 </Marker.Animated>
-              }
+              )}
 
               {order?.orderStatus === "ACCEPTED" ||
                 (order?.orderStatus === "ASSIGNED" && (
