@@ -1,13 +1,6 @@
 import { useRouter } from "expo-router";
 import { useContext, useEffect } from "react";
-import {
-  Animated,
-  Easing,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Animated, Image, Text, TouchableOpacity, View } from "react-native";
 
 // Components
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
@@ -46,24 +39,23 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
     Animated.timing(animatedValue, {
       useNativeDriver: true,
       duration: 1000,
-      easing: Easing.inOut(Easing.ease),
-      toValue: 100,
-    });
+      toValue: 1,
+    }).start();
   }, []);
   return (
-    <Animated.View
-      className="h-fit"
-      style={{
-        transform: [
-          {
-            translateY: animatedValue.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, 100],
-              easing: Easing.inOut(Easing.ease),
-            }),
-          },
-        ],
-      }}
+    <View
+      className="h-fit min-h-96"
+      // style={{
+      //   transform: [
+      //     {
+      //       translateY: animatedValue.interpolate({
+      //         inputRange: [0, 1],
+      //         outputRange: [0, 100],
+      //         easing: Easing.inOut(Easing.ease),
+      //       }),
+      //     },
+      //   ],
+      // }}
     >
       {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ? (
         <View />
@@ -347,7 +339,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
           )}
         </View>
       </TouchableOpacity>
-    </Animated.View>
+    </View>
   );
 };
 

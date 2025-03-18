@@ -73,16 +73,7 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
       className="pt-14 flex-1 pb-16"
       style={[style.contaienr, { backgroundColor: appTheme.screenBackground }]}
     >
-      {errorAssigned ? (
-        <View className="flex-1 justify-center items-center">
-          <Text
-            className="text-2xl"
-            style={{ color: appTheme.fontSecondColor }}
-          >
-            {t("Something went wrong")}
-          </Text>
-        </View>
-      ) : orders?.length > 0 ? (
+      {orders?.length > 0 ? (
         <FlatList
           className={`h-[${height}px] mb-[${marginBottom}px]`}
           keyExtractor={(item) => item._id}
@@ -90,9 +81,19 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
           showsVerticalScrollIndicator={false}
           refreshing={networkStatusAssigned === NetworkStatus.loading}
           onRefresh={refetchAssigned}
-          renderItem={({ item }: { item: IOrder }) => (
-            <Order tab={route.key as ORDER_TYPE} order={item} key={item._id} />
-          )}
+          initialNumToRender={5} // Limit initial render for better performance
+          maxToRenderPerBatch={10} // Control batch rendering
+          windowSize={10} // Control number of items rendered outside of visible area
+          removeClippedSubviews={true}
+          renderItem={({ item }: { item: IOrder }) => {
+            return (
+              <Order
+                tab={route.key as ORDER_TYPE}
+                order={item}
+                key={item._id}
+              />
+            );
+          }}
           ListEmptyComponent={() => {
             return (
               <View

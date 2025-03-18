@@ -70,16 +70,7 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
       className="pt-14 flex-1 pb-16"
       style={[style.contaienr, { backgroundColor: appTheme.screenBackground }]}
     >
-      {errorAssigned ? (
-        <View className="flex-1 justify-center items-center">
-          <Text
-            className="text-2xl"
-            style={{ color: appTheme.fontSecondColor }}
-          >
-            {t("Something went wrong")}
-          </Text>
-        </View>
-      ) : orders?.length > 0 ? (
+      {orders?.length > 0 ? (
         <FlatList
           className={`h-[${height}px] mb-[${marginBottom}px]`}
           keyExtractor={(item) => item._id}
