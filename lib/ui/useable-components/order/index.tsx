@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
-import { useContext, useEffect } from "react";
-import { Animated, Image, Text, TouchableOpacity, View } from "react-native";
+import { useContext } from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 // Components
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
@@ -24,7 +24,7 @@ import CustomContinueButton from "../custom-continue-button";
 const Order = ({ order, tab }: IOrderComponentProps) => {
   // Hook
   const { time, mutateAssignOrder } = useOrder(order);
-  const animatedValue = new Animated.Value(0);
+  // const animatedValue = new Animated.Value(0);
 
   // Context
   const configuration = useContext(ConfigurationContext);
@@ -34,17 +34,18 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  // UseEffects
-  useEffect(() => {
-    Animated.timing(animatedValue, {
-      useNativeDriver: true,
-      duration: 1000,
-      toValue: 1,
-    }).start();
-  }, []);
+  // // UseEffects
+  // useEffect(() => {
+  //   Animated.timing(animatedValue, {
+  //     useNativeDriver: true,
+  //     duration: 1000,
+  //     easing: Easing.inOut(Easing.ease),
+  //     toValue: 100,
+  //   });
+  // }, []);
   return (
     <View
-      className="h-fit min-h-96"
+      className="h-auto min-h-96"
       // style={{
       //   transform: [
       //     {

@@ -86,6 +86,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
     pollInterval: 15000,
+
     skip: !userId,
   });
 
@@ -150,6 +151,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
   };
 
   const trackRiderLocation = async () => {
+    console.log("🚀 ~ coordinatesRef:", coordinatesRef);
     locationListener.current = await watchPositionAsync(
       {
         accuracy: LocationAccuracy.BestForNavigation,
@@ -157,6 +159,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
         distanceInterval: 10,
       },
       async (location) => {
+        console.log("track location called", location);
         try {
           const token = await AsyncStorage.getItem(RIDER_TOKEN);
           if (!token) return;

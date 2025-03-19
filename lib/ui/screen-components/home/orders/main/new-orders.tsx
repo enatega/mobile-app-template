@@ -81,18 +81,19 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
           showsVerticalScrollIndicator={false}
           refreshing={networkStatusAssigned === NetworkStatus.loading}
           onRefresh={refetchAssigned}
-          initialNumToRender={5} // Limit initial render for better performance
-          maxToRenderPerBatch={10} // Control batch rendering
-          windowSize={10} // Control number of items rendered outside of visible area
           removeClippedSubviews={true}
           renderItem={({ item }: { item: IOrder }) => {
-            return (
-              <Order
-                tab={route.key as ORDER_TYPE}
-                order={item}
-                key={item._id}
-              />
-            );
+            if (item.orderId) {
+              return (
+                <Order
+                  tab={route.key as ORDER_TYPE}
+                  order={item}
+                  key={item._id}
+                />
+              );
+            } else {
+              return <></>;
+            }
           }}
           ListEmptyComponent={() => {
             return (

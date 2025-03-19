@@ -3,6 +3,10 @@
 # dependencies
 node_modules/
 
+#prebuilds
+ios
+android
+
 # Secrets
 google-servicees.json
 google-service-account.json
