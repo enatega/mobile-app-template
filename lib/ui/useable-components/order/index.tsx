@@ -1,14 +1,12 @@
-import { useRouter } from "expo-router";
 import { useContext } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 // Components
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
 // Interface
-import { IOrderComponentProps } from "@/lib/utils/interfaces/order.interface";
+import { IOrderComponentProps } from "@/lib/utils/interfaces/interface";
 
 // Contexrtg
-import { ConfigurationContext } from "@/lib/context/global/configuration.context";
 // Hook
 import useOrder from "@/lib/hooks/useOrder";
 
@@ -16,58 +14,60 @@ import useOrder from "@/lib/hooks/useOrder";
 import { BikeRidingIcon, ChatIcon, ClockIcon } from "../svg";
 
 // Hooks
+import { ConfigurationContext } from "@/lib/context/global/configuration.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
+import { IOrder } from "@/lib/utils/interfaces/order.interface";
 import { calculateDistance } from "@/lib/utils/methods/custom-functions";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import CustomContinueButton from "../custom-continue-button";
+import SpinnerComponent from "../spinner";
 
-const Order = ({ order, tab }: IOrderComponentProps) => {
-  // Hook
-  const { time, mutateAssignOrder } = useOrder(order);
-  // const animatedValue = new Animated.Value(0);
-
-  // Context
-  const configuration = useContext(ConfigurationContext);
-
+const Order = ({
+  orderId,
+  _id,
+  orderStatus,
+  restaurant,
+  deliveryAddress,
+  paymentMethod,
+  orderAmount,
+  paymentStatus,
+  acceptedAt,
+  user,
+  tab,
+}: IOrderComponentProps) => {
   // Hooks
-  const { appTheme } = useApptheme();
   const { t } = useTranslation();
+  const { appTheme } = useApptheme();
+  const { time, mutateAssignOrder, loadingAssignOrder } = useOrder({
+    _id,
+    acceptedAt,
+  } as IOrder);
+  const configuration = useContext(ConfigurationContext);
   const router = useRouter();
-
-  // // UseEffects
-  // useEffect(() => {
-  //   Animated.timing(animatedValue, {
-  //     useNativeDriver: true,
-  //     duration: 1000,
-  //     easing: Easing.inOut(Easing.ease),
-  //     toValue: 100,
-  //   });
-  // }, []);
   return (
-    <View
-      className="h-auto min-h-96"
-      // style={{
-      //   transform: [
-      //     {
-      //       translateY: animatedValue.interpolate({
-      //         inputRange: [0, 1],
-      //         outputRange: [0, 100],
-      //         easing: Easing.inOut(Easing.ease),
-      //       }),
-      //     },
-      //   ],
-      // }}
-    >
-      {order?.orderStatus === "ACCEPTED" || order?.orderStatus === "PICKED" ? (
-        <View />
-      ) : null}
+    <View className="h-auto min-h-96 min-w-[32] mx-auto my-3">
+      {orderStatus === "ACCEPTED" || orderStatus === "PICKED" ? <View /> : null}
 
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() => {
           router.push({
             pathname: "/order-detail",
-            params: { itemId: order?._id, order: JSON.stringify(order), tab },
+            params: {
+              itemId: _id,
+              order: JSON.stringify({
+                _id,
+                orderStatus,
+                restaurant,
+                deliveryAddress,
+                paymentMethod,
+                orderAmount,
+                paymentStatus,
+                acceptedAt,
+                user,
+              }),
+              tab,
+            },
           });
         }}
       >
@@ -101,7 +101,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                       : "text-green-800"
                 }`}
               >
-                {order?.orderStatus}
+                {orderStatus}
               </Text>
             </View>
           </View>
@@ -118,7 +118,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               className="font-[Inter] text-[16px] text-base font-semibold  text-right underline-offset-auto decoration-skip-ink "
               style={{ color: appTheme.fontMainColor }}
             >
-              #{order?.orderId}
+              #{orderId}
             </Text>
           </View>
 
@@ -127,7 +127,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             {/* <View className="h-8 w-8 bg-gray-400 justify-center items-center"> */}
             {/* <View className="w-[60px] h-[70px] bg-gray-200 rounded-[8px]"> */}
             <Image
-              src={order?.restaurant?.image}
+              src={restaurant?.image}
               style={{ width: 32, height: 30, borderRadius: 8 }}
             />
             {/* </View> */}
@@ -136,7 +136,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink "
               style={{ color: appTheme.fontMainColor }}
             >
-              {order?.restaurant?.name}
+              {restaurant?.name}
             </Text>
           </View>
 
@@ -161,7 +161,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink "
                 style={{ color: appTheme.fontMainColor }}
               >
-                {order?.restaurant?.address ?? "-"}
+                {restaurant?.address ?? "-"}
               </Text>
             </View>
           </View>
@@ -187,22 +187,13 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink "
                 style={{ color: appTheme.fontMainColor }}
               >
-                {order?.deliveryAddress?.deliveryAddress ?? "-"}
+                {deliveryAddress?.deliveryAddress ?? "-"}
               </Text>
             </View>
           </View>
 
           {/* Price/Time/Distance */}
           <View className="w-[99%] flex-row justify-between items-center">
-            {/* <View className="flex-row gap-x-1">
-              <IconSymbol size={20} name="currency-exchange" color="#6b7280" />
-              <Text className="font-[Inter] text-base font-medium leading-6 text-left underline-offset-auto decoration-skip-ink "
-              style={{color: appTheme.fontMainColor}}
-              >
-                0.71
-              </Text>
-            </View> */}
-
             <View className="flex-1 flex-row justify-start  items-center gap-x-1">
               <ClockIcon color="#6b7280" />
               <Text
@@ -220,10 +211,10 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
                 style={{ color: appTheme.fontMainColor }}
               >
                 {calculateDistance(
-                  Number(order?.restaurant?.location?.coordinates[0]),
-                  Number(order?.restaurant?.location?.coordinates[1]),
-                  order?.deliveryAddress?.location?.coordinates[0],
-                  order?.deliveryAddress?.location?.coordinates[1],
+                  Number(restaurant?.location?.coordinates[0]),
+                  Number(restaurant?.location?.coordinates[1]),
+                  deliveryAddress?.location?.coordinates[0],
+                  deliveryAddress?.location?.coordinates[1],
                 )
                   .toFixed(2)
                   .toLocaleString()}
@@ -244,7 +235,7 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               className="flex-1 font-[Inter] text-base font-semibold text-right underline-offset-auto decoration-skip-ink "
               style={{ color: appTheme.fontMainColor }}
             >
-              {order?.paymentMethod}
+              {paymentMethod}
             </Text>
           </View>
 
@@ -262,21 +253,21 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
               style={{ color: appTheme.fontMainColor }}
             >
               {configuration?.currencySymbol}
-              {order?.orderAmount}
-              {order.paymentStatus === "PAID" ? t("Paid") : t("(Not paid yet)")}
+              {orderAmount}
+              {paymentStatus === "PAID" ? t("Paid") : t("(Not paid yet)")}
             </Text>
           </View>
 
-          {["PICKED"].includes(order.orderStatus) && (
+          {["PICKED"].includes(orderStatus) && (
             <View className="flex-row items-center gap-x-2">
               <TouchableOpacity
                 onPress={() => {
                   router.push({
                     pathname: "/chat",
                     params: {
-                      phoneNumber: order?.user.phone,
-                      orderId: order?.orderId,
-                      id: order?._id,
+                      phoneNumber: user.phone,
+                      orderId: orderId,
+                      id: _id,
                     },
                   });
                 }}
@@ -307,36 +298,36 @@ const Order = ({ order, tab }: IOrderComponentProps) => {
             </View>
           )}
           {tab === "new_orders" && (
-            <CustomContinueButton
-              title={t("Assign me")}
-              className="w-[95%] mx-auto"
-              onPress={() =>
-                mutateAssignOrder({
-                  variables: { id: order?._id },
-                })
-              }
-            />
-            // <TouchableOpacity
-            //   className="h-12 rounded-3xl py-3 mt-10 w-full"
-            //   disabled={loadingAssignOrder}
-            //   style={{ backgroundColor: appTheme.primary }}
+            // <CustomContinueButton
+            //   title={t("Assign me")}
+            //   className="w-[95%] mx-auto"
             //   onPress={() =>
             //     mutateAssignOrder({
-            //       variables: { id: order?._id },
+            //       variables: { id: _id },
             //     })
             //   }
-            // >
-            //   {loadingAssignOrder ? (
-            //     <SpinnerComponent />
-            //   ) : (
-            //     <Text
-            //       className="text-center text-lg font-medium"
-            //       style={{ color: appTheme.black }}
-            //     >
-            //       {t("Assign me")}
-            //     </Text>
-            //   )}
-            // </TouchableOpacity>
+            // />
+            <TouchableOpacity
+              className="h-12 rounded-3xl py-3 mt-10 w-full"
+              disabled={loadingAssignOrder}
+              style={{ backgroundColor: appTheme.primary }}
+              onPress={() =>
+                mutateAssignOrder({
+                  variables: { id: _id },
+                })
+              }
+            >
+              {loadingAssignOrder ? (
+                <SpinnerComponent />
+              ) : (
+                <Text
+                  className="text-center text-lg font-medium"
+                  style={{ color: appTheme.black }}
+                >
+                  {t("Assign me")}
+                </Text>
+              )}
+            </TouchableOpacity>
           )}
         </View>
       </TouchableOpacity>

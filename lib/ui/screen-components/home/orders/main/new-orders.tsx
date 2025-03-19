@@ -73,7 +73,16 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
       className="pt-14 flex-1 pb-16"
       style={[style.contaienr, { backgroundColor: appTheme.screenBackground }]}
     >
-      {orders?.length > 0 ? (
+      {errorAssigned ? (
+        <View className="flex-1 justify-center items-center">
+          <Text
+            className="text-2xl"
+            style={{ color: appTheme.fontSecondColor }}
+          >
+            {t("Something went wrong")}
+          </Text>
+        </View>
+      ) : orders?.length > 0 ? (
         <FlatList
           className={`h-[${height}px] mb-[${marginBottom}px]`}
           keyExtractor={(item) => item._id}
@@ -81,20 +90,21 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
           showsVerticalScrollIndicator={false}
           refreshing={networkStatusAssigned === NetworkStatus.loading}
           onRefresh={refetchAssigned}
-          removeClippedSubviews={true}
-          renderItem={({ item }: { item: IOrder }) => {
-            if (item.orderId) {
-              return (
-                <Order
-                  tab={route.key as ORDER_TYPE}
-                  order={item}
-                  key={item._id}
-                />
-              );
-            } else {
-              return <></>;
-            }
-          }}
+          renderItem={({ item }: { item: IOrder }) => (
+            <Order
+              tab={route.key as ORDER_TYPE}
+              _id={item._id}
+              orderStatus={item.orderStatus}
+              restaurant={item.restaurant}
+              deliveryAddress={item.deliveryAddress}
+              paymentMethod={item.paymentMethod}
+              orderAmount={item.orderAmount}
+              paymentStatus={item.paymentStatus}
+              acceptedAt={item.acceptedAt}
+              user={item.user}
+              key={item._id}
+            />
+          )}
           ListEmptyComponent={() => {
             return (
               <View

@@ -76,6 +76,7 @@ const useDetails = (orderData: IOrder) => {
   const [mutateAssignOrder, { loading: loadingAssignOrder }] = useMutation(
     ASSIGN_ORDER,
     {
+      refetchQueries: [{ query: RIDER_ORDERS }],
       onCompleted,
       onError,
       update,

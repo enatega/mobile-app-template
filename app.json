@@ -16,7 +16,7 @@
     ],
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": false,
+    "newArchEnabled": true,
     "plugins": [
       "expo-router",
       [

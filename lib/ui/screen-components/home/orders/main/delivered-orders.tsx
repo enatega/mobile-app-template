@@ -79,7 +79,19 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
           refreshing={networkStatusAssigned === NetworkStatus.loading}
           onRefresh={refetchAssigned}
           renderItem={({ item }: { item: IOrder }) => (
-            <Order tab={route.key as ORDER_TYPE} order={item} key={item._id} />
+            <Order
+              tab={route.key as ORDER_TYPE}
+              _id={item._id}
+              orderStatus={item.orderStatus}
+              restaurant={item.restaurant}
+              deliveryAddress={item.deliveryAddress}
+              paymentMethod={item.paymentMethod}
+              orderAmount={item.orderAmount}
+              paymentStatus={item.paymentStatus}
+              acceptedAt={item.acceptedAt}
+              user={item.user}
+              key={item._id}
+            />
           )}
           ListEmptyComponent={() => {
             return (
