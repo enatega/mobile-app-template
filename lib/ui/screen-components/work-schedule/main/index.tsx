@@ -482,7 +482,7 @@ export default function ScheduleScreen() {
               {t("Select Time Slot")}
             </Text>
             <ScrollView
-              style={{ maxHeight: 300, backgroundColor: "purple" }}
+              style={{ maxHeight: 300 }}
               onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { y: parallaxAnim } } }],
                 { useNativeDriver: false },

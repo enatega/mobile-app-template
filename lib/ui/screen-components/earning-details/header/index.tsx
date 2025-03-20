@@ -90,7 +90,7 @@ export default function EarningDetailsHeader() {
             className="font-semibold text-lg text-start self-start"
             style={{ color: appTheme.mainTextColor }}
           >
-            ${riderEarningsGrandTotal.earnings}
+            ${Number(riderEarningsGrandTotal.earnings).toFixed(2)}
           </Text>
         </View>
         <View
@@ -104,7 +104,7 @@ export default function EarningDetailsHeader() {
             className="font-semibold text-lg text-start self-start"
             style={{ color: appTheme.mainTextColor }}
           >
-            ${riderEarningsGrandTotal.tips}
+            ${Number(riderEarningsGrandTotal.tips).toFixed(2)}
           </Text>
         </View>
         <View

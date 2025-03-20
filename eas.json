@@ -5,7 +5,7 @@
       "channel": "development",
       "distribution": "internal",
       "ios": {
-        "simulator": false
+        "simulator": true
       }
     },
     "staging": {
@@ -21,13 +21,7 @@
       }
     },
     "production": {
-      "channel": "production",
-      "android": {
-        "resourceClass": "large"
-      },
-      "ios": {
-        "resourceClass": "large"
-      }
+      "channel": "production"
     }
   },
   "submit": {
