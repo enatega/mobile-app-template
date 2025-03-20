@@ -7,6 +7,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
+  Alert,
   Animated,
   Dimensions,
   Image,
@@ -57,12 +58,27 @@ import { CustomMapStyles } from "@/lib/utils/constants/map";
 
 const { height } = Dimensions.get("window");
 
+// Helper function to check if coordinates are valid
+// Added to prevent array bounds crashes when using invalid coordinates
+const isValidCoordinate = (coord?: LatLng): boolean => {
+  if (!coord) return false;
+  return (
+    coord.latitude !== undefined &&
+    coord.longitude !== undefined &&
+    !isNaN(coord.latitude) &&
+    !isNaN(coord.longitude) &&
+    Math.abs(coord.latitude) <= 90 &&
+    Math.abs(coord.longitude) <= 180
+  );
+};
+
 export default function OrderDetailScreen() {
   // Ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // Context
   const configuration = useContext(ConfigurationContext);
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Hooks
   const { appTheme, currentTheme } = useApptheme();
@@ -77,6 +93,7 @@ export default function OrderDetailScreen() {
     tab,
     locationPin,
   } = useOrderDetail();
+  console.log(locationPin);
   const { userId } = useUserContext();
   const { mutateAssignOrder, mutateOrderStatus, loadingOrderStatus } =
     useDetails(order);
@@ -84,6 +101,8 @@ export default function OrderDetailScreen() {
   // States
   const [customMapStyles, setCustomMapStyles] = useState<MapStyleElement[]>();
   const [orderId, setOrderId] = useState("");
+  const [directionsError, setDirectionsError] = useState(false); // Added to track direction errors
+  const [retryCount, setRetryCount] = useState(0); // Added to implement retry logic
   // const [lineDashPhase, setLineDashPhase] = useState(0);
   // Ref
   const latitude = useRef(
@@ -96,32 +115,99 @@ export default function OrderDetailScreen() {
 
   // Handler
   const moveMarker = (newLocation: LatLng) => {
-    Animated.timing(latitude, {
-      toValue: newLocation.latitude,
-      duration: 2000,
-      useNativeDriver: false,
-    }).start();
+    // Safety check for valid coordinates before starting animation
+    // This prevents trying to animate to invalid coordinates which could cause crashes
+    if (!isValidCoordinate(newLocation)) {
+      console.warn("Attempted to move marker to invalid location", newLocation);
+      return;
+    }
 
-    Animated.timing(longitude, {
-      toValue: newLocation.longitude,
-      duration: 2000,
-      useNativeDriver: false,
-    }).start();
+    // Use a single animation group to prevent potential race conditions
+    // This prevents array index issues by ensuring animations stay in sync
+    Animated.parallel([
+      Animated.timing(latitude, {
+        toValue: newLocation.latitude,
+        duration: 2000,
+        useNativeDriver: false,
+      }),
+      Animated.timing(longitude, {
+        toValue: newLocation.longitude,
+        duration: 2000,
+        useNativeDriver: false,
+      }),
+    ]).start();
   };
 
-  const openMaps = () => {
-    const rider = `${locationPin.location.latitude},${locationPin.location.longitude}`;
-    const store = `${restaurantAddressPin.location.latitude},${restaurantAddressPin.location.longitude}`;
-    const customer = `${deliveryAddressPin.location.latitude},${deliveryAddressPin.location.longitude}`;
+  useEffect(() => {
+    return () => {
+      // Clean up any pending retry timeouts
+      if (retryTimeoutRef.current) {
+        clearTimeout(retryTimeoutRef.current);
+        retryTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
-    if (Platform.OS === "ios") {
-      // Apple Maps (Only Rider -> Store -> Customer)
-      const appleMapsUrl = `maps://app?saddr=${rider}&daddr=${order?.orderStatus === "PICKED" ? customer : store}`;
-      Linking.openURL(appleMapsUrl);
-    } else {
-      // Google Maps (Supports waypoints: Rider -> Store -> Customer)
-      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${rider}&destination=${customer}&waypoints=${store}`;
-      Linking.openURL(googleMapsUrl);
+  const openMaps = () => {
+    try {
+      // Validate all required coordinates to prevent app crashes
+      // when trying to construct navigation URLs with invalid data
+      if (!isValidCoordinate(locationPin?.location)) {
+        console.error("Invalid rider location for maps navigation");
+        Alert.alert(t("Navigation Error"), t("Rider location is unavailable."));
+        return;
+      }
+
+      if (!isValidCoordinate(restaurantAddressPin?.location)) {
+        console.error("Invalid store location for maps navigation");
+        Alert.alert(
+          t("Navigation Error"),
+          t("Restaurant location is unavailable."),
+        );
+        return;
+      }
+
+      if (!isValidCoordinate(deliveryAddressPin?.location)) {
+        console.error("Invalid customer location for maps navigation");
+        Alert.alert(
+          t("Navigation Error"),
+          t("Delivery location is unavailable."),
+        );
+        return;
+      }
+
+      const rider = `${locationPin.location.latitude},${locationPin.location.longitude}`;
+      const store = `${restaurantAddressPin.location.latitude},${restaurantAddressPin.location.longitude}`;
+      const customer = `${deliveryAddressPin.location.latitude},${deliveryAddressPin.location.longitude}`;
+
+      if (Platform.OS === "ios") {
+        // Apple Maps (Only Rider -> Store -> Customer)
+        const appleMapsUrl = `maps://app?saddr=${rider}&daddr=${order?.orderStatus === "PICKED" ? customer : store}`;
+        // Added error handling for Linking
+        Linking.openURL(appleMapsUrl).catch(() => {
+          Alert.alert(
+            t("Navigation Error"),
+            t("Could not open maps application"),
+          );
+        });
+      } else {
+        // Google Maps (Supports waypoints: Rider -> Store -> Customer)
+        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${rider}&destination=${customer}&waypoints=${store}`;
+        // Added error handling for Linking
+        Linking.openURL(googleMapsUrl).catch(() => {
+          Alert.alert(
+            t("Navigation Error"),
+            t("Could not open maps application"),
+          );
+        });
+      }
+    } catch (error) {
+      // Added global error handling
+      console.error("Error opening maps:", error);
+      Alert.alert(
+        t("Navigation Error"),
+        t("An error occurred when trying to open maps"),
+      );
     }
   };
 
@@ -131,37 +217,80 @@ export default function OrderDetailScreen() {
     if (currentTheme && appTheme) {
       setCustomMapStyles(styles_for_map);
     }
-  }, [appTheme, currentTheme]);
+
+    // Added validation for Google Maps API key to catch common configuration issues
+    if (!GOOGLE_MAPS_KEY || GOOGLE_MAPS_KEY === "") {
+      console.error("Google Maps API key is missing or invalid");
+    }
+  }, [appTheme, currentTheme, GOOGLE_MAPS_KEY]);
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      const newLatitude = locationPin.location.latitude;
-      const newLongitude = locationPin.location.longitude;
-      moveMarker({ latitude: newLatitude, longitude: newLongitude });
-    }, 5000);
+    // Only set up the animation if locationPin.location exists and is valid
+    // This prevents trying to animate when location data is invalid
+    if (!locationPin?.location || !isValidCoordinate(locationPin.location)) {
+      console.warn("Location pin is invalid or missing:", locationPin);
+      return;
+    }
 
-    // Start wave animation
-    const animation = Animated.loop(
-      Animated.timing(waveAnimation, {
-        toValue: 1000,
-        duration: 10000,
-        useNativeDriver: true,
-        easing: Easing.linear,
-      }),
-    );
+    // Reference to the timer for proper cleanup
+    let intervalId: NodeJS.Timeout | null = null;
 
-    animation.start();
+    try {
+      // Safely initialize marker position before starting animations
+      // This prevents issues with undefined initial values
+      const initialLatitude = locationPin.location.latitude;
+      const initialLongitude = locationPin.location.longitude;
 
-    // Listen to the animated value change
-    // const id = waveAnimation.addListener(({ value }) => {
-    //   setLineDashPhase(-Math.floor(value)); // Adjust this multiplier to control the dash speed
-    // });
+      // Initial positioning (without animation)
+      latitude.setValue(initialLatitude);
+      longitude.setValue(initialLongitude);
 
-    return () => {
-      // waveAnimation.removeListener(id); // Clean up listener
-      animation.stop();
-      clearInterval(interval);
-    };
-  }, []);
+      // Start periodic updates with proper error handling
+      intervalId = setInterval(() => {
+        if (
+          !locationPin?.location ||
+          !isValidCoordinate(locationPin.location)
+        ) {
+          console.warn("Skipping marker update due to invalid location data");
+          return;
+        }
+
+        const newLatitude = locationPin.location.latitude;
+        const newLongitude = locationPin.location.longitude;
+        moveMarker({ latitude: newLatitude, longitude: newLongitude });
+      }, 5000);
+
+      // Start wave animation
+      const animation = Animated.loop(
+        Animated.timing(waveAnimation, {
+          toValue: 1000,
+          duration: 10000,
+          useNativeDriver: true,
+          easing: Easing.linear,
+        }),
+      );
+
+      animation.start();
+
+      return () => {
+        // Proper cleanup to prevent animation continuing after unmount
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+        animation.stop();
+      };
+    } catch (error) {
+      // Error handling to prevent uncaught exceptions
+      console.error("Error in location animation setup:", error);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+      return () => {};
+    }
+    // Added proper dependency array to control rerunning this effect
+    // This prevents stale closures that might reference outdated data
+  }, [locationPin?.location?.latitude, locationPin?.location?.longitude]);
 
   if (!order) return;
 
@@ -260,74 +389,145 @@ export default function OrderDetailScreen() {
                   />
                 </Marker>
               )}
-              {/* {locationPin?.location && ( */}
-              {
-                <Marker.Animated
-                  coordinate={{ latitude, longitude }}
-                  title="Rider"
-                  description={t("This is rider's location")}
-                  onPress={() => {
-                    linkToMapsApp(locationPin.location, locationPin.label);
-                  }}
-                >
-                  <Image
-                    source={require("@/lib/assets/rider_icon.png")}
-                    style={{ height: 35, width: 32 }}
-                  />
-                </Marker.Animated>
-              }
+              {/* Added multiple validation checks for rider marker to prevent array index errors */}
+              {locationPin?.location &&
+                isValidCoordinate(locationPin.location) && (
+                  <Marker.Animated
+                    coordinate={{ latitude, longitude }}
+                    title="Rider"
+                    description={t("This is rider's location")}
+                    onPress={() => {
+                      if (
+                        locationPin?.location &&
+                        isValidCoordinate(locationPin.location)
+                      ) {
+                        linkToMapsApp(locationPin.location, locationPin.label);
+                      }
+                    }}
+                  >
+                    <Image
+                      source={require("@/lib/assets/rider_icon.png")}
+                      style={{ height: 35, width: 32 }}
+                    />
+                  </Marker.Animated>
+                )}
 
+              {/* Added validation for rider to restaurant directions */}
               {order?.orderStatus === "ACCEPTED" ||
-                (order?.orderStatus === "ASSIGNED" && (
+              order?.orderStatus === "ASSIGNED"
+                ? isValidCoordinate(locationPin?.location) &&
+                  isValidCoordinate(restaurantAddressPin?.location) && (
+                    <MapViewDirections
+                      origin={locationPin.location}
+                      destination={restaurantAddressPin.location}
+                      apikey={GOOGLE_MAPS_KEY ?? ""}
+                      strokeWidth={2}
+                      strokeColor={"#f95509"}
+                      resetOnChange={false} // Prevents unnecessary recalculations
+                      onReady={(results) => {
+                        console.log("Route found:", results);
+                        if (results && results.distance) {
+                          setDistance(results.distance);
+                          setDuration(results.duration);
+                          setDirectionsError(false);
+                        }
+                      }}
+                      onError={(error) => {
+                        console.error("Detailed route error:", error);
+                        setDirectionsError(true);
+                        // Retry logic for NOT_FOUND errors
+                        if (
+                          error.toString().includes("NOT_FOUND") &&
+                          retryCount < 3
+                        ) {
+                          setRetryCount((prev) => prev + 1);
+                        }
+                      }}
+                    />
+                  )
+                : null}
+
+              {/* Added validation for rider to customer directions */}
+              {order?.orderStatus === "PICKED" &&
+                isValidCoordinate(locationPin?.location) &&
+                isValidCoordinate(deliveryAddressPin?.location) && (
                   <MapViewDirections
                     origin={locationPin.location}
-                    destination={restaurantAddressPin.location}
+                    destination={deliveryAddressPin.location}
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
                     strokeColor={"#f95509"}
-                    // lineDashPattern={[5, 5]} // Dashed pattern
-                    // lineDashPhase={lineDashPhase} // Animated wave
+                    resetOnChange={false} // Prevents unnecessary recalculations
                     onReady={(result) => {
-                      setDistance(result?.distance);
-                      setDuration(result?.duration);
+                      setDistance(result.distance);
+                      setDuration(result.duration);
+                      setDirectionsError(false);
+                    }}
+                    onError={(error) => {
+                      console.error("Delivery route error:", error);
+                      setDirectionsError(true);
+                      // Retry logic for NOT_FOUND errors
+                      if (
+                        error.toString().includes("NOT_FOUND") &&
+                        retryCount < 3
+                      ) {
+                        setRetryCount((prev) => prev + 1);
+                      }
                     }}
                   />
-                ))}
+                )}
 
-              {order?.orderStatus === "PICKED" && (
-                <MapViewDirections
-                  origin={locationPin.location}
-                  destination={deliveryAddressPin.location}
-                  apikey={GOOGLE_MAPS_KEY ?? ""}
-                  strokeWidth={2}
-                  strokeColor={"#f95509"}
-                  // lineDashPattern={[5, 5]} // Dashed pattern
-                  // lineDashPhase={lineDashPhase} // Animated wave
-                  onReady={(result) => {
-                    setDistance(result.distance);
-                    setDuration(result.duration);
-                  }}
-                />
-              )}
-
+              {/* Added validation for restaurant to customer directions */}
               {order?.orderStatus !== "ACCEPTED" &&
                 order?.orderStatus !== "PICKED" &&
-                order?.orderStatus !== "ASSIGNED" && (
+                order?.orderStatus !== "ASSIGNED" &&
+                isValidCoordinate(restaurantAddressPin?.location) &&
+                isValidCoordinate(deliveryAddressPin?.location) && (
                   <MapViewDirections
                     origin={restaurantAddressPin.location}
                     destination={deliveryAddressPin.location}
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
                     strokeColor={"#f95509"}
-                    // lineDashPattern={[5, 5]} // Dashed pattern
-                    // lineDashPhase={lineDashPhase} // Animated wave
+                    resetOnChange={false} // Prevents unnecessary recalculations
                     onReady={(result) => {
-                      setDistance(result?.distance);
-                      setDuration(result?.duration);
+                      if (result) {
+                        setDistance(result.distance);
+                        setDuration(result.duration);
+                        setDirectionsError(false);
+                      }
+                    }}
+                    onError={(error) => {
+                      console.error("Default route error:", error);
+                      setDirectionsError(true);
+                      // Retry logic for NOT_FOUND errors
+                      if (
+                        error.toString().includes("NOT_FOUND") &&
+                        retryCount < 3
+                      ) {
+                        setRetryCount((prev) => prev + 1);
+                      }
                     }}
                   />
                 )}
 
+              {/* Added user-friendly error banner when directions fail */}
+              {directionsError && (
+                <View style={styles.errorBanner}>
+                  <Text style={styles.errorText}>
+                    {t("Unable to find directions.")}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setDirectionsError(false);
+                      setRetryCount(0);
+                    }}
+                    style={styles.retryButton}
+                  >
+                    <Text style={styles.retryButtonText}>{t("Try Again")}</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
               {/* <Button title="Open in Maps" onPress={openMaps} /> */}
             </MapView>
           ) : (
@@ -346,7 +546,7 @@ export default function OrderDetailScreen() {
         <BottomSheet
           ref={bottomSheetRef}
           index={0} // Initially, the sheet starts at 50% height (snap point 0)
-          snapPoints={["50%"]} // Snap points: 50%
+          snapPoints={["50%", "80%", "100%"]} // Snap points: 50%
           backgroundStyle={styles.backgroundStyle} // Optional, to style the background
           animateOnMount={true} // Ensure that the initial animation is applied
           handleIndicatorStyle={{
@@ -555,5 +755,31 @@ const styles = StyleSheet.create({
   backgroundStyle: {
     //zIndex: 0,
     backgroundColor: "transparent", // Change to your desired background color
+  },
+  // Added error banner styles for user feedback
+  errorBanner: {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+    right: 10,
+    backgroundColor: "rgba(255, 0, 0, 0.7)",
+    padding: 8,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  errorText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  retryButton: {
+    backgroundColor: "white",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 4,
+    marginTop: 8,
+  },
+  retryButtonText: {
+    color: "red",
+    fontWeight: "bold",
   },
 });

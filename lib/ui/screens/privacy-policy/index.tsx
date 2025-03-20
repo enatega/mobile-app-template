@@ -1,6 +1,6 @@
 import * as Linking from "expo-linking";
-import { useLayoutEffect } from "react";
 import { router } from "expo-router";
+import { useLayoutEffect } from "react";
 
 const index = () => {
   useLayoutEffect(() => {
