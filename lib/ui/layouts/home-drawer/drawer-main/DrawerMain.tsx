@@ -6,7 +6,6 @@ import CustomDrawerContent from "@/lib/ui/screen-components/home/drawer/drawer-c
 
 // Icons
 import {
-  AboutIcon,
   BikeRidingIcon,
   CardIcon,
   ClockIcon,
@@ -14,8 +13,6 @@ import {
   // UserIcon,
   HomeIcon,
   LanguageIcon,
-  PageIcon,
-  PrivacyIcon,
 } from "@/lib/ui/useable-components/svg";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -138,54 +135,12 @@ const DrawerMain = ({
         }}
       />
       <Drawer.Screen
-        name="product-page"
-        options={{
-          drawerLabel: t("Product Page"),
-          title: t("Product Page"),
-          drawerIcon: ({ color, size }) => (
-            <PageIcon
-              color={appTheme.iconColor ?? color}
-              height={size}
-              width={size}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="privacy-policy"
-        options={{
-          drawerLabel: t("Privacy Policy"),
-          title: t("Privacy Policy"),
-          drawerIcon: ({ color, size }) => (
-            <PrivacyIcon
-              color={appTheme.iconColor ?? color}
-              height={size}
-              width={size}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
         name="bank-management"
         options={{
           drawerLabel: t("Bank Management"),
           title: t("Bank Management"),
           drawerIcon: ({ color, size }) => (
             <CardIcon
-              color={appTheme.iconColor ?? color}
-              height={size}
-              width={size}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="about-us"
-        options={{
-          drawerLabel: t("About Us"),
-          title: t("About US"),
-          drawerIcon: ({ color, size }) => (
-            <AboutIcon
               color={appTheme.iconColor ?? color}
               height={size}
               width={size}

@@ -4,7 +4,7 @@ import {
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
 import { useContext } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Linking, Text, TouchableOpacity, View } from "react-native";
 
 // Context
 import { AuthContext } from "@/lib/context/global/auth.context";
@@ -15,7 +15,10 @@ import CustomDrawerHeader from "@/lib/ui/screen-components/home/drawer/drawer-he
 // UI-Componetns
 import { useApptheme } from "@/lib/context/global/theme.context";
 import {
+  AboutIcon,
   LogoutIcon,
+  PageIcon,
+  PrivacyIcon,
   RightArrowIcon,
   UserIcon,
 } from "@/lib/ui/useable-components/svg";
@@ -49,6 +52,7 @@ export default function CustomDrawerContent(
       {/* Drawer Items with Right Arrow */}
       <ScrollView
         key={currentTheme?.concat("Drawer_Content").concat("Scroll_View")}
+        showsVerticalScrollIndicator={false}
         style={{
           backgroundColor: appTheme.themeBackground,
           height: "auto",
@@ -66,7 +70,7 @@ export default function CustomDrawerContent(
                 onPress={() => {
                   router.replace("/(tabs)/profile");
                 }}
-                className={`flex-row justify-between items-center px-4 py-3 border-b-[0.5px]`}
+                className={`flex-row justify-between items-center px-4 py-4 border-b-[0.5px]`}
                 style={{ borderColor: appTheme.borderLineColor }}
               >
                 <View className="flex-row items-center gap-3">
@@ -147,13 +151,86 @@ export default function CustomDrawerContent(
             );
         })}
 
+        {/* EXTERNAL LINKS  */}
+        <TouchableOpacity
+          onPress={() => {
+            Linking.openURL("https://enatega.com/");
+          }}
+          className="flex-row justify-between items-center px-4 py-4 border-b-[0.5px]"
+          style={{ borderColor: appTheme.borderLineColor }}
+        >
+          <View className="flex-row items-center gap-3">
+            <View
+              className="h-[30px] w-[40px] rounded-full items-center justify-center"
+              style={{ backgroundColor: appTheme.sidebarIconBackground }}
+            >
+              <AboutIcon width={16} height={16} color={appTheme.iconColor} />
+            </View>
+            <Text
+              className="text-sm font-semibold"
+              style={{
+                color: appTheme.buttonText,
+              }}
+            >
+              {t("About Us")}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            Linking.openURL("https://multivendor.enatega.com/#/privacy");
+          }}
+          className="flex-row justify-between items-center px-4 py-4 border-b-[0.5px]"
+          style={{ borderColor: appTheme.borderLineColor }}
+        >
+          <View className="flex-row items-center gap-3">
+            <View
+              className="h-[30px] w-[40px] rounded-full items-center justify-center"
+              style={{ backgroundColor: appTheme.sidebarIconBackground }}
+            >
+              <PrivacyIcon width={16} height={16} color={appTheme.iconColor} />
+            </View>
+            <Text
+              className="text-sm font-semibold"
+              style={{
+                color: appTheme.buttonText,
+              }}
+            >
+              {t("Product Page")}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            Linking.openURL("https://enatega.com/");
+          }}
+          className="flex-row justify-between items-center px-4 py-4 border-b-[0.5px]"
+          style={{ borderColor: appTheme.borderLineColor }}
+        >
+          <View className="flex-row items-center gap-3">
+            <View
+              className="h-[30px] w-[40px] rounded-full items-center justify-center"
+              style={{ backgroundColor: appTheme.sidebarIconBackground }}
+            >
+              <PageIcon width={16} height={16} color={appTheme.iconColor} />
+            </View>
+            <Text
+              className="text-sm font-semibold"
+              style={{
+                color: appTheme.buttonText,
+              }}
+            >
+              {t("Product Page")}
+            </Text>
+          </View>
+        </TouchableOpacity>
         {/* Logout Button */}
 
         <TouchableOpacity
           onPress={() => {
             if (logout) logout();
           }}
-          className="flex-row justify-between items-center px-4 py-2 border-b-[0.5px]"
+          className="flex-row justify-between items-center px-4 py-4 border-b-[0.5px]"
           style={{ borderColor: appTheme.borderLineColor }}
         >
           <View className="flex-row items-center gap-3">
