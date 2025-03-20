@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 
 import { NetworkStatus } from "@apollo/client";
 import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 
 // Components
 import Order from "@/lib/ui/useable-components/order";
@@ -19,6 +18,7 @@ import { IOrder } from "@/lib/utils/interfaces/order.interface";
 // Types
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { ORDER_TYPE } from "@/lib/utils/types";
+import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 
 const { height } = Dimensions.get("window");
@@ -65,35 +65,38 @@ function HomeProcessingOrdersMain(props: IOrderTabsComponentProps) {
       refetchAssigned();
     }
   }, [orders?.length]);
-
   // Calculate the marginBottom dynamically
-  const marginBottom = Platform.OS === "ios" ? height * 0.4 : height * 0.35;
-
+  // const marginBottom = Platform.OS === "ios" ? height * 0.5 : height * 0.01;
   // Render
   return (
     <View
       className="pt-14 flex-1 pb-16"
       style={[style.contaienr, { backgroundColor: appTheme.screenBackground }]}
     >
-      {errorAssigned ? (
-        <View className="flex-1 justify-center items-center">
-          <Text
-            className="text-2xl"
-            style={{ color: appTheme.fontSecondColor }}
-          >
-            {t("Something went wrong")}
-          </Text>
-        </View>
-      ) : orders?.length > 0 ? (
-        <FlatList
-          className={`h-[${height}px] mb-[${marginBottom}px]`}
-          keyExtractor={(item) => item._id}
+      {orders?.length > 0 ? (
+        <FlashList
           data={orders}
+          estimatedItemSize={orders?.length}
+          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
           refreshing={networkStatusAssigned === NetworkStatus.loading}
           onRefresh={refetchAssigned}
-          renderItem={({ item }: { item: IOrder }) => (
-            <Order tab={route.key as ORDER_TYPE} order={item} key={item._id} />
+          renderItem={({ item, index }: { item: IOrder; index: number }) => (
+            <Order
+              tab={route.key as ORDER_TYPE}
+              _id={item._id}
+              orderId={item.orderId}
+              orderStatus={item.orderStatus}
+              restaurant={item.restaurant}
+              deliveryAddress={item.deliveryAddress}
+              paymentMethod={item.paymentMethod}
+              orderAmount={item.orderAmount}
+              paymentStatus={item.paymentStatus}
+              acceptedAt={item.acceptedAt}
+              user={item.user}
+              key={item._id}
+              isLast={index === orders.length - 1}
+            />
           )}
           ListEmptyComponent={() => {
             return (

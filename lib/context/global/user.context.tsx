@@ -1,6 +1,7 @@
 import { QueryResult, useQuery } from "@apollo/client";
 import {
   LocationAccuracy,
+  LocationObject,
   LocationSubscription,
   requestForegroundPermissionsAsync,
   watchPositionAsync,
@@ -53,6 +54,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
 
   // Refs
   const locationListener = useRef<LocationSubscription>();
+  const coordinatesRef = useRef<LocationObject>({} as LocationObject);
 
   // Context
   // const { locationPermission } = useLocationContext()
@@ -83,9 +85,11 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     // onError: error2,
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
-    pollInterval: 15000,
-
+    pollInterval: 5000,
     skip: !userId,
+    variables: {
+      userId,
+    },
   });
 
   // let unsubscribeZoneOrder: unknown = null
@@ -150,11 +154,23 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
 
   const trackRiderLocation = async () => {
     locationListener.current = await watchPositionAsync(
-      { accuracy: LocationAccuracy.BestForNavigation, timeInterval: 10000 },
+      {
+        accuracy: LocationAccuracy.BestForNavigation,
+        timeInterval: 60000,
+        distanceInterval: 10,
+      },
       async (location) => {
         try {
           const token = await AsyncStorage.getItem(RIDER_TOKEN);
           if (!token) return;
+          if (
+            coordinatesRef.current?.coords?.latitude ===
+              location.coords?.latitude &&
+            coordinatesRef.current?.coords?.longitude ===
+              location.coords?.longitude
+          )
+            return;
+          coordinatesRef.current = location;
           client.mutate({
             mutation: UPDATE_LOCATION,
             variables: {

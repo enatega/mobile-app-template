@@ -1,26 +1,26 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   ApolloClient,
-  InMemoryCache,
-  createHttpLink,
   ApolloLink,
-  split,
   concat,
+  createHttpLink,
+  InMemoryCache,
   Observable,
   Operation,
+  split,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
+import { WebSocketLink } from "@apollo/client/link/ws";
 import {
   getMainDefinition,
   offsetLimitPagination,
 } from "@apollo/client/utilities";
-import { WebSocketLink } from "@apollo/client/link/ws";
-import useEnvVars from "../../environment";
-import { IRestaurantLocation } from "../utils/interfaces";
-import { calculateDistance } from "../utils/methods/custom-functions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DefinitionNode, FragmentDefinitionNode } from "graphql";
 import { Subscription } from "zen-observable-ts";
+import useEnvVars from "../../environment";
 import { RIDER_TOKEN } from "../utils/constants";
+import { IRestaurantLocation } from "../utils/interfaces";
+import { calculateDistance } from "../utils/methods/custom-functions";
 // import { onError } from "apollo-link-error";
 
 const setupApollo = () => {
@@ -99,6 +99,7 @@ const setupApollo = () => {
     uri: WS_GRAPHQL_URL,
     options: {
       reconnect: true,
+      timeout:30000
     },
   });
 

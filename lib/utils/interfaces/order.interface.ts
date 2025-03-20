@@ -5,7 +5,7 @@ import { IRestaurantProfile } from "./resturant.interface";
 import { IRiderProfile } from "./user.interface";
 
 export interface IOrderComponentProps extends IGlobalComponentProps {
-  order: IOrder;
+
   tab: ORDER_TYPE;
 }
 

@@ -44,9 +44,9 @@ function calculateDistance(
   return R * c;
 }
 
-function toRad(Value: number) {
-  return (Value * Math.PI) / 180;
-}
+// function toRad(Value: number) {
+//   return (Value * Math.PI) / 180;
+// }
 const calulateRemainingTime = (order: IOrder) => {
   const expectedTime =
     (
@@ -147,12 +147,8 @@ const sortRestaurantsByOpenStatus = (restaurants: IRestaurantProfile[]) => {
 };
 
 export {
-  calculateDistance,
-  calulateRemainingTime,
-  calculateDaysAgo,
-  groupAndCount,
-  sortReviews,
-  calculateAmount,
-  isOpen,
-  sortRestaurantsByOpenStatus,
+  calculateAmount, calculateDaysAgo, calculateDistance,
+  calulateRemainingTime, groupAndCount, isOpen,
+  sortRestaurantsByOpenStatus, sortReviews
 };
+

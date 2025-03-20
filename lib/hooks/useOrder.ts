@@ -1,14 +1,14 @@
-import { useContext, useState, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
+import { ApolloError, useMutation, useSubscription } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
-import { useMutation, useSubscription } from "@apollo/client";
 
-import { IOrder } from "../utils/interfaces/order.interface";
-import UserContext from "../context/global/user.context";
-import { getRemainingAcceptingTime } from "../utils/methods";
-import { SUBSCRIPTION_ORDERS } from "../apollo/subscriptions";
-import { FlashMessageComponent } from "../ui/useable-components";
 import { ASSIGN_ORDER } from "../apollo/mutations/order.mutation";
+import { SUBSCRIPTION_ORDERS } from "../apollo/subscriptions";
+import UserContext from "../context/global/user.context";
+import { FlashMessageComponent } from "../ui/useable-components";
+import { IOrder } from "../utils/interfaces/order.interface";
+import { getRemainingAcceptingTime } from "../utils/methods";
 
 const useOrder = (order: IOrder) => {
   //   const { active } = useContext(TabsContext)
@@ -20,6 +20,13 @@ const useOrder = (order: IOrder) => {
   const [time, setTime] = useState("00:00");
 
   useEffect(() => {
+        // Clear any existing timer first to prevent multiple timers
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = undefined;
+        }
+
+   if(order.acceptedAt){
     const remainingSeconds = getRemainingAcceptingTime(order?.acceptedAt);
     if (remainingSeconds > 0) {
       minutesRef.current = Math.floor(remainingSeconds / 60);
@@ -47,6 +54,7 @@ const useOrder = (order: IOrder) => {
         }
       }, 1000);
     }
+   }
     return () => timerRef.current && clearInterval(timerRef.current);
   }, []);
 
@@ -69,7 +77,7 @@ const useOrder = (order: IOrder) => {
     }
   }
 
-  function onError({ graphQLErrors, networkError }) {
+  function onError({ graphQLErrors, networkError }:ApolloError) {
     let message = "Unknown error occured";
     if (networkError) message = "Internal Server Error";
     if (graphQLErrors) message = graphQLErrors.map((o) => o.message).join(", ");

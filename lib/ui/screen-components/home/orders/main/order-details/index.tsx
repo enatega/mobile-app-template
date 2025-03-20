@@ -45,7 +45,9 @@ import useOrderDetail from "@/lib/hooks/useOrderDetails";
 import { ConfigurationContext } from "@/lib/context/global/configuration.context";
 
 // UI Components
+import { RIDER_ORDERS } from "@/lib/apollo/queries";
 import { useApptheme } from "@/lib/context/global/theme.context";
+import { useUserContext } from "@/lib/context/global/user.context";
 import { CustomContinueButton } from "@/lib/ui/useable-components";
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
 import AccordionItem from "@/lib/ui/useable-components/accordian";
@@ -75,7 +77,7 @@ export default function OrderDetailScreen() {
     tab,
     locationPin,
   } = useOrderDetail();
-
+  const { userId } = useUserContext();
   const { mutateAssignOrder, mutateOrderStatus, loadingOrderStatus } =
     useDetails(order);
 
@@ -161,7 +163,7 @@ export default function OrderDetailScreen() {
     };
   }, []);
 
-  if (!order || !order?.orderId) return;
+  if (!order) return;
 
   return (
     <>
@@ -457,7 +459,7 @@ export default function OrderDetailScreen() {
               </View>
 
               {/* Divider */}
-              <View className="flex-1 h-[1px] bg-gray-300 mb-4" />
+              <View className="flex-1 h-[1px] mb-4" />
 
               <AccordionItem title={t("Order Details")}>
                 <ItemDetails orderData={order} tab={tab} />
@@ -519,10 +521,13 @@ export default function OrderDetailScreen() {
               {tab === "new_orders" && order.orderStatus === "ACCEPTED" && (
                 <CustomContinueButton
                   title={t("Assign me")}
-                  className="w-[15%] mx-auto"
+                  className="w-[55%] mx-auto"
                   onPress={() =>
                     mutateAssignOrder({
                       variables: { id: order?._id },
+                      refetchQueries: [
+                        { query: RIDER_ORDERS, variables: { userId: userId } },
+                      ],
                     })
                   }
                 />
