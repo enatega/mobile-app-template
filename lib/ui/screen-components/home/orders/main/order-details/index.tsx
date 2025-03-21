@@ -431,7 +431,6 @@ export default function OrderDetailScreen() {
                         if (results && results.distance) {
                           setDistance(results.distance);
                           setDuration(results.duration);
-                          setDirectionsError(false);
                         }
                       }}
                       optimizeWaypoints={true}
