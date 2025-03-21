@@ -22,7 +22,7 @@ import MapView, {
   LatLng,
   MapStyleElement,
   Marker,
-  PROVIDER_GOOGLE
+  PROVIDER_GOOGLE,
 } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { Easing } from "react-native-reanimated";
@@ -101,7 +101,6 @@ export default function OrderDetailScreen() {
   // States
   const [customMapStyles, setCustomMapStyles] = useState<MapStyleElement[]>();
   const [orderId, setOrderId] = useState("");
-  const [directionsError, setDirectionsError] = useState(false); // Added to track direction errors
   const [retryCount, setRetryCount] = useState(0); // Added to implement retry logic
 
   // Ref
@@ -353,12 +352,8 @@ export default function OrderDetailScreen() {
                 longitude: locationPin?.location?.longitude ?? 0.0,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
-                // latitudeDelta: 0.05,
-                // longitudeDelta: 0.05,
               }}
-              provider={
-              PROVIDER_GOOGLE
-              }
+              provider={PROVIDER_GOOGLE}
               // customMapStyle={MapStyles}
             >
               {deliveryAddressPin?.location && (
@@ -422,11 +417,12 @@ export default function OrderDetailScreen() {
               {localOrder?.orderStatus === "ACCEPTED" ||
               localOrder?.orderStatus === "ASSIGNED"
                 ? isValidCoordinate(locationPin?.location) &&
-                  isValidCoordinate(restaurantAddressPin?.location) && (
+                  isValidCoordinate(restaurantAddressPin?.location) &&
+                  GOOGLE_MAPS_KEY && (
                     <MapViewDirections
                       origin={locationPin?.location}
                       destination={restaurantAddressPin?.location}
-                      apikey={GOOGLE_MAPS_KEY ?? ""}
+                      apikey={GOOGLE_MAPS_KEY}
                       strokeWidth={2}
                       strokeColor={"#f95509"}
                       precision="low"
@@ -441,7 +437,6 @@ export default function OrderDetailScreen() {
                       optimizeWaypoints={true}
                       onError={(error) => {
                         console.log("Detailed route error:", error);
-                        setDirectionsError(true);
                         // Retry logic for NOT_FOUND errors
                         if (
                           error.toString().includes("NOT_FOUND") &&
@@ -457,11 +452,12 @@ export default function OrderDetailScreen() {
               {/* Added validation for rider to customer directions */}
               {localOrder?.orderStatus === "PICKED" &&
                 isValidCoordinate(locationPin?.location) &&
-                isValidCoordinate(deliveryAddressPin?.location) && (
+                isValidCoordinate(deliveryAddressPin?.location) &&
+                GOOGLE_MAPS_KEY && (
                   <MapViewDirections
                     origin={locationPin?.location}
                     destination={deliveryAddressPin?.location}
-                    apikey={GOOGLE_MAPS_KEY ?? ""}
+                    apikey={GOOGLE_MAPS_KEY}
                     strokeWidth={2}
                     strokeColor={"#f95509"}
                     precision="low"
@@ -470,11 +466,9 @@ export default function OrderDetailScreen() {
                     onReady={(result) => {
                       setDistance(result.distance);
                       setDuration(result.duration);
-                      setDirectionsError(false);
                     }}
                     onError={(error) => {
                       console.log("Delivery route error:", error);
-                      setDirectionsError(true);
                       // Retry logic for NOT_FOUND errors
                       if (
                         error.toString().includes("NOT_FOUND") &&
@@ -505,12 +499,10 @@ export default function OrderDetailScreen() {
                       if (result) {
                         setDistance(result.distance);
                         setDuration(result.duration);
-                        setDirectionsError(false);
                       }
                     }}
                     onError={(error) => {
                       console.log("Default route error:", error);
-                      setDirectionsError(true);
                       // Retry logic for NOT_FOUND errors
                       if (
                         error.toString().includes("NOT_FOUND") &&
@@ -580,12 +572,14 @@ export default function OrderDetailScreen() {
                   style={{ width: 32, height: 30, borderRadius: 8 }}
                 />
 
-                {localOrder?.restaurant?.name&&<Text
-                  className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink "
-                  style={{ color: appTheme.fontMainColor }}
-                >
-                  {localOrder?.restaurant?.name}
-                </Text>}
+                {localOrder?.restaurant?.name && (
+                  <Text
+                    className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink "
+                    style={{ color: appTheme.fontMainColor }}
+                  >
+                    {localOrder?.restaurant?.name}
+                  </Text>
+                )}
               </View>
 
               {/* Pick Up Order */}
@@ -658,29 +652,30 @@ export default function OrderDetailScreen() {
               </AccordionItem>
 
               {/* Pick up Button */}
-              {tab === "processing" && localOrder.orderStatus === "ASSIGNED" && (
-                <TouchableOpacity
-                  className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
-                  style={{ backgroundColor: appTheme.primary }}
-                  disabled={loadingOrderStatus}
-                  onPress={() =>
-                    mutateOrderStatus({
-                      variables: { id: localOrder?._id, status: "PICKED" },
-                    })
-                  }
-                >
-                  {loadingOrderStatus ? (
-                    <SpinnerComponent />
-                  ) : (
-                    <Text
-                      className="text-center  text-lg font-medium"
-                      style={{ color: appTheme.black }}
-                    >
-                      {t("Pick up")}
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              )}
+              {tab === "processing" &&
+                localOrder.orderStatus === "ASSIGNED" && (
+                  <TouchableOpacity
+                    className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
+                    style={{ backgroundColor: appTheme.primary }}
+                    disabled={loadingOrderStatus}
+                    onPress={() =>
+                      mutateOrderStatus({
+                        variables: { id: localOrder?._id, status: "PICKED" },
+                      })
+                    }
+                  >
+                    {loadingOrderStatus ? (
+                      <SpinnerComponent />
+                    ) : (
+                      <Text
+                        className="text-center  text-lg font-medium"
+                        style={{ color: appTheme.black }}
+                      >
+                        {t("Pick up")}
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                )}
 
               {tab == "processing" && localOrder.orderStatus === "PICKED" && (
                 <TouchableOpacity
@@ -710,20 +705,24 @@ export default function OrderDetailScreen() {
                 </TouchableOpacity>
               )}
 
-              {tab === "new_orders" && localOrder.orderStatus === "ACCEPTED" && (
-                <CustomContinueButton
-                  title={t("Assign me")}
-                  className="w-[55%] mx-auto"
-                  onPress={() =>
-                    mutateAssignOrder({
-                      variables: { id: localOrder?._id },
-                      refetchQueries: [
-                        { query: RIDER_ORDERS, variables: { userId: userId } },
-                      ],
-                    })
-                  }
-                />
-              )}
+              {tab === "new_orders" &&
+                localOrder.orderStatus === "ACCEPTED" && (
+                  <CustomContinueButton
+                    title={t("Assign me")}
+                    className="w-[55%] mx-auto"
+                    onPress={() =>
+                      mutateAssignOrder({
+                        variables: { id: localOrder?._id },
+                        refetchQueries: [
+                          {
+                            query: RIDER_ORDERS,
+                            variables: { userId: userId },
+                          },
+                        ],
+                      })
+                    }
+                  />
+                )}
             </BottomSheetScrollView>
           </BottomSheetView>
         </BottomSheet>
