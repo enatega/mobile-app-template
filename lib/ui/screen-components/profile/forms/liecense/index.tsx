@@ -256,9 +256,10 @@ export default function DrivingLicenseForm({
 
   // UseEffects
   useEffect(() => {
-    console.warn(dataProfile?.licenseDetails?.expiryDate);
     setFormData({
-      expiryDate: new Date(dataProfile?.licenseDetails?.expiryDate ?? ""),
+      expiryDate: dataProfile?.licenseDetails?.expiryDate
+        ? new Date(dataProfile?.licenseDetails?.expiryDate)
+        : new Date(),
       image: dataProfile?.licenseDetails?.image ?? "",
       number: String(dataProfile?.licenseDetails?.number ?? ""),
     });
