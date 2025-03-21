@@ -13,7 +13,6 @@ import {
   Image,
   Linking,
   Platform,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -50,11 +49,13 @@ import { RIDER_ORDERS } from "@/lib/apollo/queries";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { CustomContinueButton } from "@/lib/ui/useable-components";
-import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
 import AccordionItem from "@/lib/ui/useable-components/accordian";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
+import { HomeIcon } from "@/lib/ui/useable-components/svg";
 import WelldoneComponent from "@/lib/ui/useable-components/well-done";
 import { CustomMapStyles } from "@/lib/utils/constants/map";
+import { map_styles } from "@/lib/utils/constants/order-details";
+import { IOrder } from "@/lib/utils/interfaces/order.interface";
 
 const { height } = Dimensions.get("window");
 
@@ -93,8 +94,8 @@ export default function OrderDetailScreen() {
     tab,
     locationPin,
   } = useOrderDetail();
-  console.log(locationPin);
   const { userId } = useUserContext();
+  const [localOrder, setLocalOrder] = useState<IOrder>({} as IOrder);
   const { mutateAssignOrder, mutateOrderStatus, loadingOrderStatus } =
     useDetails(order);
 
@@ -103,7 +104,7 @@ export default function OrderDetailScreen() {
   const [orderId, setOrderId] = useState("");
   const [directionsError, setDirectionsError] = useState(false); // Added to track direction errors
   const [retryCount, setRetryCount] = useState(0); // Added to implement retry logic
-  // const [lineDashPhase, setLineDashPhase] = useState(0);
+
   // Ref
   const latitude = useRef(
     new Animated.Value(locationPin.location.latitude),
@@ -153,13 +154,13 @@ export default function OrderDetailScreen() {
       // Validate all required coordinates to prevent app crashes
       // when trying to construct navigation URLs with invalid data
       if (!isValidCoordinate(locationPin?.location)) {
-        console.error("Invalid rider location for maps navigation");
+        console.log("Invalid rider location for maps navigation");
         Alert.alert(t("Navigation Error"), t("Rider location is unavailable."));
         return;
       }
 
       if (!isValidCoordinate(restaurantAddressPin?.location)) {
-        console.error("Invalid store location for maps navigation");
+        console.log("Invalid store location for maps navigation");
         Alert.alert(
           t("Navigation Error"),
           t("Restaurant location is unavailable."),
@@ -168,7 +169,7 @@ export default function OrderDetailScreen() {
       }
 
       if (!isValidCoordinate(deliveryAddressPin?.location)) {
-        console.error("Invalid customer location for maps navigation");
+        console.log("Invalid customer location for maps navigation");
         Alert.alert(
           t("Navigation Error"),
           t("Delivery location is unavailable."),
@@ -182,7 +183,7 @@ export default function OrderDetailScreen() {
 
       if (Platform.OS === "ios") {
         // Apple Maps (Only Rider -> Store -> Customer)
-        const appleMapsUrl = `maps://app?saddr=${rider}&daddr=${order?.orderStatus === "PICKED" ? customer : store}`;
+        const appleMapsUrl = `maps://app?saddr=${rider}&daddr=${localOrder?.orderStatus === "PICKED" ? customer : store}`;
         // Added error handling for Linking
         Linking.openURL(appleMapsUrl).catch(() => {
           Alert.alert(
@@ -203,7 +204,7 @@ export default function OrderDetailScreen() {
       }
     } catch (error) {
       // Added global error handling
-      console.error("Error opening maps:", error);
+      console.log("Error opening maps:", error);
       Alert.alert(
         t("Navigation Error"),
         t("An error occurred when trying to open maps"),
@@ -220,7 +221,7 @@ export default function OrderDetailScreen() {
 
     // Added validation for Google Maps API key to catch common configuration issues
     if (!GOOGLE_MAPS_KEY || GOOGLE_MAPS_KEY === "") {
-      console.error("Google Maps API key is missing or invalid");
+      console.log("Google Maps API key is missing or invalid");
     }
   }, [appTheme, currentTheme, GOOGLE_MAPS_KEY]);
 
@@ -282,7 +283,7 @@ export default function OrderDetailScreen() {
       };
     } catch (error) {
       // Error handling to prevent uncaught exceptions
-      console.error("Error in location animation setup:", error);
+      console.log("Error in location animation setup:", error);
       if (intervalId) {
         clearInterval(intervalId);
       }
@@ -292,7 +293,12 @@ export default function OrderDetailScreen() {
     // This prevents stale closures that might reference outdated data
   }, [locationPin?.location?.latitude, locationPin?.location?.longitude]);
 
-  if (!order) return;
+  useEffect(() => {
+    if (order.orderStatus) {
+      setLocalOrder(order);
+    }
+  }, [order.orderStatus]);
+  if (!localOrder) return;
 
   return (
     <>
@@ -330,7 +336,7 @@ export default function OrderDetailScreen() {
               />
             </TouchableOpacity>
           </View>
-          {locationPin ? (
+          {locationPin && GOOGLE_MAPS_KEY ? (
             <MapView
               style={{
                 width: "100%",
@@ -413,13 +419,13 @@ export default function OrderDetailScreen() {
                 )}
 
               {/* Added validation for rider to restaurant directions */}
-              {order?.orderStatus === "ACCEPTED" ||
-              order?.orderStatus === "ASSIGNED"
+              {localOrder?.orderStatus === "ACCEPTED" ||
+              localOrder?.orderStatus === "ASSIGNED"
                 ? isValidCoordinate(locationPin?.location) &&
                   isValidCoordinate(restaurantAddressPin?.location) && (
                     <MapViewDirections
-                      origin={locationPin.location}
-                      destination={restaurantAddressPin.location}
+                      origin={locationPin?.location}
+                      destination={restaurantAddressPin?.location}
                       apikey={GOOGLE_MAPS_KEY ?? ""}
                       strokeWidth={2}
                       strokeColor={"#f95509"}
@@ -433,12 +439,12 @@ export default function OrderDetailScreen() {
                         }
                       }}
                       onError={(error) => {
-                        console.error("Detailed route error:", error);
+                        console.log("Detailed route error:", error);
                         setDirectionsError(true);
                         // Retry logic for NOT_FOUND errors
                         if (
                           error.toString().includes("NOT_FOUND") &&
-                          retryCount < 3
+                          retryCount < 10
                         ) {
                           setRetryCount((prev) => prev + 1);
                         }
@@ -448,12 +454,12 @@ export default function OrderDetailScreen() {
                 : null}
 
               {/* Added validation for rider to customer directions */}
-              {order?.orderStatus === "PICKED" &&
+              {localOrder?.orderStatus === "PICKED" &&
                 isValidCoordinate(locationPin?.location) &&
                 isValidCoordinate(deliveryAddressPin?.location) && (
                   <MapViewDirections
-                    origin={locationPin.location}
-                    destination={deliveryAddressPin.location}
+                    origin={locationPin?.location}
+                    destination={deliveryAddressPin?.location}
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
                     strokeColor={"#f95509"}
@@ -464,12 +470,12 @@ export default function OrderDetailScreen() {
                       setDirectionsError(false);
                     }}
                     onError={(error) => {
-                      console.error("Delivery route error:", error);
+                      console.log("Delivery route error:", error);
                       setDirectionsError(true);
                       // Retry logic for NOT_FOUND errors
                       if (
                         error.toString().includes("NOT_FOUND") &&
-                        retryCount < 3
+                        retryCount < 10
                       ) {
                         setRetryCount((prev) => prev + 1);
                       }
@@ -478,14 +484,14 @@ export default function OrderDetailScreen() {
                 )}
 
               {/* Added validation for restaurant to customer directions */}
-              {order?.orderStatus !== "ACCEPTED" &&
-                order?.orderStatus !== "PICKED" &&
-                order?.orderStatus !== "ASSIGNED" &&
+              {localOrder?.orderStatus !== "ACCEPTED" &&
+                localOrder?.orderStatus !== "PICKED" &&
+                localOrder?.orderStatus !== "ASSIGNED" &&
                 isValidCoordinate(restaurantAddressPin?.location) &&
                 isValidCoordinate(deliveryAddressPin?.location) && (
                   <MapViewDirections
-                    origin={restaurantAddressPin.location}
-                    destination={deliveryAddressPin.location}
+                    origin={restaurantAddressPin?.location}
+                    destination={deliveryAddressPin?.location}
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
                     strokeColor={"#f95509"}
@@ -498,12 +504,12 @@ export default function OrderDetailScreen() {
                       }
                     }}
                     onError={(error) => {
-                      console.error("Default route error:", error);
+                      console.log("Default route error:", error);
                       setDirectionsError(true);
                       // Retry logic for NOT_FOUND errors
                       if (
                         error.toString().includes("NOT_FOUND") &&
-                        retryCount < 3
+                        retryCount < 10
                       ) {
                         setRetryCount((prev) => prev + 1);
                       }
@@ -513,8 +519,8 @@ export default function OrderDetailScreen() {
 
               {/* Added user-friendly error banner when directions fail */}
               {directionsError && (
-                <View style={styles.errorBanner}>
-                  <Text style={styles.errorText}>
+                <View style={map_styles.errorBanner}>
+                  <Text style={map_styles.errorText}>
                     {t("Unable to find directions.")}
                   </Text>
                   <TouchableOpacity
@@ -522,9 +528,11 @@ export default function OrderDetailScreen() {
                       setDirectionsError(false);
                       setRetryCount(0);
                     }}
-                    style={styles.retryButton}
+                    style={map_styles.retryButton}
                   >
-                    <Text style={styles.retryButtonText}>{t("Try Again")}</Text>
+                    <Text style={map_styles.retryButtonText}>
+                      {t("Try Again")}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               )}
@@ -547,7 +555,7 @@ export default function OrderDetailScreen() {
           ref={bottomSheetRef}
           index={0} // Initially, the sheet starts at 50% height (snap point 0)
           snapPoints={["50%", "80%", "100%"]} // Snap points: 50%
-          backgroundStyle={styles.backgroundStyle} // Optional, to style the background
+          backgroundStyle={map_styles.backgroundStyle} // Optional, to style the background
           animateOnMount={true} // Ensure that the initial animation is applied
           handleIndicatorStyle={{
             backgroundColor: "transparent",
@@ -577,13 +585,13 @@ export default function OrderDetailScreen() {
                   {t("Order ID")}
                 </Text>
                 <Text style={{ color: appTheme.fontMainColor }}>
-                  #{order?.orderId ?? "-"}
+                  #{localOrder?.orderId ?? "-"}
                 </Text>
               </View>
 
               <View className="flex-1 flex-row justify-start items-center gap-x-4 mb-4">
                 <Image
-                  src={order?.restaurant?.image}
+                  src={localOrder?.restaurant?.image}
                   style={{ width: 32, height: 30, borderRadius: 8 }}
                 />
 
@@ -591,17 +599,16 @@ export default function OrderDetailScreen() {
                   className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink "
                   style={{ color: appTheme.fontMainColor }}
                 >
-                  {order?.restaurant?.name}
+                  {localOrder?.restaurant?.name}
                 </Text>
               </View>
 
               {/* Pick Up Order */}
               <View className="w-[90%] flex-row items-center gap-x-2 mb-4">
                 <View>
-                  <IconSymbol
-                    name="apartment"
-                    size={30}
-                    weight="medium"
+                  <HomeIcon
+                    width={30}
+                    height={30}
                     color={appTheme.fontMainColor}
                   />
                 </View>
@@ -616,7 +623,7 @@ export default function OrderDetailScreen() {
                     className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink "
                     style={{ color: appTheme.fontMainColor }}
                   >
-                    {order?.restaurant?.address ?? "-"}
+                    {localOrder?.restaurant?.address ?? "-"}
                   </Text>
                 </View>
               </View>
@@ -633,7 +640,7 @@ export default function OrderDetailScreen() {
                   className="font-[Inter] text-base font-semibold  text-left underline-offset-auto decoration-skip-ink   mr-2"
                   style={{ color: appTheme.fontMainColor }}
                 >
-                  {order?.paymentMethod}
+                  {localOrder?.paymentMethod}
                 </Text>
               </View>
 
@@ -651,7 +658,7 @@ export default function OrderDetailScreen() {
                   style={{ color: appTheme.fontMainColor }}
                 >
                   {configuration?.currencySymbol}
-                  {order?.orderAmount}
+                  {localOrder?.orderAmount}
                   {order.paymentStatus === "PAID"
                     ? t("Paid")
                     : t("(Not paid yet)")}
@@ -673,7 +680,7 @@ export default function OrderDetailScreen() {
                   disabled={loadingOrderStatus}
                   onPress={() =>
                     mutateOrderStatus({
-                      variables: { id: order?._id, status: "PICKED" },
+                      variables: { id: localOrder?._id, status: "PICKED" },
                     })
                   }
                 >
@@ -697,12 +704,12 @@ export default function OrderDetailScreen() {
                   disabled={loadingOrderStatus}
                   onPress={async () => {
                     await mutateOrderStatus({
-                      variables: { id: order?._id, status: "DELIVERED" },
+                      variables: { id: localOrder?._id, status: "DELIVERED" },
                       onCompleted: () => {
-                        setOrderId(order?.orderId);
+                        setOrderId(localOrder?.orderId);
                       },
                     });
-                    setOrderId(order?.orderId);
+                    setOrderId(localOrder?.orderId);
                   }}
                 >
                   {loadingOrderStatus ? (
@@ -724,7 +731,7 @@ export default function OrderDetailScreen() {
                   className="w-[55%] mx-auto"
                   onPress={() =>
                     mutateAssignOrder({
-                      variables: { id: order?._id },
+                      variables: { id: localOrder?._id },
                       refetchQueries: [
                         { query: RIDER_ORDERS, variables: { userId: userId } },
                       ],
@@ -740,46 +747,9 @@ export default function OrderDetailScreen() {
         <WelldoneComponent
           orderId={orderId}
           setOrderId={setOrderId}
-          status={order?.orderStatus === "DELIVERED" ? "Delivered" : ""}
+          status={localOrder?.orderStatus === "DELIVERED" ? "Delivered" : ""}
         />
       }
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  map: {
-    height: "100%",
-    width: "100%",
-  },
-  backgroundStyle: {
-    //zIndex: 0,
-    backgroundColor: "transparent", // Change to your desired background color
-  },
-  // Added error banner styles for user feedback
-  errorBanner: {
-    position: "absolute",
-    bottom: 10,
-    left: 10,
-    right: 10,
-    backgroundColor: "rgba(255, 0, 0, 0.7)",
-    padding: 8,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  errorText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  retryButton: {
-    backgroundColor: "white",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 4,
-    marginTop: 8,
-  },
-  retryButtonText: {
-    color: "red",
-    fontWeight: "bold",
-  },
-});

@@ -39,7 +39,8 @@ export default function CustomDrawerContent(
       key={currentTheme?.concat("Drawer_Content")}
       {...props}
       // scrollEnabled={false}
-
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
       contentContainerStyle={{
         backgroundColor: appTheme.themeBackground,
         paddingBottom: 30,
@@ -52,7 +53,6 @@ export default function CustomDrawerContent(
       {/* Drawer Items with Right Arrow */}
       <ScrollView
         key={currentTheme?.concat("Drawer_Content").concat("Scroll_View")}
-        showsVerticalScrollIndicator={false}
         style={{
           backgroundColor: appTheme.themeBackground,
           height: "auto",
