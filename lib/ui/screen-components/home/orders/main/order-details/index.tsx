@@ -22,8 +22,7 @@ import MapView, {
   LatLng,
   MapStyleElement,
   Marker,
-  PROVIDER_DEFAULT,
-  PROVIDER_GOOGLE,
+  PROVIDER_GOOGLE
 } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { Easing } from "react-native-reanimated";
@@ -294,10 +293,11 @@ export default function OrderDetailScreen() {
   }, [locationPin?.location?.latitude, locationPin?.location?.longitude]);
 
   useEffect(() => {
-    if (order.orderStatus) {
+    if (order) {
       setLocalOrder(order);
     }
-  }, [order.orderStatus]);
+  }, [order]);
+
   if (!localOrder) return;
 
   return (
@@ -357,7 +357,7 @@ export default function OrderDetailScreen() {
                 // longitudeDelta: 0.05,
               }}
               provider={
-                Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
+              PROVIDER_GOOGLE
               }
               // customMapStyle={MapStyles}
             >
@@ -429,15 +429,16 @@ export default function OrderDetailScreen() {
                       apikey={GOOGLE_MAPS_KEY ?? ""}
                       strokeWidth={2}
                       strokeColor={"#f95509"}
+                      precision="low"
                       resetOnChange={false} // Prevents unnecessary recalculations
                       onReady={(results) => {
-                        console.log("Route found:", results);
                         if (results && results.distance) {
                           setDistance(results.distance);
                           setDuration(results.duration);
                           setDirectionsError(false);
                         }
                       }}
+                      optimizeWaypoints={true}
                       onError={(error) => {
                         console.log("Detailed route error:", error);
                         setDirectionsError(true);
@@ -463,7 +464,9 @@ export default function OrderDetailScreen() {
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
                     strokeColor={"#f95509"}
-                    resetOnChange={false} // Prevents unnecessary recalculations
+                    precision="low"
+                    resetOnChange={false}
+                    optimizeWaypoints={true}
                     onReady={(result) => {
                       setDistance(result.distance);
                       setDuration(result.duration);
@@ -494,8 +497,10 @@ export default function OrderDetailScreen() {
                     destination={deliveryAddressPin?.location}
                     apikey={GOOGLE_MAPS_KEY ?? ""}
                     strokeWidth={2}
+                    precision="low"
                     strokeColor={"#f95509"}
-                    resetOnChange={false} // Prevents unnecessary recalculations
+                    resetOnChange={false}
+                    optimizeWaypoints={true}
                     onReady={(result) => {
                       if (result) {
                         setDistance(result.distance);
@@ -516,26 +521,6 @@ export default function OrderDetailScreen() {
                     }}
                   />
                 )}
-
-              {/* Added user-friendly error banner when directions fail */}
-              {directionsError && (
-                <View style={map_styles.errorBanner}>
-                  <Text style={map_styles.errorText}>
-                    {t("Unable to find directions.")}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setDirectionsError(false);
-                      setRetryCount(0);
-                    }}
-                    style={map_styles.retryButton}
-                  >
-                    <Text style={map_styles.retryButtonText}>
-                      {t("Try Again")}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
               {/* <Button title="Open in Maps" onPress={openMaps} /> */}
             </MapView>
           ) : (
@@ -554,7 +539,7 @@ export default function OrderDetailScreen() {
         <BottomSheet
           ref={bottomSheetRef}
           index={0} // Initially, the sheet starts at 50% height (snap point 0)
-          snapPoints={["50%", "80%", "100%"]} // Snap points: 50%
+          snapPoints={["50%"]} // Snap points: 50%
           backgroundStyle={map_styles.backgroundStyle} // Optional, to style the background
           animateOnMount={true} // Ensure that the initial animation is applied
           handleIndicatorStyle={{
@@ -595,12 +580,12 @@ export default function OrderDetailScreen() {
                   style={{ width: 32, height: 30, borderRadius: 8 }}
                 />
 
-                <Text
+                {localOrder?.restaurant?.name&&<Text
                   className="font-[Inter] text-lg font-bold leading-7 text-left underline-offset-auto decoration-skip-ink "
                   style={{ color: appTheme.fontMainColor }}
                 >
                   {localOrder?.restaurant?.name}
-                </Text>
+                </Text>}
               </View>
 
               {/* Pick Up Order */}
@@ -659,7 +644,7 @@ export default function OrderDetailScreen() {
                 >
                   {configuration?.currencySymbol}
                   {localOrder?.orderAmount}
-                  {order.paymentStatus === "PAID"
+                  {localOrder.paymentStatus === "PAID"
                     ? t("Paid")
                     : t("(Not paid yet)")}
                 </Text>
@@ -669,11 +654,11 @@ export default function OrderDetailScreen() {
               <View className="flex-1 h-[1px] mb-4" />
 
               <AccordionItem title={t("Order Details")}>
-                <ItemDetails orderData={order} tab={tab} />
+                <ItemDetails orderData={localOrder} tab={tab} />
               </AccordionItem>
 
               {/* Pick up Button */}
-              {tab === "processing" && order.orderStatus === "ASSIGNED" && (
+              {tab === "processing" && localOrder.orderStatus === "ASSIGNED" && (
                 <TouchableOpacity
                   className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
                   style={{ backgroundColor: appTheme.primary }}
@@ -697,7 +682,7 @@ export default function OrderDetailScreen() {
                 </TouchableOpacity>
               )}
 
-              {tab == "processing" && order.orderStatus === "PICKED" && (
+              {tab == "processing" && localOrder.orderStatus === "PICKED" && (
                 <TouchableOpacity
                   className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
                   style={{ backgroundColor: appTheme.primary }}
@@ -725,7 +710,7 @@ export default function OrderDetailScreen() {
                 </TouchableOpacity>
               )}
 
-              {tab === "new_orders" && order.orderStatus === "ACCEPTED" && (
+              {tab === "new_orders" && localOrder.orderStatus === "ACCEPTED" && (
                 <CustomContinueButton
                   title={t("Assign me")}
                   className="w-[55%] mx-auto"
